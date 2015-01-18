@@ -19,6 +19,7 @@
     </div>
 </div>
 
+</div><!-- Content -->
 </div><!-- End Main -->
 </div><!-- End wrap -->
 

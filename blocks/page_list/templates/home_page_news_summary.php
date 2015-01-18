@@ -36,7 +36,6 @@ if ($paginate && $num > 0 && is_object($pl)) {
  */?>
 
 
-<div class="spacer">&nbsp;</div>
 <?php foreach ($pages as $page):
     echo '<div class="newsEntry">';
 

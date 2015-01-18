@@ -35,9 +35,6 @@ if ($paginate && $num > 0 && is_object($pl)) {
  * DESIGNERS: CUSTOMIZE THE PAGE LIST HTML STARTING HERE...
  */?>
 
-    <!-- <div class="row"> -->
-    <!-- <div class="large-9 columns"> -->
-
 <?php foreach ($pages as $page):
     echo '<div class="newsEntry">';
 
@@ -168,8 +165,6 @@ if ($paginate && $num > 0 && is_object($pl)) {
     <?php echo $rssInvisibleLink ?>
 <?php endif; ?>
 
-    <!-- </div> --><!-- End large Columns -->
-    <!-- </div> --><!-- Row -->
 
 <?php if ($showPagination): ?>
     <div id="pagination">

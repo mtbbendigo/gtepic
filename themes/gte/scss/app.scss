@@ -39,14 +39,13 @@
 //"foundation/components/offcanvas",
 "foundation/components/visibility";
 
-$heading-color-std: #ffffff;//#D7A704;;
-$color-default: #FFF;
+$heading-color-std: #ffffff;
 $footer-nav-color: #D7A704;
 $footer-nav-hover: #D4E20A;
 $default-gold: #D7A704;
-$white: #FFF;
-$hover-green: #D4E20A;
-$dark-grey: #333;
+$white: #FFFFFF;
+$dark-grey: #333333;
+$black: #000000;
 
 $heading-family: Enriqueta, Alegreya, Belgrano, serif;
 $paragraph-font-family: 'Open Sans', tahoma, verdana;
@@ -112,7 +111,7 @@ $pc-screen: 1024px;
 
 
 .banner-container{
-  background-color: #000;
+  background-color: $black;
 }
 
 .banner-content-container{
@@ -131,16 +130,17 @@ $pc-screen: 1024px;
   }
 }
 
-//.off-canvas-menu-container{
-//  padding-left: .85rem;
-//  padding-top: .55rem;
-//}
+@media screen and (max-width: $small-screen-width){
+  .banner-image{
+    padding-top: 8%;
+  }
+}
 
-a { color: #FFF; }
-a:hover { color: #D7A704;}
-a:active { color: #D7A704; }
-a:visited { color: #FFF; }
-a:focus { color: #D7A704; }
+a { color: $white; }
+a:hover { color: $default-gold;}
+a:active { color: $default-gold; }
+a:visited { color: $white; }
+a:focus { color: $default-gold; }
 
 p{
   color: #f4f4f4;
@@ -151,11 +151,11 @@ p{
 
 .nav-block {
   height: 5.5em;
-  //background-color: #D7A704;//#000;
+
   .nav-container {
     padding-top: .90em; padding-right: 1.3em;
-    a:hover{color: #fff; text-decoration: underline;}
-    a:active{color: #fff; text-decoration: underline;}
+    a:hover{color: $white; text-decoration: underline;}
+    a:active{color: $white; text-decoration: underline;}
   }
 }
 
@@ -186,7 +186,7 @@ p{
 .banner {
   height: 4.5em;
   padding-top: 50px;
-  color: #000;
+  color: $black;
   z-index: -1;
   //http://stackoverflow.com/questions/18339549/floating-div-over-an-image
 }
@@ -194,7 +194,7 @@ p{
 .banner-bg{
   margin-left: 2%;
   margin-right: 2%;
-  background-color: #000;
+  background-color: $black;
 }
 
 @media screen and (min-width: $smaller-screen){
@@ -207,16 +207,15 @@ p{
 .menu-text{
   font-family: Enriqueta, "Alegreya SC", serif;
   font-size: 1.55em;
-  color: #D7A704;
+  color: $default-gold;
 }
 
 .box-container {
-  background-color: #D7A704;//#FFDD00;
-  h1,h2,h3,h4,h5,h6 {color: $heading-color-std;}
+  background-color: $default-gold;
+  h1,h2,h3,h4,h5,h6 {color: $white;}
 }
 
 .left-menu-container {
-  //background-color: #D7A704;//#FFDD00;
   padding-top: 11%;
 }
 
@@ -232,10 +231,10 @@ p{
     padding-left: 5%;
     padding-right: 5%;
     .document-text {
-      h1{@include headings($heading-family, $h1-size, $heading-color-std, 2px);}
-      h2{@include headings($heading-family, $h2-size, $heading-color-std, 2px);}
-      h3{@include headings($heading-family, $h3-size, $heading-color-std, 2px);}
-      h4{@include headings($heading-family, $h4-size, $heading-color-std, 2px);}
+      h1{@include headings($heading-family, $h1-size, $white, 2px);}
+      h2{@include headings($heading-family, $h2-size, $white, 2px);}
+      h3{@include headings($heading-family, $h3-size, $white, 2px);}
+      h4{@include headings($heading-family, $h4-size, $white, 2px);}
     }
   }
   .image-container {
@@ -253,7 +252,7 @@ p{
 }
 
 .yellow-band {
-  background-color: #D7A704;
+  background-color: $default-gold;
   padding-top: 15px;
   padding-bottom: 15px;
   float: right;
@@ -266,9 +265,9 @@ p{
   .yellow-band-text{
     font-weight: bold;
     margin-left: 3%;
-    color: #000;
-    a{color: #000;}
-    a:hover{color:#FFF;}
+    color: $black;
+    a{color: $black;}
+    a:hover{color:$white;}
   }
 }
 
@@ -331,9 +330,10 @@ p{
   h3{
     font-family: $heading-family;
     a{color: $default-gold;}
+    a:hover{border-bottom: $default-gold 1px solid;}
   }
   font-family: $paragraph-font-family;
-  color: $color-default;
+  color: $white;
 }
 
 
@@ -345,9 +345,10 @@ p{
 
 .read-more{
   color: $default-gold;
-  font-family: $heading-color-std;
+  font-family: $white;
   font-style: italic;
   a{color: $default-gold;}
+  a:hover{border-bottom: $default-gold 1px solid;}
   //a:before {content: &#8594 attr(href);}
 }
 
@@ -360,7 +361,7 @@ p{
 }
 
 .newsExcerpt{
-  color: $color-default;
+  color: $white;
 }
 
 .news-summary-image-container{
@@ -447,7 +448,7 @@ p{
   td {
     font-size: .86em;
     a {
-      color: #000;
+      color: $black;
       font-size: .9575em;
     }
     a:hover{color: $default-gold;border-bottom: 1px solid; }
@@ -460,7 +461,7 @@ p{
   margin-top: 1.8em;
   .footer-text {
     margin: 0 auto;
-    color: $color-default;
+    color: $white;
     font-size: .757em;
     a:link {color: $footer-nav-color;}
     a:hover {color: $footer-nav-hover;}
@@ -499,11 +500,11 @@ p{
 
 .button{
   background-color: $default-gold;
-  border-color: #000;
+  border-color: $black;
 }
 
 .button:hover{background-color: #3F3F3F;}
-.button:focus{background-color: $default-gold; border-color: #FFF;}
+.button:focus{background-color: $default-gold; border-color: $white;}
 
 ol{color: $white;}
 
@@ -521,7 +522,7 @@ nav ul {
   font-family: $paragraph-font-family;
   font-size: .88rem;
   font-weight: bold;
-  background: #D7A704;
+  background: $default-gold;
   background: linear-gradient(top, $default-gold  0%, #f9c906 100%);
   background: -moz-linear-gradient(top, $default-gold  0%, #f9c906 100%);
   background: -webkit-linear-gradient(top, $default-gold  0%,#f9c906 100%);
@@ -556,6 +557,8 @@ nav ul li a {
   display: block; padding: 15px 30px;
   color: #757575; text-decoration: none;
 }
+
+nav ul li a:visited {color: $black;}
 
 nav ul ul {
   background: #5f6975;
@@ -636,7 +639,7 @@ nav ul ul ul {
 .nav-item {
   width: 220px;
   border-top: 1px solid #111;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid $black;
   a {
     display: block;
     padding: .8em 0 .8em .8em;

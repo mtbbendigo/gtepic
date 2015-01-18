@@ -81,7 +81,9 @@
                                 <div class="banner-content-container">
                                     <div class="row">
                                         <div class="medium-4 large-5 columns">
-                                            <a href="<?php echo View::url('/'); ?>"><img src="<?php echo $this->getThemePath()?>/images/banner/gte-trans.png" /></a>
+                                            <div class="banner-image">
+                                                <a href="<?php echo View::url('/'); ?>"><img src="<?php echo $this->getThemePath()?>/images/banner/logo-transparent.png" /></a>
+                                            </div>
                                         </div>
                                         <div class="medium-8 large-7 columns">
                                             <div class="visible-for-medium-up">
@@ -106,3 +108,6 @@
                     </div>
                 </header>
             <div class="header-spacer">&nbsp;</div>
+            <!--[if lt IE 9]>
+            <h3 style="color: #FFA500;">Internet Explorer 8 or less is not supported. Update your browser, or download <a href="https://www.google.com/intl/en-AU/chrome/browser/">Google Chrome</a></h3>
+            <![endif]-->
