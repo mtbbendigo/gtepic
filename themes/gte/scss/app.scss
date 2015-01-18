@@ -46,6 +46,7 @@ $default-gold: #D7A704;
 $white: #FFFFFF;
 $dark-grey: #333333;
 $black: #000000;
+$orange: #FFA500;
 
 $heading-family: Enriqueta, Alegreya, Belgrano, serif;
 $paragraph-font-family: 'Open Sans', tahoma, verdana;
@@ -235,6 +236,14 @@ p{
       h2{@include headings($heading-family, $h2-size, $white, 2px);}
       h3{@include headings($heading-family, $h3-size, $white, 2px);}
       h4{@include headings($heading-family, $h4-size, $white, 2px);}
+      a{color: $default-gold;}
+      a:hover{color: $orange; border-bottom: $orange 1px solid;}
+
+      .gte-fileset-table td a {
+        color: black;
+        font-size: .9575em;
+      }
+      .gte-fileset-table td a:hover {color: $orange; border-bottom: $orange 1px solid;}
     }
   }
   .image-container {
@@ -379,7 +388,10 @@ p{
 }
 
 .google-maps-directions{
+  padding-top: .85rem;
   text-align: center;
+  a{color: $default-gold;}
+  a:hover{color: $orange; border-bottom: $orange 1px solid;}
 }
 
 .secondary-nav-container{
@@ -445,13 +457,9 @@ p{
 
 .gte-fileset-table {
   font-family: $paragraph-font-family;
+  thead{background: #e3e3e3;}
   td {
     font-size: .86em;
-    a {
-      color: $black;
-      font-size: .9575em;
-    }
-    a:hover{color: $default-gold;border-bottom: 1px solid; }
   }
 
 }
