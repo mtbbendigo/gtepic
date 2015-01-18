@@ -1,0 +1,13 @@
+cgi-bin
+error_log
+config/site.php
+files/cache/*
+files/tmp/*
+.htaccess
+.settings/*
+.buildpath
+.project
+**/.sass-cache/*
+.idea/*
+*.DS_Store
+
