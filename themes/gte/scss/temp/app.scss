@@ -1,0 +1,468 @@
+@import "settings";
+//@import "foundation";
+
+// Or selectively include components
+ @import
+//   "foundation/components/accordion",
+//   "foundation/components/alert-boxes",
+   "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+   "foundation/components/buttons",
+//   "foundation/components/clearing",
+   "foundation/components/dropdown",
+   "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+//   "foundation/components/forms",
+   "foundation/components/grid",
+   "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+   "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+   "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+//   "foundation/components/sub-nav",
+//   "foundation/components/switches",
+   "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+//   "foundation/components/top-bar",
+   "foundation/components/type",
+   "foundation/components/offcanvas",
+  "foundation/components/visibility";
+
+$heading-color-std: #ffffff;//#D7A704;;
+$color-default: #FFF;
+$footer-nav-color: orange;
+$default-gold: #D7A704;
+
+$heading-family: Enriqueta, Alegreya, Belgrano, serif;
+$paragraph-font-family: 'Open Sans', tahoma, verdana;
+
+$h1-size: 2.85em;
+$h2-size: 2.5em;
+$h3-size: 2.1em;
+$h4-size: 1.75em;
+$h5-size: 1.5em;
+$h6-size: 1.3em;
+
+$h1-lineHeight: 1.2em;
+$h2-lineHeight: 1.2em;
+$h3-lineHeight: 1.2em;
+$h4-lineHeight: 1.3em;
+$h5-lineHeight: 1.1em;
+$h6-lineHeight: 1.1em;
+
+//Small 0 - 640px
+$medium-screen: 478;//766px;
+//640 and up.
+$pc-screen: 1024px;
+
+
+//########### Mixins 
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin headings($font-family, $size, $color, $spacing) {
+  font-family: $font-family;
+  font-size: $size;
+  font-weight: normal;
+  color: $color;
+  margin-top: 0;
+  letter-spacing: $spacing;
+  display: block;
+}
+
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $color) {
+  -moz-box-shadow: $h-shadow $v-shadow $blur $color;
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $color;
+  -o-box-shadow: $h-shadow $v-shadow $blur $color;
+  box-shadow: $h-shadow $v-shadow $blur $color;
+}
+
+@mixin links($color, $hover) {
+  a.link{color: $color; text-decoration: none;}
+  a:hover{color: $hover; text-decoration: underline;}
+  a:active{color: $color; text-decoration: none;}
+}
+
+//########### Begin Stylesheet
+
+//Some kinda funky namespace work around. Maybe remove after foundation v5+
+.foundation-data-attribute-namespace {
+  font-family: false;
+}
+
+body {
+  //margin: 0;
+  width: 100%;
+  //background: url(../images/mtb2.jpg) no-repeat fixed center #c5c5c5;
+
+}
+
+//h1{@include headings($heading-family, $h1-size, $heading-color-std, 0, 0, 2px);}
+//h2{@include headings($heading-family, $h2-size, $heading-color-std, $h2-lineHeight, 1.25em, 2px);}
+//h3{@include headings($heading-family, $h3-size, $heading-color-std, $h3-lineHeight, 1.25em, 2px);}
+//h4{@include headings($heading-family, $h4-size, $heading-color-std, $h4-lineHeight, 1.15em, 2px);}
+//h5{@include headings($heading-family, $h5-size, $heading-color-std, $h5-lineHeight, 1.15em, 1px);}
+//h6{@include headings($heading-family, $h6-size, $heading-color-std, $h6-lineHeight, 1.0em, 1px);}
+
+
+.banner-container{
+  background-color: #000;
+}
+
+.banner-content-container{
+  margin-top: 1.2em;
+  margin-bottom: 1.55em;
+  .menu-container {
+    margin-top: 15.5%;
+  }
+}
+
+
+
+.nav-header-container {
+  margin-top: 13%;
+  .nav a{
+    color: #FFF;
+    text-decoration: none;
+  }
+}
+
+a{color: #FFF;}
+a:hover{color: #D7A704;}
+a:active{color: #D7A704;}
+
+p{
+  color: #f4f4f4;
+  font-family: $paragraph-font-family;
+  //color: whitesmoke;
+  //line-height: 1.5em; //1.6 by default.
+}
+
+.nav-block {
+  height: 5.5em;
+  //background-color: #D7A704;//#000;
+  .nav-container {
+    padding-top: .90em; margin-right: 1.3em;
+    a:hover{color: #fff; text-decoration: underline;}
+    a:active{color: #fff; text-decoration: underline;}
+  }
+}
+
+.block-advertising{
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+
+  /*
+  //This stuffs up the block-grid....not sure how to do the advertising block
+  img {
+    display: block;
+    max-width:250px;
+    max-height:250px;
+    width: auto;
+    height: auto;
+  }
+  */
+}
+
+.fullWidth {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: initial;
+}
+
+.banner {
+  height: 4.5em;
+  margin-top: 50px;
+  color: #000;
+  z-index: -1;
+  //http://stackoverflow.com/questions/18339549/floating-div-over-an-image
+}
+
+.banner-bg{
+  margin-left: 2%;
+  margin-right: 2%;
+  background-color: #000;
+}
+
+@media all and (min-width: $medium-screen){
+  .banner-bg {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.menu-text{
+  font-family: Enriqueta, "Alegreya SC", serif;
+  font-size: 1.55em;
+  color: #D7A704;
+}
+
+.box-container {
+  background-color: #D7A704;//#FFDD00;
+  h1,h2,h3,h4,h5,h6 {color: $heading-color-std;}
+}
+
+.left-menu-container {
+  //background-color: #D7A704;//#FFDD00;
+  margin-top: 11%;
+}
+
+
+.block-container {
+  background-color: rgba(0, 0, 0, 0.639216);
+  width: 100%;
+  //opacity: .85;
+
+  .content-container {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    .document-text {
+      h1{@include headings($heading-family, $h1-size, $heading-color-std, 2px);}
+      h2{@include headings($heading-family, $h2-size, $heading-color-std, 2px);}
+      h3{@include headings($heading-family, $h3-size, $heading-color-std, 2px);}
+      h4{@include headings($heading-family, $h4-size, $heading-color-std, 2px);}
+    }
+  }
+  .image-container {
+    margin-top: 1.4em;
+    margin-bottom: 1.5em;
+    align-content: center;
+  }
+}
+
+@media all and (max-width: 1020px){
+  .block-container{
+    //margin-left: 1%;
+    width: 98%;
+  }
+}
+
+.yellow-band {
+  background-color: #D7A704;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  float: right;
+  width: 75%;
+  margin-right: -4.5%;
+  -webkit-box-shadow: 0 1px 6px rgba(1,1,1,0.9);
+  -moz-box-shadow: 0 1px 6px rgba(1,1,1,0.9);
+  box-shadow: 0 1px 6px rgba(1,1,1,0.9);
+  margin-bottom: 2%;
+  .yellow-band-text{
+    margin-left: 3%;
+    color: #000;
+    a{color: #000;}
+    a:hover{color:#FFF;}
+  }
+}
+
+@media all and (max-width: 875px) {
+  .yellow-band {
+    margin-right: -3.6%;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .yellow-band {
+    margin-right: -3.0%;
+    margin-bottom: 2.5%;
+  }
+}
+
+@media all and (max-width: 365px) {
+  .yellow-band {
+    margin-right: -2.75%;
+    margin-bottom: 5%;
+  }
+}
+
+.block-grid-container{
+  padding-top: 5%;
+  padding-bottom: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+@media all and (max-width: 910px)
+{
+  .block-grid-container{
+    padding-top: 6.5%;
+    padding-bottom: 3.5%;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+}
+
+@media all and (max-width: 365px)
+{
+  .block-grid-container{
+    padding-top: 8.6%;
+    padding-bottom: 0;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+}
+
+.spacer {
+  margin-top: 1.8em;
+}
+
+.page-list-title{
+  a{color: $default-gold;}
+}
+
+.pageList-article{
+  h3{
+    font-family: $heading-family;
+    a{color: $default-gold;}
+  }
+  font-family: $paragraph-font-family;
+  color: $color-default;
+}
+
+
+.postedDate{
+  color: #777777;//dimgrey
+  font-weight: normal;
+
+}
+
+.read-more{
+  color: $default-gold;
+  font-family: $heading-color-std;
+  font-style: italic;
+   a{color: $default-gold;}
+  //a:before {content: &#8594 attr(href);}
+}
+
+.arrow{
+  margin: 0 0 0 0;
+  padding-top: 0;
+  line-height: 0;
+  font-size: 2.0em;
+  color: $default-gold;
+}
+
+.newsExcerpt{
+  color: $color-default;
+}
+
+.news-summary-image-container{
+  img {
+    display: block;
+    max-width:250px;
+    max-height:250px;
+    width: auto;
+    height: auto;
+  }
+}
+
+.news-article-divider{
+  margin-bottom: 1.8em;
+}
+
+.google-maps-directions{
+  text-align: center;
+}
+
+.secondary-nav-container{
+  background-color: rgba(0, 0, 0, 0.639216);
+  width: 100%;
+}
+
+.header-spacer{
+  margin-top: 5.5em;
+}
+
+.social-media-container{
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.639216);
+  margin-bottom: 2.15em;
+  .soc-media-content {
+    padding-top: 20px;
+    p {text-align: right;}
+  }
+}
+
+@media all and (max-width: 640px){
+  .social-media-container {
+    .soc-media-content{
+      p{text-align: center;}
+      text-align: center;
+      .icons-container{
+        padding-left: 35%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+        display: block;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 450px){
+  .social-media-container {
+    .soc-media-content{
+      .icons-container{
+        padding-left: 28%;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 350px){
+  .social-media-container {
+    .soc-media-content{
+      .icons-container{
+        padding-left: 22%;
+      }
+    }
+  }
+}
+
+.fileset-table {
+  font-family: $paragraph-font-family;
+  td {
+    font-size: .86em;
+  }
+  a {
+    font-size: .9575em;
+  }
+}
+
+
+.footer-content {
+
+  //margin-top: 1.2em;
+  //padding-bottom: 1.45em;
+  .footer-text {
+    margin: 0 auto;
+    color: $color-default;
+    font-size: .757em;
+    a:link {color: $footer-nav-color;}
+    a:hover {color: #D7A704;}
+    text-align: center;
+    letter-spacing: 1.1px;
+    font-weight: normal;
+  }
+}
