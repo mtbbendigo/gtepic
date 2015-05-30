@@ -37,7 +37,7 @@ if ($paginate && $num > 0 && is_object($pl)) {
 
 
 <?php foreach ($pages as $page):
-    echo '<div class="newsEntry">';
+    echo '<div class="news-entry-container">';
 
     // Prepare data for each page being listed...
     $title = $th->entities($page->getCollectionName());

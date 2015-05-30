@@ -30,7 +30,7 @@
                 <div class="footer-text">
                     <?php
                     $rights = 'All rights reserved&nbsp;&copy;' . date('Y').'&nbsp;';
-                    $site = '<a href="'.View::url('/').DIR_REL.'/" style="{color: orange;} :hover{color: red;}">'.SITE.'</a>.&nbsp;';
+                    $site = '<a href="'.View::url('/').'/" style="{color: orange;} :hover{color: red;}">'.SITE.'</a>.&nbsp;';
                     $sponsor = 'Facilitated by: <a href="http://www.mtbbendigo.com/index.php">Bendigo Mountain Bike Club Inc.</a>';
                     echo $rights.$site.$sponsor;
                     $u = new User();

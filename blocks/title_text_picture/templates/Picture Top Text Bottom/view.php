@@ -31,9 +31,11 @@ $nh = Loader::helper('navigation');
                     </div>
                     <div class="row">
                         <div class="small-12 large-12 columns">
+                            <div class="document-text">
                             <?php  if (!empty($field_2_wysiwyg_content)): ?>
                                 <?php  echo $field_2_wysiwyg_content; ?>
                             <?php  endif; ?>
+                            </div>
                         </div>
                     </div>
                 </article>

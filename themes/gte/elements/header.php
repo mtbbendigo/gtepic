@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php Loader::element('header_required'); ?>
-    <title>Golden Triangle Epic</title>
     <link rel="stylesheet" href="<?php echo $this->getThemePath(); ?>/stylesheets/app.css" />
     <link rel="stylesheet" href="<?php echo $this->getThemePath(); ?>/stylesheets/sticky_footer.css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -33,6 +32,10 @@
                 echo 'background:url(' . $this->getThemePath() . '/images/page_bg/' . $img . ') no-repeat fixed center #646464;';
                 //Gareths phpstorm tool tip Select entire line...Tools live template....etc
                 //look up live templates and examples
+            }
+            else
+            {
+                echo 'background:url('.$this->getThemePath().'/images/page_bg/spark.jpg) no-repeat fixed center #646464;';
             }
         ?>
         }
@@ -62,10 +65,6 @@
         if($uinfo->IsLoggedIn())
         {
             echo('<div style="margin-top: -50px"></div>');
-        }
-        if(empty($img))
-        {
-            echo '<h1 style="color:red;">Background image is missing.</h1>';
         }
     ?>
 <!-- Create a page Attribute in Admin and set it. getAttribute('body') -->

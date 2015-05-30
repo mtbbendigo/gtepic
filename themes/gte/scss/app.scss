@@ -236,6 +236,7 @@ p{
       h2{@include headings($heading-family, $h2-size, $white, 2px);}
       h3{@include headings($heading-family, $h3-size, $white, 2px);}
       h4{@include headings($heading-family, $h4-size, $white, 2px);}
+      .article-title{@include headings($heading-family, $h3-size, $default-gold, 2px);}
       a{color: $default-gold;}
       a:hover{color: $orange; border-bottom: $orange 1px solid;}
 
@@ -247,7 +248,7 @@ p{
     }
   }
   .image-container {
-    padding-top: 1.4em;
+    padding-top: .75em;
     padding-bottom: 1.5em;
     align-content: center;
   }
@@ -301,7 +302,8 @@ p{
 }
 
 .block-grid-container{
-  padding-top: 5%;
+  margin-top: 5%;
+  //padding-top: 4%;
   padding-bottom: 2%;
   padding-left: 1%;
   padding-right: 1%;
@@ -310,7 +312,8 @@ p{
 @media all and (max-width: 910px)
 {
   .block-grid-container{
-    padding-top: 6.5%;
+    margin-top: 6%;
+    //padding-top: 6.5%;
     padding-bottom: 3.5%;
     padding-left: 1%;
     padding-right: 1%;
@@ -320,10 +323,11 @@ p{
 @media all and (max-width: 365px)
 {
   .block-grid-container{
-    padding-top: 8.6%;
+    margin-top: 8.8%;
+    //padding-top: 8.0%;
     padding-bottom: 0;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
   }
 }
 
@@ -383,8 +387,14 @@ p{
   }
 }
 
-.news-article-divider{
-  padding-bottom: 1.8em;
+.news-entry-container{
+  padding-top: 3.5%;
+}
+
+@media screen and (max-width: $small-screen-width){
+  .news-entry-container {
+    padding-top: 10%;
+  }
 }
 
 .google-maps-directions{
@@ -542,6 +552,13 @@ nav ul {
   display: inline-table;
 }
 
+@media screen and (max-width: 754px){
+  nav ul {
+    font-size: .80rem;
+    padding: 0 0;
+  }
+}
+
 nav ul:after {
   content: ""; clear: both; display: block;
 }
@@ -587,6 +604,13 @@ nav ul ul li a {
   color: $white;
 }
 
+@media screen and (max-width: 754px){
+  nav ul ul li a {
+    padding: 8px 18px;
+    color: $white;
+  }
+}
+
 nav ul ul li a:hover {
   background: #4b545f;
 }
@@ -617,6 +641,12 @@ nav ul li a {
   padding: 10px 10px;
   color: #353535;
   text-decoration: none;
+}
+
+@media screen and (max-width: 684px){
+  nav ul li a {
+    padding: 8px 7px;
+  }
 }
 
 nav ul ul ul {
@@ -675,7 +705,7 @@ nav ul ul ul {
 
 label[for="nav-trigger"] {
   position: fixed;
-  top: 15px;
+  top: 35px;
   left: 15px; //hide the icon for larger screen sizes
   z-index: 2;
   width: 30px;
@@ -701,4 +731,148 @@ label[for="nav-trigger"] {
 
 .sub-menu {
   margin-left: 0;
+}
+
+.eventSponsorsContainer{
+  padding-top: 3.5%;
+  h3{@include headings($heading-family, $h3-size, $white, 2px);}
+}
+
+.image-block-grid-container{
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.image-block-grid-title{
+  color: white;
+  font-family: $heading-family;
+  font-size: $h4-size;
+  line-height: $h4-lineHeight;
+  padding-bottom: 1.2rem;
+  margin-left: .01em;
+}
+
+.cyclesacpe-sm-img-container {
+  padding-top: 63%;
+}
+
+@media screen and (max-width: $small-screen-width) {
+  .cyclesacpe-sm-img-container {
+    padding-top: 5%;
+  }
+}
+
+.cyclescape-bttm-rgt-img {
+  padding-top: 2%;
+  padding-left: 10%;
+}
+
+@media screen and (max-width: $small-screen-width){
+  .cyclescape-bttm-rgt-img {
+    padding-top: 5;
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 346px){
+  .cyclescape-bttm-rgt-img {
+    padding-top: 0;
+    padding-left: 8%;
+    padding-bottom: 6%;
+  }
+}
+
+.cyclescape-image-container {
+  border: solid 1px #FFF;
+  padding: 10px 10px 10px 10px;
+  margin: 10px 2px 10px 2px;
+}
+
+table {
+  border-collapse: collapse;
+  max-width: 100%;
+  margin-bottom: 15px;
+  caption{ color: $white; text-align: left; margin-bottom: 10px;}
+  th {color: $white;}
+  td {color: $white;}
+}
+
+table.prizes-table {
+  border: solid 1px #DDDDDD;
+  margin-left: 0;
+  margin-bottom: 1.25rem;
+
+
+  caption{
+    font-family: $heading-family;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  td.title {
+    background-color: #333333;
+    padding: 0.9375rem 1.25rem;
+    text-align: center;
+    color: #EEEEEE;
+    font-weight: normal;
+    font-size: 1rem;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  }
+  td.first {
+    background-color: #F6F6F6;
+    padding: 0.9375rem 1.25rem;
+    text-align: center;
+    color: #333333;
+    font-weight: normal;
+    font-size: 1.3rem;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  }
+
+  td.second{
+    background-color: #FFFFFF;
+    padding: 0.9375rem;
+    text-align: center;
+    color: #777777;
+    font-size: 1.25rem;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-weight: normal;
+    line-height: 1.4;
+    border-bottom: dotted 1px #DDDDDD;
+  }
+
+  td.third {
+    background-color: #FFFFFF;
+    padding: 0.9375rem;
+    text-align: center;
+    color: #333333;
+    font-size: 1.2rem;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-weight: normal;
+    border-bottom: dotted 1px #DDDDDD;
+  }
+  td.misc{
+    background-color: #FFFFFF;
+    padding: 0.9375rem;
+    text-align: center;
+    color: #333333;
+    font-size: 1.2rem;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-weight: normal;
+    border-bottom: dotted 1px #DDDDDD;
+  }
+  p{
+    color: #222;
+    font-family: inherit;
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 1.4;
+    text-rendering: optimizeLegibility;
+    margin-bottom: 0;
+  }
+}
+
+.two-column-heading-container{
+  padding-top: 1.8rem;
 }
