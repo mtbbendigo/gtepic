@@ -1,13 +1,16 @@
-<?php  $ih = Loader::helper('concrete/interface'); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
+<?php $ih = Loader::helper('concrete/interface'); ?>
+<?php
 $enabledVals = array('0' => t('No'), '1' => t('Yes'));
 $secureVals = array('' => t('None'), 'SSL' => 'SSL', 'TLS' => 'TLS');
 $form = Loader::helper('form');
 ?>
 	
 
-	<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('SMTP Method'), false, 'span8 offset2', false)?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('SMTP Method'), false, 'span8 offset2', false)?>
 	<form method="post" action="<?php echo $this->url('/dashboard/system/mail/method', 'save_settings')?>" class="form-horizontal" id="mail-settings-form">
+	<?php Loader::helper('validation/token')->output('save_settings') ?>
 	<div class="ccm-pane-body">
 	<fieldset>
 	<legend><?php echo t('Send Mail Method')?></legend>
@@ -35,7 +38,7 @@ $form = Loader::helper('form');
 			<div class="control-group">
 				<?php echo $form->label('MAIL_SEND_METHOD_SMTP_PASSWORD',t('Password'));?>
 				<div class="controls">
-					<?php echo $form->text('MAIL_SEND_METHOD_SMTP_PASSWORD', Config::get('MAIL_SEND_METHOD_SMTP_PASSWORD'))?>
+					<?php echo $form->password('MAIL_SEND_METHOD_SMTP_PASSWORD', Config::get('MAIL_SEND_METHOD_SMTP_PASSWORD'), array('autocomplete' => 'off'))?>
 				</div>
 			</div>
 			
@@ -54,11 +57,12 @@ $form = Loader::helper('form');
 	</fieldset>	
 	</div>
 	<div class="ccm-pane-footer">
+		<a href="<?php echo $this->url('/dashboard/system/mail/method/test_settings')?>" class="btn"><?php echo t('Test Settings')?></a>
 		<?php echo $ih->submit(t('Save'), 'mail-settings-form','right','primary')?>
 	</div>
 	</form>
 	
-	<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 	
 		<script type="text/javascript">
 	ccm_checkMailSettings = function() {

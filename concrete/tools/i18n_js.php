@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 header('Content-type: text/javascript'); ?>
@@ -30,6 +30,7 @@ var ccmi18n = {
 	copyBlockToScrapbookMsg: "<?php echo t('The block has been added to your clipboard.')?>",
 	closeWindow: "<?php echo t('Close')?>",
 	editBlock: "<?php echo t('Edit')?>",
+	editBlockWithName: "<?php echo tc('%s is a block type name', 'Edit %s')?>",
 	setPermissionsDeferredMsg: "<?php echo t('Permission setting saved. You must complete the workflow before this change is active.')?>",
 	editStackContents: "<?php echo t('Manage Stack Contents')?>",
 	compareVersions: "<?php echo t('Compare Versions')?>",
@@ -50,6 +51,8 @@ var ccmi18n = {
 	themeBrowserLoading: "<?php echo t('Retrieving theme data from concrete5.org marketplace.')?>",
 	addonBrowserLoading: "<?php echo t('Retrieving add-on data from concrete5.org marketplace.')?>",
 	clear: "<?php echo t('Clear')?>",
+	requestTimeout: "<?php echo t('This request took too long.')?>",
+	generalRequestError: "<?php echo t('An unexpected error occurred.')?>",
 	helpPopup: "<?php echo t('Help')?>",
 	community: "<?php echo t('concrete5 Community')?>",
 	communityCheckout: "<?php echo t('concrete5 Community - Purchase &amp; Checkout')?>",
@@ -85,6 +88,7 @@ var ccmi18n_sitemap = {
 	visitExternalLink: "<?php echo t('Visit')?>",
 	editExternalLink: "<?php echo t('Edit External Link')?>",
 	deleteExternalLink: "<?php echo t('Delete')?>",
+	copyProgressTitle: "<?php echo t('Copy Progress')?>",
 	addExternalLink: "<?php echo t('Add External Link')?>",
 	sendToTop: "<?php echo t('Send To Top')?>",
 	sendToBottom: "<?php echo t('Send To Bottom')?>",
@@ -171,3 +175,11 @@ var ccmi18n_filemanager = {
 	FTYPE_APPLICATION: "<?php echo FileType::T_APPLICATION?>"
 	
 }
+
+var ccmi18n_chosen = {
+
+	placeholder_text_multiple: "<?php echo t('Select Some Options')?>",
+	placeholder_text_single: "<?php echo t('Select an Option')?>",
+	no_results_text: "<?php echo t(/*i18n After this text we have a search criteria: for instance 'No results match "Criteria"'*/'No results match')?>"
+
+};

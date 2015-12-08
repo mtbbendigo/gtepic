@@ -1,11 +1,11 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 	$set = PermissionSet::getSavedPermissionSetFromSession();
 ?>
 <button class="btn btn-mini" type="button" id="ccm-permissions-list-copy-permissions"><?php echo t('Copy')?></button>
-<?php  if (is_object($set) && $set->getPermissionKeyCategory() == $pkCategory->getPermissionKeyCategoryHandle()) { ?>
+<?php if (is_object($set) && $set->getPermissionKeyCategory() == $pkCategory->getPermissionKeyCategoryHandle()) { ?>
 	<button class="btn btn-mini" type="button" id="ccm-permissions-list-paste-permissions"><?php echo t('Paste')?></button>
-<?php  } ?>
+<?php } ?>
 <input type="hidden" name="pkCategoryHandle" value="<?php echo $pkCategory->getPermissionKeyCategoryHandle()?>" />
 <script type="text/javascript">
 

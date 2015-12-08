@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -157,8 +157,13 @@ if (($_REQUEST['btask'] == 'add' || $_REQUEST['ctask'] == 'add') && $scrapbookNa
 						$p->add($pc);
 					}
 				}
+
+				$securityHelper = Loader::helper('security');
+				$PHP_SELF = $securityHelper->sanitizeURL($_SERVER['PHP_SELF']);
+				$cID = $securityHelper->sanitizeInt($_REQUEST['cID']);
+				$arHandle = $securityHelper->sanitizeString($_REQUEST['arHandle']);
 			
-				header('Location: ' . $_SERVER['PHP_SELF'] . '?pID=' . $p->getPileID() . '&cID=' . $_REQUEST['cID'] . '&arHandle=' . $_REQUEST['arHandle']);
+				header('Location: ' . $PHP_SELF . '?pID=' . $p->getPileID() . '&cID=' . $cID . '&arHandle=' . $arHandle);
 				exit;
 			}
 			break;
@@ -236,12 +241,12 @@ if($_REQUEST['btask']=='add'){
 			<option value="userScrapbook" <?php echo ($defaultScrapbook==$scrapbookHelper->getPersonalScrapbookName())?'selected':''?>>
 				<?php echo t("%s's Personal Scrapbook", $u->getUserName()) ?> 
 			</option>
-			<?php  foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
+			<?php foreach($scrapBookAreasData as $scrapBookAreaData){ ?>
 				<option value="<?php echo addslashes($scrapBookAreaData['arHandle'])?>" 
 				<?php echo ($defaultScrapbook==$scrapBookAreaData['arHandle'])?'selected':''?> >
 					<?php echo $scrapBookAreaData['arHandle'] ?>
 				</option>
-			<?php  } ?>
+			<?php } ?>
 		</select> 
 		</div>
 		
@@ -253,9 +258,9 @@ if($_REQUEST['btask']=='add'){
 	
 		<br/> 
 		
-		<div class="sillyIE7"><?php echo  $ih->button_js( t('Add Block to Scrapbook'), 'ccmSaveToScrapbook()','left'); ?></div>
+		<div class="sillyIE7"><?php echo $ih->button_js( t('Add Block to Scrapbook'), 'ccmSaveToScrapbook()','left'); ?></div>
 		
-	<?php  }elseif($added){ ?>
+	<?php }elseif($added){ ?>
 		
 		<br/> 
 		
@@ -266,8 +271,8 @@ if($_REQUEST['btask']=='add'){
 		<img src="<?php echo ASSETS_URL_IMAGES?>/throbber_white_32.gif" width="32" height="32" />
 		</div>
 		
-		<?php  /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?php echo t('Close Window')?></em></span></a>*/ ?>
+		<?php /*<a href="javascript:void(0)" class="ccm-dialog-close ccm-button-left cancel"><span><em class="ccm-button-close"><?=t('Close Window')?></em></span></a>*/ ?>
 		
-	<?php  }
+	<?php }
 }	
 ?>

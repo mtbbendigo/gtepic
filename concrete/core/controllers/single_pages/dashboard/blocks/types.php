@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 
@@ -114,6 +114,7 @@ class Concrete5_Controller_Dashboard_Blocks_Types extends Controller {
 		if (isset($bt) && ($bt instanceof BlockType)) {
 			$this->set('bt', $bt);
 			$this->set('num', $bt->getCount());
+			$this->set('numActive', $bt->getCount(true));
 		} else {
 			$this->redirect('/dashboard/blocks/types');
 		}

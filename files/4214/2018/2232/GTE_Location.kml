@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.2">
 <Placemark>
@@ -7,4 +8,15 @@
 <coordinates>144.28875267505646,-36.8022664533409,0</coordinates>
 </Point>
 </Placemark>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Placemark>
+<name>Koolamurt Scout Camp</name>
+<description>44 Mandurang Rd, Spring Gully Vic 3550</description>
+<Point>
+<coordinates>144.28875267505646,-36.8022664533409,0</coordinates>
+</Point>
+</Placemark>
+>>>>>>> c8ab72de222fa218030dc40156cfe6d736b9ee22
 </kml>

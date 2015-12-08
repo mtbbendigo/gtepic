@@ -1,12 +1,4 @@
-<?php 
-/**
- * @package Helpers
- * @category Concrete
- * @author Andrew Embler <andrew@concrete5.org>
- * @copyright  Copyright (c) 2003-2008 Concrete5. (http://www.concrete5.org)
- * @license    http://www.concrete5.org/license/     MIT License
- */
-
+<?php
 /**
  * Functions useful for working with text.
  * @package Helpers
@@ -18,25 +10,76 @@
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Helper_Text { 
-	
+
+	/** Takes text and converts it to an ASCII-only string (characters with code between 32 and 127, plus \t, \n and \r).
+	* @param string $text The text to be converted.
+	* @param string $locale='' The locale for the string. If not specified we consider the current locale.
+	* @return string
+	*/
+	public function asciify($text, $locale = '') {
+		if(!strlen($locale)) {
+			$locale = Localization::activeLocale();
+		}
+		$language = substr($locale, 0, strcspn($locale, '_'));
+		Loader::library('3rdparty/urlify');
+		$text = URLify::downcode($text, $language);
+		if(preg_match('/[^\\t\\r\\n\\x20-\\x7e]/', $text)) {
+			if(function_exists('iconv')) {
+				$t = @iconv(APP_CHARSET, 'US-ASCII//IGNORE//TRANSLIT', $text);
+				if(is_string($t)) {
+					$text = $t;
+				}
+			}
+			$text = preg_replace('/[^\\t\\r\\n\\x20-\\x7e]/', '', $text);
+		}
+		return $text;
+	}
+
 	/** 
 	 * @access private
 	 * @param string $handle
 	 * @return string $handle
 	 */
 	public function sanitizeFileSystem($handle) {
-		return $this->urlify($handle);
+		return $this->urlify($handle, PAGE_PATH_SEGMENT_MAX_LENGTH, '', false);
 	}	
 	
 	/** 
 	 * Takes text and returns it in the "lowercase-and-dashed-with-no-punctuation" format
 	 * @param string $handle
+	 * @param int $maxlength=PAGE_PATH_SEGMENT_MAX_LENGTH Max number of characters of the return value
+	 * @param string $lang='' Language code of the language rules that should be priorized
+	 * @param bool $removeExcludedWords=true Set to true to remove excluded words, false to allow them.
 	 * @return string $handle
 	 */
-	public function urlify($handle, $maxlength = PAGE_PATH_SEGMENT_MAX_LENGTH) {
-		Loader::library('3rdparty/urlify');
-		$handle = URLify::filter($handle, $maxlength);
-		return $handle;
+	public function urlify($handle, $maxlength = PAGE_PATH_SEGMENT_MAX_LENGTH, $locale = '', $removeExcludedWords = true) {
+		$text = strtolower(str_replace(array("\r", "\n", "\t"), ' ', $this->asciify($handle, $locale)));
+		if($removeExcludedWords) {
+			$excludeSeoWords = Config::get('SEO_EXCLUDE_WORDS');
+			if(is_string($excludeSeoWords)) {
+				if(strlen($excludeSeoWords)) {
+					$remove_list = explode(',', $excludeSeoWords);
+					$remove_list = array_map('trim', $remove_list);
+					$remove_list = array_filter($remove_list, 'strlen');
+				}
+				else {
+					$remove_list = array();
+				}
+			}
+			else {
+				Loader::library('3rdparty/urlify');
+				$remove_list = URLify::$remove_list;
+			}
+			if(count($remove_list)) {
+				$text = preg_replace('/\b(' . join ('|', $remove_list) . ')\b/i', '', $text);
+			}
+		}
+		$text = preg_replace('/[^-\w\s]/', '', $text);		// remove unneeded chars
+		$text = str_replace('_', ' ', $text);		// treat underscores as spaces
+		$text = preg_replace('/^\s+|\s+$/', '', $text);	// trim leading/trailing spaces
+		$text = preg_replace('/[-\s]+/', '-', $text);		// convert spaces to hyphens
+		$text = strtolower ($text);							// convert to lowercase
+		return trim(substr($text, 0, $maxlength), '-');	// trim to first $maxlength chars
 	}
 		
 
@@ -90,6 +133,14 @@ class Concrete5_Helper_Text {
 		return htmlentities( $v, ENT_COMPAT, APP_CHARSET); 
 	}
 	
+	/** Decodes html-encoded entities (for instance: from '&gt;' to '>')
+	* @param string $v
+	* @return string
+	*/
+	public function decodeEntities($v) {
+		return html_entity_decode($v, ENT_QUOTES, APP_CHARSET);
+	}
+
 	/** 
 	 * A concrete5 specific version of htmlspecialchars(). Double encoding is OFF, and the character set is set to your site's.
 	 */
@@ -131,25 +182,28 @@ class Concrete5_Helper_Text {
 		return $textStr;			
 	}
         
-        /**
-        * Shortens and sanitizes a string but only cuts at word boundaries
+	/**
+	* Shortens and sanitizes a string but only cuts at word boundaries
 	* @param string $textStr
 	* @param int $numChars
 	* @param string $tail
-        */
-        function shortenTextWord($textStr, $numChars=255, $tail='…') {
+	*/
+	function shortenTextWord($textStr, $numChars=255, $tail='…') {
 		if (intval($numChars)==0) $numChars=255;
 		$textStr=strip_tags($textStr);
 		if (function_exists('mb_substr')) {
 			if (mb_strlen($textStr, APP_CHARSET) > $numChars) { 
-				$textStr=preg_replace('/\s+?(\S+)?$/', '', mb_substr($textStr, 0, $numChars + 1, APP_CHARSET)) . $tail;
+				$textStr=preg_replace('/\s+?(\S+)?$/', '', mb_substr($textStr, 0, $numChars + 1, APP_CHARSET));
+				// this is needed if the shortened string consists of one single word
+				$textStr = mb_substr($textStr, 0, $numChars, APP_CHARSET). $tail;
 			}
 		} else {
 			if (strlen($textStr) > $numChars) { 
-				$textStr = preg_replace('/\s+?(\S+)?$/', '', substr($textStr, 0, $numChars + 1)) . $tail;
+				$textStr = preg_replace('/\s+?(\S+)?$/', '', substr($textStr, 0, $numChars + 1));
+				$textStr = substr($textStr, 0, $numChars). $tail;
 			}
 		}
-		return $textStr;		
+		return $textStr;
 	}
 
 	
@@ -245,36 +299,14 @@ class Concrete5_Helper_Text {
 	}
 	
 	/**
-	 * shortens a string without breaking words
+	 * alias of shortenTextWord()
 	 * @param string $textStr
 	 * @param int $numChars
 	 * @param string $tail
 	 * @return string
 	 */
-	public function wordSafeShortText($textStr, $numChars=255, $tail='...') {
-		if (intval($numChars)==0) $numChars=255;
-		$textStr = trim(strip_tags($textStr));
-		
-		if (strlen($textStr) > $numChars) { 
-			$words = explode(" ",$textStr);
-			$length = 0;
-			$trimmed = "";
-			if(is_array($words) && count($words) > 1) {
-				foreach($words as $w) {
-					$length += strlen($w);
-					if($length >= $numChars) {
-						break;
-					} else {
-						$trimmed .= $w." ";
-						$length+=1;
-					}
-				}
-				$textStr = trim($trimmed).$tail;
-			} else { // no spaces or something...
-				$textStr = self::shortText($textStr,$numChars,$tail);
-			}
-		}
-		return $textStr;
+	public function wordSafeShortText($textStr, $numChars=255, $tail='…') {
+		return $this->shortenTextWord($textStr, $numChars, $tail);
 	}
 
 	
@@ -288,14 +320,21 @@ class Concrete5_Helper_Text {
 	}
 	
 	/** 
-	 * Highlights a string within a string with the class ccm-hightlight-search
+	 * Highlights a string within a string with the class ccm-highlight-search
 	 * @param string $value
 	 * @param string $searchString
 	 * @return string
 	 */
 	 
 	public function highlightSearch($value, $searchString) {
-		return str_ireplace($searchString, '<em class="ccm-highlight-search">' . $searchString . '</em>', $value);
+		if (strlen($value) < 1 || strlen($searchString) < 1) {
+		    return $value;
+		}
+		preg_match_all("/$searchString+/i", $value, $matches);
+		if (is_array($matches[0]) && count($matches[0]) > 0) {
+			return str_replace($matches[0][0], '<em class="ccm-highlight-search">'.$matches[0][0].'</em>', $value);
+		}
+		return $value;
 	}
 	
 	/** 
@@ -303,43 +342,11 @@ class Concrete5_Helper_Text {
 	 * @param string $xml
 	 */
 	public function formatXML($xml) {  
-	
-		// add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
-		$xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
-		
-		// now indent the tags
-		$token      = strtok($xml, "\n");
-		$result     = ''; // holds formatted version as it is built
-		$pad        = 0; // initial indent
-		$matches    = array(); // returns from preg_matches()
-		
-		// scan each line and adjust indent based on opening/closing tags
-		while ($token !== false) : 
-		
-		// test for the various tag states
-		
-		// 1. open and closing tags on same line - no change
-		if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) : 
-		  $indent=0;
-		// 2. closing tag - outdent now
-		elseif (preg_match('/^<\/\w/', $token, $matches)) :
-		  $pad -= 4;
-		// 3. opening tag - don't pad this one, only subsequent tags
-		elseif (preg_match('/^<\w[^>]*[^\/]>.*$/', $token, $matches)) :
-		  $indent=4;
-		// 4. no indentation needed
-		else :
-		  $indent = 0; 
-		endif;
-		
-		// pad the line with the required number of leading spaces
-		$line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
-		$result .= $line . "\n"; // add to the cumulative result, with linefeed
-		$token   = strtok("\n"); // get the next token
-		$pad    += $indent; // update the pad size for subsequent lines    
-		endwhile; 
-		
-		return $result;
+		$dom = new DOMDocument;
+		$dom->preserveWhiteSpace = false;
+		$dom->loadXML($xml);
+		$dom->formatOutput = true;
+		return $dom->saveXml();
 	}
 
 	/** 
@@ -354,6 +361,5 @@ class Concrete5_Helper_Text {
 			$this->appendXML($node, $ch);
 		}
 	}
-
-
+	
 }

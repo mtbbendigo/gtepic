@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 /* @var $h ConcreteDashboardHelper */
 $h = Loader::helper('concrete/dashboard');
 /* @var $ih ConcreteInterfaceHelper */
@@ -10,7 +10,7 @@ $form = Loader::helper('form');
 <form id="site-permissions-form" action="<?php echo $this->action('')?>" method="post">
 	<?php echo $this->controller->token->output('site_permissions_code')?>
 
-<?php  if(PERMISSIONS_MODEL != 'simple'):?>
+<?php if(PERMISSIONS_MODEL != 'simple'):?>
 <div class="ccm-pane-body ccm-pane-body-footer">
 <p>
 <?php echo t('Your concrete5 site does not use the simple permissions model. You must change your permissions for each specific page and content area.')?>
@@ -51,7 +51,7 @@ $form = Loader::helper('form');
 				<li>
 					<label>
 						<?php echo $form->checkbox('gID[]', $g->getGroupID(), in_array($g->getGroupID(), $editAccess))?>
-						<span><?php echo $g->getGroupName()?></span>
+						<span><?php echo $g->getGroupDisplayName()?></span>
 					</label>
 				</li>
 				<?php endforeach?>
@@ -61,7 +61,7 @@ $form = Loader::helper('form');
 	</div>
 </div>
 <div class="ccm-pane-footer">
-<?php 
+<?php
 	$submit = $ih->submit( t('Save'), 'site-permissions-form', 'right', 'primary');
 	print $submit;
 ?>

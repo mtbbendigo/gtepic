@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for a block that displays flash content on a page. 

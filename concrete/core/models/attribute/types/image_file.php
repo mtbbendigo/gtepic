@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeController  {
@@ -19,6 +19,10 @@ class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeControll
 		if (is_object($f)) {
 			return '<a href="' . $f->getDownloadURL() . '">' . $f->getTitle() . '</a>';
 		}
+	}
+
+	public function getDisplaySanitizedValue() {
+		return $this->getDisplayValue();
 	}
 	
 	public function exportValue($akn) {
@@ -64,6 +68,9 @@ class Concrete5_Controller_AttributeType_ImageFile extends AttributeTypeControll
 
 	// run when we call setAttribute(), instead of saving through the UI
 	public function saveValue($obj) {
+		if(!is_object($obj)){
+			$obj = File::getByID($obj);
+		}
 		$db = Loader::db();
 		if (is_object($obj) && (!$obj->isError())) {
 			$db->Replace('atFile', array('avID' => $this->getAttributeValueID(), 'fID' => $obj->getFileID()), 'avID', true);

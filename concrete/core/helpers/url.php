@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @package Helpers
  * @author Andrew Embler <andrew@concrete5.org>
@@ -19,9 +19,9 @@ class Concrete5_Helper_Url {
 		// either it's key/value as variables, or it's an associative array of key/values
 		
 		if ($url == false) {
-			$url = $_SERVER['REQUEST_URI'];
-		} elseif(!strstr($url,'?')) {
-			$url = $url . '?' . $_SERVER['QUERY_STRING'];
+			$url = Loader::helper('security')->sanitizeString($_SERVER['REQUEST_URI']);
+		} elseif(!strstr($url,'?') && strlen($_SERVER['QUERY_STRING']) > 0) {
+			$url = $url . '?' . Loader::helper('security')->sanitizeString($_SERVER['QUERY_STRING']);
 		}
 
  		$vars = array();

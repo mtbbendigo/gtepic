@@ -1,6 +1,4 @@
-<?php 
-
-Loader::model('file_version');
+<?php
 
 class Concrete5_Model_File extends Object { 
 
@@ -13,15 +11,14 @@ class Concrete5_Model_File extends Object {
 	 * @param int $fID
 	 * @return File
 	 */
-	public function getByID($fID) {
+	public static function getByID($fID) {
 		
-		Loader::model('file_set');
 		$db = Loader::db();
 		$f = new File();
 		$row = $db->GetRow("SELECT Files.*, FileVersions.fvID
 		FROM Files LEFT JOIN FileVersions on Files.fID = FileVersions.fID and FileVersions.fvIsApproved = 1
 		WHERE Files.fID = ?", array($fID));
-		if ($row['fID'] == $fID) {
+		if (!is_null($fID) && $row['fID'] == $fID) {
 			$f->setPropertiesFromArray($row);
 		} else {
 			$f->error = File::F_ERROR_INVALID_FILE;
@@ -162,11 +159,10 @@ class Concrete5_Model_File extends Object {
 	
 	public function getFileSets() {
 		$db = Loader::db();
-		Loader::model('file_set');
 		$fsIDs = $db->Execute("select fsID from FileSetFiles where fID = ?", array($this->getFileID()));
 		$filesets = array();
-		foreach($fsIDs as $fsID) {
-			$filesets[] = FileSet::getByID($fsID);
+		while ($row = $fsIDs->FetchRow()) {
+			$filesets[] = FileSet::getByID($row['fsID']);
 		}
 		return $filesets;
 	}
@@ -273,8 +269,9 @@ class Concrete5_Model_File extends Object {
 		}
 		
 		// return the new file object
-		return File::getByID($fIDNew);
-		
+		$nf = File::getByID($fIDNew);
+		Events::fire('on_file_duplicate', $this, $nf);
+		return $nf;		
 	}
 	
 	public static function add($filename, $prefix, $data = array()) {
@@ -419,6 +416,9 @@ class Concrete5_Model_File extends Object {
 		$db->Execute("delete from FileAttributeValues where fID = ?", array($this->fID));
 		$db->Execute("delete from FileSetFiles where fID = ?", array($this->fID));
 		$db->Execute("delete from FileVersionLog where fID = ?", array($this->fID));
+		$db->Execute("delete from FileSearchIndexAttributes where fID = ?", array($this->fID));
+		$db->Execute("delete from DownloadStatistics where fID = ?", array($this->fID));
+		$db->Execute("delete from FilePermissionAssignments where fID = ?", array($this->fID));		
 	}
 	
 

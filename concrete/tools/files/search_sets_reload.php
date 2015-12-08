@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $cp = FilePermissions::getGlobal();
@@ -20,13 +20,13 @@ if (count($s1) > 0) { ?>
 	<?php echo $form->label('fsID', t('In Set(s)'))?>
 	<div class="input">
 		<select multiple name="fsID[]" class="chosen-select">
-			<?php  foreach($s1 as $s) { ?>
+			<?php foreach($s1 as $s) { ?>
 				<option value="<?php echo $s->getFileSetID()?>"><?php echo $s->getFileSetName()?></option>
-			<?php  } ?>
+			<?php } ?>
 			<optgroup label="<?php echo t('Other')?>">
-				<option value="-1" <?php  if (is_array($req['fsID']) && in_array(-1, $req['fsID'])) { ?> selected="selected" <?php  } ?>><?php echo t('Files in no sets.')?></option>
+				<option value="-1" <?php if (is_array($req['fsID']) && in_array(-1, $req['fsID'])) { ?> selected="selected" <?php } ?>><?php echo t('Files in no sets.')?></option>
 			</optgroup>
 		</select>
 	</div>
 </div>
-<?php  } ?>
+<?php } ?>

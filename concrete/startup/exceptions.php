@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 function Concrete5_Exception_Handler($e) {
 	// log if setup to do so

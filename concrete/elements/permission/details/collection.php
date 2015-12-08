@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model('collection_types');
 $dh = Loader::helper('date');
@@ -21,12 +21,12 @@ if ($cp->canEditPagePermissions()) {
 }
 ?>
 
-<?php 
+<?php
 $pk = PagePermissionKey::getByID($_REQUEST['pkID']);
 $pk->setPermissionObject($c);
 ?>
 
-<?php  Loader::element("permission/detail", array('permissionKey' => $pk)); ?>
+<?php Loader::element("permission/detail", array('permissionKey' => $pk)); ?>
 
 
 <script type="text/javascript">

@@ -1,6 +1,6 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div class="ccm-ui">
-<?php  
+<?php 
 
 Loader::model('collection_attributes');
 Loader::model('collection_types');
@@ -29,11 +29,11 @@ $(function() {
 			if (r != null && r.rel == 'SITEMAP') {
 				jQuery.fn.dialog.hideLoader();
 				jQuery.fn.dialog.closeTop();
-				<?php  if ($_REQUEST['display_mode'] == 'explore') { ?>
+				<?php if ($_REQUEST['display_mode'] == 'explore') { ?>
 					ccmSitemapExploreNode('<?php echo $_REQUEST['instance_id']?>', 'explore', '<?php echo $_REQUEST['select_mode']?>', resp.cParentID);
-				<?php  } else { ?>
+				<?php } else { ?>
 					deleteBranchFade(r.cID);
-				<?php  } ?>
+				<?php } ?>
 	 			ccmAlert.hud(ccmi18n_sitemap.deletePageSuccessMsg, 2000, 'delete_small', ccmi18n_sitemap.deletePage);
 			} else {
 				window.location.href = '<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cID=' + r.cParentID;
@@ -60,5 +60,5 @@ $(function() {
 
 
 </form>
-<?php  } ?>
+<?php } ?>
 </div>

@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 if(!strlen($searchInstance)) {
 	$searchInstance = 'user';
@@ -64,12 +64,12 @@ if ($_POST['task'] == 'group_add') {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-bulk-group-add-wrapper">
-<?php  } ?>
+<?php } ?>
 
 	<div id="ccm-user-activate" class="ccm-ui">
-		<form method="post" id="ccm-user-bulk-group-add" action="<?php  echo REL_DIR_FILES_TOOLS_REQUIRED ?>/users/bulk_group_add">
+		<form method="post" id="ccm-user-bulk-group-add" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED ?>/users/bulk_group_add">
 			<fieldset class="form-stacked">
-			<?php 
+			<?php
 			echo $form->hidden('task','group_add');
 			foreach($users as $ui) {
 				echo $form->hidden('uID[]' , $ui->getUserID());
@@ -78,13 +78,13 @@ if (!isset($_REQUEST['reload'])) { ?>
 			<div class="clearfix">
 				<?php echo $form->label('groupIDs', t('Add the users below to Group(s)'))?>
 				<div class="input">
-					<select multiple name="groupIDs[]" class="chosen-select" data-placeholder="<?php  echo t('Select Group(s)');?>" >
-						<?php  foreach($g1 as $g) { 
+					<select multiple name="groupIDs[]" class="chosen-select" data-placeholder="<?php echo t('Select Group(s)');?>" >
+						<?php foreach($g1 as $g) { 
 							if ($gk->validate($g['gID'])) { 
 
 						?>
-							<option value="<?php echo $g['gID']?>"  <?php  if (is_array($_REQUEST['groupIDs']) && in_array($g['gID'], $_REQUEST['groupIDs'])) { ?> selected="selected" <?php  } ?>><?php echo $g['gName']?></option>
-						<?php  } 
+							<option value="<?php echo $g['gID']?>"  <?php if (is_array($_REQUEST['groupIDs']) && in_array($g['gID'], $_REQUEST['groupIDs'])) { ?> selected="selected" <?php } ?>><?php echo h(tc('GroupName', $g['gName']))?></option>
+						<?php } 
 						
 						}?>
 					</select>
@@ -92,7 +92,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 			</div>
 			</fieldset>
 			
-			<?php  Loader::element('users/confirm_list',array('users'=>$users)); ?>
+			<?php Loader::element('users/confirm_list',array('users'=>$users)); ?>
 		</form>
 	
 
@@ -102,10 +102,10 @@ if (!isset($_REQUEST['reload'])) { ?>
 		<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
 		<?php echo $ih->button_js(t('Save'), 'ccm_userBulkGroupAdd()', 'right', 'btn primary')?>
 	</div>
-<?php 
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<?php  } ?>
+<?php } ?>
 
 <script type="text/javascript">
 ccm_userBulkGroupAdd = function() { 
@@ -121,6 +121,6 @@ ccm_userBulkGroupAdd = function() {
 	});
 };
 $(function() { 
-	$(".chosen-select").chosen();	
+	$(".chosen-select").chosen(ccmi18n_chosen);	
 });
 </script>

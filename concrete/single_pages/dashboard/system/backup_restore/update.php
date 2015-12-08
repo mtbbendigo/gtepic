@@ -1,13 +1,13 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $h = Loader::helper('concrete/dashboard');
 $ih = Loader::helper('concrete/interface');
 $form = Loader::helper('form');
 if ($downloadableUpgradeAvailable) { ?>
 	<?php echo $h->getDashboardPaneHeaderWrapper(t('Download Update'), false, 'span8 offset2');?>
-	<?php  if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
+	<?php if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
 		<a href="<?php echo $this->action('check_for_updates')?>" class="btn" style="float: right"><?php echo t('Check For Updates')?></a>
-	<?php  } ?>
+	<?php } ?>
 		<h2><?php echo t('Currently Running %s',config::get('SITE_APP_VERSION'))?></h2>
 		<div class="clearfix">
 		</div>
@@ -28,7 +28,7 @@ if ($downloadableUpgradeAvailable) { ?>
 		
 		</form>
 	<?php echo $h->getDashboardPaneFooterWrapper();?>
-<?php  } else if (count($updates)) { ?>
+<?php } else if (count($updates)) { ?>
 	<?php echo $h->getDashboardPaneHeaderWrapper(t('Install Local Update'),false,'span8 offset2',false);?>
 		<div class="ccm-pane-body">
 			<?php print '<strong>' . t('Make sure you <a href="%s">backup your database</a> before updating.', $this->url('/dashboard/system/backup_restore/backup')) . '</strong><br/>';
@@ -44,31 +44,31 @@ if ($downloadableUpgradeAvailable) { ?>
 						<?php echo $ih->submit(t('Update'), 'maintenance-mode-form', 'right', 'primary')?>
 					</form>
 				</div>
-			<?php  } else { ?>
+			<?php } else { ?>
 				<p><?php echo t('Several updates are available. Please choose the desired update from the list below.')?></p>
 					<span class="label"><?php echo t('Current Version')?> <?php echo config::get('SITE_APP_VERSION')?></span>
 				<form method="post" action="<?php echo $this->action('do_update')?>" id="ccm-update-form">
-				<?php   $checked = true;
+				<?php  $checked = true;
 					foreach($updates as $upd) { ?>
 						<div class="ccm-dashboard-radio"><input type="radio" name="updateVersion" value="<?php echo $upd->getUpdateVersion()?>" <?php echo (!$checked?'':"checked")?> />
 							<?php echo $upd->getUpdateVersion()?>
 						</div>
-						<?php  $checked = false;
+						<?php $checked = false;
 					} ?>
 					</div>
 					<div class="ccm-pane-footer">
 						<?php echo $ih->submit(t('Update'),false, 'right', 'primary')?>
 					</div>
 				</form>
-			<?php  } ?>
+			<?php } ?>
 		</div>
 	<?php echo $h->getDashboardPaneFooterWrapper(false);?>
 	<div class="clearfix">&nbsp;</div>
-<?php  } else { ?>
+<?php } else { ?>
 	<?php echo $h->getDashboardPaneHeaderWrapper(t('Update concrete5'), false, 'span8 offset2');?>
-	<?php  if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
+	<?php if (!defined('MULTI_SITE') || MULTI_SITE == false) { ?>
 		<a href="<?php echo $this->action('check_for_updates')?>" class="btn" style="float: right"><?php echo t('Check For Updates')?></a>
-	<?php  } ?>
+	<?php } ?>
 		<h2><?php echo t('Currently Running %s',config::get('SITE_APP_VERSION'))?></h2>
 		<div class="clearfix">
 		</div>
@@ -77,4 +77,4 @@ if ($downloadableUpgradeAvailable) { ?>
 		<p><?php echo t('No updates available.')?></p>
 
 	<?php echo $h->getDashboardPaneFooterWrapper();?>
-<?php  } ?>
+<?php } ?>

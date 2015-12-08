@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAccess {
@@ -17,6 +17,13 @@ class Concrete5_Model_AddSubpagePagePermissionAccess extends PagePermissionAcces
 			$db->Execute('insert into PagePermissionPageTypeAccessListCustom  (peID, paID, ctID) values (?, ?, ?)', $v);
 		}
 		return $newPA;
+	}
+
+	public function removeListItem(PermissionAccessEntity $pe) {
+		parent::removeListItem($pe);
+		$db = Loader::db();
+		$db->Execute('delete from PagePermissionPageTypeAccessList where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
+		$db->Execute('delete from PagePermissionPageTypeAccessListCustom where peID = ? and paID = ?', array($pe->getAccessEntityID(), $this->getPermissionAccessID()));	
 	}
 
 	public function save($args) {

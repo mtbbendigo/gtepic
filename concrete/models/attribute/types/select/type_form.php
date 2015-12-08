@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function getAttributeOptionHTML($v){ 
 	if ($v == 'TEMPLATE') {
@@ -21,23 +21,22 @@ function getAttributeOptionHTML($v){
 			<span onClick="ccmAttributesHelper.editValue('<?php echo addslashes($akSelectValueID)?>')" id="akSelectValueStatic_<?php echo $akSelectValueID?>" class="leftCol"><?php echo $akSelectValue ?></span>
 		</div>
 		<div id="akSelectValueEdit_<?php echo $akSelectValueID?>" style="display:none">
+			<span class="leftCol">
+				<input name="akSelectValueOriginal_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValue?>" />
+				<?php if (is_object($v) && $v->getSelectAttributeOptionTemporaryID() == false) { ?>
+					<input id="akSelectValueExistingOption_<?php echo $akSelectValueID?>" name="akSelectValueExistingOption_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValueID?>" />
+				<?php } else { ?>
+					<input id="akSelectValueNewOption_<?php echo $akSelectValueID?>" name="akSelectValueNewOption_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValueID?>" />
+				<?php } ?>
+				<input id="akSelectValueField_<?php echo $akSelectValueID?>" onkeypress="ccmAttributesHelper.keydownHandler(event);" class="akSelectValueField" data-select-value-id="<?php echo $akSelectValueID; ?>" name="akSelectValue_<?php echo $akSelectValueID?>" type="text" value="<?php echo $akSelectValue?>" size="20" />
+			</span>		
 			<div class="rightCol">
 				<input class="btn" type="button" onClick="ccmAttributesHelper.editValue('<?php echo addslashes($akSelectValueID)?>')" value="<?php echo t('Cancel')?>" />
 				<input class="btn" type="button" onClick="ccmAttributesHelper.changeValue('<?php echo addslashes($akSelectValueID)?>')" value="<?php echo t('Save')?>" />
 			</div>		
-			<span class="leftCol">
-				<input name="akSelectValueOriginal_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValue?>" />
-				<?php  if (is_object($v) && $v->getSelectAttributeOptionTemporaryID() == false) { ?>
-					<input id="akSelectValueExistingOption_<?php echo $akSelectValueID?>" name="akSelectValueExistingOption_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValueID?>" />
-				<?php  } else { ?>
-					<input id="akSelectValueNewOption_<?php echo $akSelectValueID?>" name="akSelectValueNewOption_<?php echo $akSelectValueID?>" type="hidden" value="<?php echo $akSelectValueID?>" />
-				<?php  } ?>
-				<input id="akSelectValueField_<?php echo $akSelectValueID?>" name="akSelectValue_<?php echo $akSelectValueID?>" type="text" value="<?php echo $akSelectValue?>" size="20" 
-				  onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.changeValue('<?php echo addslashes($akSelectValueID)?>')})" />
-			</span>		
 		</div>	
 		<div class="ccm-spacer">&nbsp;</div>
-<?php  } ?>
+<?php } ?>
 
 <fieldset>
 <legend><?php echo t('Select Options')?></legend>
@@ -63,7 +62,7 @@ function getAttributeOptionHTML($v){
 <div class="clearfix">
 <label for="akSelectOptionDisplayOrder"><?php echo t("Option Order")?></label>
 <div class="input">
-	<?php  
+	<?php 
 	$displayOrderOptions = array(
 		'display_asc' => t('Display Order'),
 		'alpha_asc' => t('Alphabetical'),
@@ -80,7 +79,7 @@ function getAttributeOptionHTML($v){
 <div class="input">
 	<div id="attributeValuesInterface">
 	<div id="attributeValuesWrap">
-	<?php 
+	<?php
 	Loader::helper('text');
 	foreach($akSelectValues as $v) { 
 		if ($v->getSelectAttributeOptionTemporaryID() != false) {
@@ -89,10 +88,10 @@ function getAttributeOptionHTML($v){
 			$akSelectValueID = $v->getSelectAttributeOptionID();
 		}
 		?>
-		<div id="akSelectValueWrap_<?php echo $akSelectValueID?>" class="akSelectValueWrap <?php  if ($akSelectOptionDisplayOrder == 'display_asc') { ?> akSelectValueWrapSortable <?php  } ?>">
+		<div id="akSelectValueWrap_<?php echo $akSelectValueID?>" class="akSelectValueWrap <?php if ($akSelectOptionDisplayOrder == 'display_asc') { ?> akSelectValueWrapSortable <?php } ?>">
 			<?php echo getAttributeOptionHTML( $v )?>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 	</div>
 	
 	<div id="akSelectValueWrapTemplate" class="akSelectValueWrap" style="display:none">
@@ -103,7 +102,7 @@ function getAttributeOptionHTML($v){
 		<input id="akSelectValueFieldNew" name="akSelectValueNew" type="text" value="<?php echo $defaultNewOptionNm ?>" size="40" class="faint" 
 		onfocus="ccmAttributesHelper.clrInitTxt(this,'<?php echo $defaultNewOptionNm ?>','faint',0)" 
 		onblur="ccmAttributesHelper.clrInitTxt(this,'<?php echo $defaultNewOptionNm ?>','faint',1)"
-		onkeypress="ccmAttributesHelper.addEnterClick(event,function(){ccmAttributesHelper.saveNewOption()})"
+		onkeypress="ccmAttributesHelper.keydownHandler(event);"
 		 /> 
 		<input class="btn" type="button" onClick="ccmAttributesHelper.saveNewOption(); $('#ccm-attribute-key-form').unbind()" value="<?php echo t('Add') ?>" />
 	</div>
@@ -114,7 +113,7 @@ function getAttributeOptionHTML($v){
 
 
 </fieldset>
-<?php  if ($akSelectOptionDisplayOrder == 'display_asc') { ?>
+<?php if ($akSelectOptionDisplayOrder == 'display_asc') { ?>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -122,4 +121,4 @@ $(function() {
 });
 //]]>
 </script>
-<?php  } ?>
+<?php } ?>

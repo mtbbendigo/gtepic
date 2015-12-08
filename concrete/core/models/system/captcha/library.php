@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Concrete5_Model_SystemCaptchaLibrary extends Object {
 
@@ -39,6 +39,11 @@ class Concrete5_Model_SystemCaptchaLibrary extends Object {
 	
 	public function delete() {
 		$db = Loader::db();
+		if(SystemCaptchaLibrary::getActive()->getSystemCaptchaLibraryHandle() == $this->sclHandle) {
+			if ($scl = SystemCaptchaLibrary::getByHandle('securimage')) {
+				$scl->activate();
+			}
+		}
 		$db->Execute('delete from SystemCaptchaLibraries where sclHandle = ?', array($this->sclHandle));
 	}
 	

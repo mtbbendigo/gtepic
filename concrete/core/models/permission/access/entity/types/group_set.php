@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEntity {
@@ -10,7 +10,7 @@ class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEnt
 	}
 	
 	public function getAccessEntityTypeLinkHTML() {
-		$html = '<a href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/permissions/dialogs/access/entity/types/group_set" dialog-width="400" dialog-height="300" class="dialog-launch" dialog-modal="false" dialog-title="' . t('Add Group Set') . '">' . t('Group Set') . '</a>';
+		$html = '<a href="' . REL_DIR_FILES_TOOLS_REQUIRED . '/permissions/dialogs/access/entity/types/group_set" dialog-width="400" dialog-height="300" class="dialog-launch" dialog-modal="false" dialog-title="' . t('Add Group Set') . '">' . tc('PermissionAccessEntityTypeName', 'Group Set') . '</a>';
 		return $html;
 	}
 
@@ -36,12 +36,15 @@ class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEnt
 	}
 	
 	public function getAccessEntityUsers(PermissionAccess $pa) {
+		if (!isset($this->groupset)) {
+			$this->load();
+		}
 		$groups = $this->groupset->getGroups();
 		$users = array();
 		$ingids = array();
 		$db = Loader::db();
-		foreach($user->getUserGroups() as $key => $val) {
-			$ingids[] = $key;
+		foreach($groups as $group) {
+			$ingids[] = $group->getGroupID();
 		}
 		$instr = implode(',',$ingids);
 		$r = $db->Execute('select uID from UserGroups where gID in (' . $instr . ')');
@@ -76,7 +79,7 @@ class Concrete5_Model_GroupSetPermissionAccessEntity extends PermissionAccessEnt
 			$gs = GroupSet::getByID($gsID);
 			if (is_object($gs)) {
 				$this->groupset = $gs;
-				$this->label = $gs->getGroupSetName();
+				$this->label = $gs->getGroupSetDisplayName();
 			}
 		}
 	}

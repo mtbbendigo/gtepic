@@ -1,3 +1,5 @@
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Allowed File Types'), false, 'span8 offset2', false)?>
 
 	<form method="post" id="file-access-extensions" action="<?php echo $this->url('/dashboard/system/permissions/file_types', 'file_access_extensions')?>">
@@ -6,15 +8,15 @@
 			<p>
 			<?php echo t('Only files with the following extensions will be allowed. Separate extensions with commas. Periods and spaces will be ignored.')?>
 			</p>
-			<?php  if (UPLOAD_FILE_EXTENSIONS_CONFIGURABLE) { ?>
+			<?php if (UPLOAD_FILE_EXTENSIONS_CONFIGURABLE) { ?>
 				<?php echo $form->textarea('file-access-file-types',$file_access_file_types,array('rows'=>'5','class' => 'span7'));?>
 
-			<?php  } else { ?>
+			<?php } else { ?>
 				<?php echo $file_access_file_types?>
-			<?php  } ?>
+			<?php } ?>
 	</div>
 	<div class="ccm-pane-footer">
-		<?php  print $concrete_interface->submit(t('Save'), 'file-access-extensions', 'right', 'primary'); ?>
+		<?php print $concrete_interface->submit(t('Save'), 'file-access-extensions', 'right', 'primary'); ?>
 	</div>
 	</form>
 

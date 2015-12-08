@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -21,9 +21,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
  *
  */
 	class Concrete5_Library_View extends Object {
-	
+			
+		/**
+		 * @var string
+		 */ 
 		private $viewPath;
+		
+		/**
+		 * @var string
+		 */
 		protected $pkgHandle;
+		
+		/**
+		 * @var bool
+		 */
 		protected $disableContentInclude = false;
 		
 		/**
@@ -36,11 +47,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * An array of items that get loaded into a page's header
+		 * @var array
 		 */
 		private $headerItems = array();
 
 		/** 
 		 * An array of items that get loaded into just before body close
+		 * @var array
 		 */
 		private $footerItems = array();
 
@@ -51,6 +64,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		*/
 		private $themePaths = array();	
 	
+		/**
+		 * @var bool
+		 */
 		private $areLinksDisabled = false;
 		
 		/**
@@ -60,7 +76,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		*/	
 		private $isEditingEnabled = true;
 		
-		// getInstance() grabs one instance of the view w/the singleton pattern
+		/**
+		 * getInstance() grabs one instance of the view w/the singleton pattern
+		 * @return View
+		*/
 		public function getInstance() {
 			static $instance;
 			if (!isset($instance)) {
@@ -212,6 +231,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return true;
 		}
 		
+		/**
+		 * returns an array of string header items, typically inserted into the html <head> of a page through the header_required element
+		 * @return array
+		 */
 		public function getHeaderItems() {
 			//Combine items from all namespaces into one list
 			$a1 = (is_array($this->headerItems['CORE'])) ? $this->headerItems['CORE'] : array();
@@ -230,6 +253,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			return $items;
 		}
 		
+		/**
+		 * returns an array of string footer items, typically inserted into the html before the close of the </body> tag of a page through the footer_required element
+		 * @return array
+		 */
 		public function getFooterItems() {
 			//Combine items from all namespaces into one list
 			$a1 = (is_array($this->footerItems['CORE'])) ? $this->footerItems['CORE'] : array();
@@ -264,21 +291,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @access private
 		 */
 		public function outputHeaderItems() {
-			
 			$items = $this->getHeaderItems();
-			
-			// Loop through all items
-			// If it is a header output object, place each item in a separate array for its container directory
-			// Otherwise, put it in the outputPost array
-			
-			$outputPost = array();
-			$output = array();
 			
 			foreach($items as $hi) {
 				print $hi; // caled on two seperate lines because of pre php 5.2 __toString issues
 				print "\n";
 			}			
-			
 		}
 		
 		/** 
@@ -294,6 +312,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			}
 		}
 
+		/**
+		 * @param string
+		 * @return mixed
+		 */
 		public function field($fieldName) {
 			return $this->controller->field($fieldName);
 		}
@@ -301,6 +323,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * @access private
+		 * @return void
 		 */
 		public function enablePreview() {
 			$this->isPreview = true;
@@ -308,6 +331,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * @access private
+		 * @return bool
 		 */
 		public function isPreview() {
 			return $this->isPreview;
@@ -315,6 +339,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * @access private
+		 * @return void
 		 */
 		public function disableLinks() {
 			$this->areLinksDisabled = true;
@@ -322,6 +347,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * @access private
+		 * @return void
 		 */
 		public function enableLinks() {
 			$this->areLinksDisabled = false;
@@ -329,6 +355,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * @access private
+		 * @return bool
 		 */
 		public function areLinksDisabled() {
 			return $this->areLinksDisabled;
@@ -336,7 +363,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * Returns the path used to access this view
-		 * @return string $viewPath
+		 * @return string
 		 */
 		private function getViewPath() {
 			return $this->viewPath;
@@ -344,6 +371,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/** 
 		 * Returns the handle of the currently active theme
+		 * @return string
 		 */
 		public function getThemeHandle() { return $this->ptHandle;}
 		
@@ -518,9 +546,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * @param string $task
 		 * @return string $url
 		*/	
-		public function url($action, $task = null) {
+		public static function url($action, $task = null) {
 			$dispatcher = '';
-			if ((!URL_REWRITING_ALL) || !defined('URL_REWRITING_ALL')) {
+			if ((!defined('URL_REWRITING_ALL')) || (!URL_REWRITING_ALL)) {
 				$dispatcher = '/' . DISPATCHER_FILENAME;
 			}
 			
@@ -613,6 +641,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		public function renderError($title, $error, $errorObj = null) {
 			$innerContent = $error;
 			$titleContent = $title; 
+			header('HTTP/1.1 500 Internal Server Error');
 			if (!isset($this) || (!$this)) {
 				$v = new View();
 				$v->setThemeForView(DIRNAME_THEMES_CORE, FILENAME_THEMES_ERROR . '.php', true);
@@ -644,13 +673,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		 * or a PageTheme object and sets information in the view about that theme. This is called internally
 		 * and is always passed the correct item based on context
 		 * 
-		 * @access public
+		 * @access protected
 		 * @param PageTheme object $pl
 		 * @param string $filename
 		 * @param boolean $wrapTemplateInTheme
 		 * @return void
 		*/	
-		private function setThemeForView($pl, $filename, $wrapTemplateInTheme = false) {
+		protected function setThemeForView($pl, $filename, $wrapTemplateInTheme = false) {
 			// wrapTemplateInTheme gets set to true if we're passing the filename of a single page or page type file through 
 			$pkgID = 0;
 			$env = Environment::get();
@@ -735,7 +764,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 			$wrapTemplateInTheme = false;
 			$this->checkMobileView();
-			Events::fire('on_start', $this);
+			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+				Events::fire('on_start', $this);
+			}
 			
 			// Extract controller information from the view, and put it in the current context
 			if (!isset($this->controller)) {
@@ -910,9 +941,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			if (ob_get_level() > OB_INITIAL_LEVEL) {
 				ob_end_clean();
 			}
-			
-			Events::fire('on_before_render', $this);
-			
+
+			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+				Events::fire('on_before_render', $this);
+			}
+						
 			if (defined('APP_CHARSET')) {
 				header("Content-Type: text/html; charset=" . APP_CHARSET);
 			}
@@ -948,14 +981,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				throw new Exception(t('File %s not found. All themes need default.php and view.php files in them. Consult concrete5 documentation on how to create these files.', $this->theme));
 			}
 			
-			Events::fire('on_render_complete', $this);
-			
-			if (ob_get_level() == OB_INITIAL_LEVEL) {
-
-				require(DIR_BASE_CORE . '/startup/shutdown.php');
-				exit;
-				
+			if (defined('DB_DATABASE') && ($view !== '/upgrade')) {
+				Events::fire('on_render_complete', $this);
 			}
 			
-		}		
+			if (ob_get_level() == OB_INITIAL_LEVEL) {
+				require(DIR_BASE_CORE . '/startup/jobs.php');
+				require(DIR_BASE_CORE . '/startup/shutdown.php');
+				exit;
+			}
+			
+		}
 	}

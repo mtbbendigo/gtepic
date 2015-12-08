@@ -8,3 +8,6 @@ files/tmp/*
 .buildpath
 .project
 **/.sass-cache/*
+.idea/*
+*.DS_Store
+**/*_ADMIN*

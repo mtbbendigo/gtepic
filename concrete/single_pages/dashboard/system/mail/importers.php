@@ -1,17 +1,20 @@
-<?php  $ih = Loader::helper('concrete/interface'); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
+<?php $ih = Loader::helper('concrete/interface'); ?>
+<?php
 $enabledVals = array('0' => t('No'), '1' => t('Yes'));
 $secureVals = array('' => t('None'), 'SSL' => 'SSL', 'TLS' => 'TLS');
 $form = Loader::helper('form');
 ?>
 
 
-<?php  if ($this->controller->getTask() == 'edit_importer') { ?>
+<?php if ($this->controller->getTask() == 'edit_importer') { ?>
 
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Importer'), false, 'span8 offset2', false)?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Importer'), false, 'span8 offset2', false)?>
 <form method="post" id="mail-importer-form" class="form-horizontal" action="<?php echo $this->url('/dashboard/system/mail/importers', 'save_importer')?>">
 <div class="ccm-pane-body">
 
+		<?php Loader::helper('validation/token')->output('save_importer') ?>
 		<?php echo $form->hidden('miID', $mi->getMailImporterID())?>
 		<fieldset>
 			<legend><?php echo t($mi->getMailImporterName())?> <?php echo t('Settings');?></legend>
@@ -57,7 +60,7 @@ $form = Loader::helper('form');
 					<?php echo $form->select('miEncryption', $secureVals, $mi->getMailImporterEncryption())?>
 				</div>
 			</div>
-			<?php  $port = $mi->getMailImporterPort() == 0 ? '' : $mi->getMailImporterPort(); ?>
+			<?php $port = $mi->getMailImporterPort() == 0 ? '' : $mi->getMailImporterPort(); ?>
 		
 			<div class="control-group">
 				<?php echo $form->label('miPort',t('Port (Leave blank for default)'));?>
@@ -79,15 +82,15 @@ $form = Loader::helper('form');
 <?php echo $ih->submit(t('Save'), 'mail-importer-form','right', 'primary')?>
 </div>
 </form>
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>	
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>	
 
-<?php  } else { ?>
+<?php } else { ?>
 
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Mail Importers'), false, 'span8 offset2')?>	
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Mail Importers'), false, 'span8 offset2')?>	
 	<div class="ccm-pane-body">
-	<?php  if (count($importers) == 0) { ?>
+	<?php if (count($importers) == 0) { ?>
 		<p><?php echo t('There are no mail importers. Mail importers poll email accounts for new messages and run actions on those messages.')?></p>
-	<?php  } else { ?>
+	<?php } else { ?>
 	
 	<table class="table table-striped" border="0" cellspacing="1" cellpadding="0">
 	<tr>
@@ -97,19 +100,19 @@ $form = Loader::helper('form');
 		<td class="header"><?php echo t('Enabled')?></td>
 		<td class="header">&nbsp;</td>
 	</tr>
-	<?php  foreach($importers as $mi) { ?>
+	<?php foreach($importers as $mi) { ?>
 		<tr>
 			<td><?php echo $mi->getMailImporterName()?></td>
 			<td><?php echo $mi->getMailImporterServer()?></td>
 			<td><?php echo $mi->getMailImporterEmail()?></td>
 			<td><?php echo $mi->isMailImporterEnabled() ? t('Yes') : t('No')?></td>
-			<td width="60"><?php 
+			<td width="60"><?php
 				print $ih->button(t('Edit'), $this->url('/dashboard/system/mail/importers', 'edit_importer', $mi->getMailImporterID()), 'left');		
 			?>
 		</tr>
-	<?php  } ?>
+	<?php } ?>
 	</table>
-	<?php  } ?>
+	<?php } ?>
 </div>
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
-<?php  } ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
+<?php } ?>

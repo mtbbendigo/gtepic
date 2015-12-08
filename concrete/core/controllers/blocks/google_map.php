@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the Google Maps block, which can display a map on a page.
@@ -57,7 +57,7 @@
 			$html = Loader::helper('html');
 			$c = Page::getCurrentPage();
 			if (!$c->isEditMode()) {
-				$this->addFooterItem('<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>');
+				$this->addFooterItem('<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>');
 				$this->addFooterItem('<script type="text/javascript"> 
 				function googleMapInit' . $this->bID . '() { 
 				   try{
@@ -123,6 +123,9 @@
 		}
 		
 		public function lookupLatLong($address) {
+			if(preg_match('/^\\s*([+\\-]?\\d+(\\.\\d*)?)[\\s,;]+([+\\-]?\\d+(\\.\\d*)?)\\s*$/', $address, $matches)) {
+				return array('lat' => floatval($matches[1]), 'lng' => floatval($matches[3]));
+			}
 			$json = Loader::helper('json');
 			$fh = Loader::helper('file');
 			

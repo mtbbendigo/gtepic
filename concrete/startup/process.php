@@ -1,7 +1,7 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 	# Filename: _process.php
-	# Author: Andrew Embler (andrew@bluepavo.com)
+	# Author: Andrew Embler (andrew@concrete5.org)
 	# -------------------
 	# _process.php is included at the top of the dispatcher and basically
 	# checks to see if a any submits are taking place. If they are, then
@@ -9,7 +9,7 @@
 	
 	
 	// Modification for step editing
-	$step = ($_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
+	$step = (isset($_REQUEST['step']) && $_REQUEST['step']) ? '&step=' . $_REQUEST['step'] : '';
 	
 	// if we don't have a valid token we die
 	$valt = Loader::helper('validation/token');
@@ -20,7 +20,10 @@
 		$u = new User();
 		$u->refreshCollectionEdit($c);
 	}
-	if ($_REQUEST['btask'] && $valt->validate()) {
+
+	$securityHelper = Loader::helper('security');
+
+	if (isset($_REQUEST['btask']) && $_REQUEST['btask'] && $valt->validate()) {
 	
 		// these are tasks dealing with blocks (moving up, down, removing)
 		
@@ -28,16 +31,70 @@
 			case 'ajax_do_arrange': /* called via ajax */
 				if ($cp->canEditPageContents()) {
 					$nvc = $c->getVersionToModify();
-					$r = $nvc->processArrangement($_POST['area']);
+					$doProcessArrangement = true;
+					$sourceAreaID = intval($_POST['sourceBlockAreaID']);
+					$destinationAreaID = intval($_POST['destinationBlockAreaID']);
+					$affectedAreaIDs = array();
+					$affectedAreaIDs[] = $sourceAreaID;
+					if ($sourceAreaID != $destinationAreaID) {
+						$affectedAreaIDs[] = $destinationAreaID;
+					}
+					if (PERMISSIONS_MODEL == 'advanced') {
+						// first, we check to see if we have permissions to edit the area contents for the source area.
+						$arHandle = Area::getAreaHandleFromID($sourceAreaID);
+						$ar = Area::getOrCreate($nvc, $arHandle);
+						$ap = new Permissions($ar);
+						if (!$ap->canEditAreaContents()) {
+							$r = new stdClass;
+							$r->error = true;
+							$doProcessArrangement = false;
+							$r->message = t('You may not arrange the contents of area %s.', $arHandle);
+						} else {
+							// now we get further in. We check to see if we're dealing with both a source AND a destination area.
+							// if so, we check the area permissions for the destination area.
+							if ($sourceAreaID != $destinationAreaID) {
+								$destAreaHandle = Area::getAreaHandleFromID($destinationAreaID);
+								$destArea = Area::getOrCreate($nvc, $destAreaHandle);
+								$destAP = new Permissions($destArea);
+								if (!$destAP->canEditAreaContents()) {
+									$r = new stdClass;
+									$r->error = true;
+									$doProcessArrangement = false;
+									$r->message = t('You may not arrange the contents of area %s.', $destAreaHandle);
+								} else {
+									// we're not done yet. Now we have to check to see whether this user has permission to add
+									// a block of this type to the destination area.
+									$b = Block::getByID($_REQUEST['sourceBlockID'], $nvc, $arHandle);
+									$bt = $b->getBlockTypeObject();
+									if (!$destAP->canAddBlock($bt)) {
+										$doProcessArrangement = false;
+										$r = new stdClass;
+										$r->error = true;
+										$r->message = t('You may not add %s to area %s.', t($bt->getBlockTypeName()), $destAreaHandle);
+									}
+								}
+							}							
+						}
+
+						// now, if we get down here and $doProcessArrangement is still set to true, we perform the arrangement
+						// it will be set to true if we're in simple permissions mode, or if we've passed all the checks
+					}
+
+					if ($doProcessArrangement) {
+						$nvc->processArrangement($_POST['area'], $affectedAreaIDs);
+					}
+
 					if (!is_object($r)) {
 						$r = new stdClass;
 						$r->error = false;
 					}
+
 				} else {
 					$r = new stdClass;
 					$r->error = true;
 					$r->message = t('Access Denied');
 				}
+				
 				print Loader::helper('json')->encode($r);
 				exit;
 				break;
@@ -70,8 +127,10 @@
 						if (isset($_POST['isAjax'])) {
 							exit;
 						}
+
+						$cID = $securityHelper->sanitizeInt($_GET['cID']);
 						
-						header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit' . $step);
+						header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $cID . '&mode=edit' . $step);
 						exit;
 					}
 				}
@@ -133,7 +192,9 @@
 							}
 						}
 
-						header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit' . $step);				
+						$cID = $securityHelper->sanitizeInt($_GET['cID']);
+
+						header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $cID . '&mode=edit' . $step);				
 					}
 				}
 				break;
@@ -303,7 +364,7 @@
 		}
 	}
 	
-	if ($_GET['atask'] && $valt->validate()) {
+	if (isset($_GET['atask']) && $_GET['atask'] && $valt->validate()) {
 		switch($_GET['atask']) { 		
 			case 'add_stack':
 				$a = Area::get($c, $_GET['arHandle']);
@@ -376,7 +437,9 @@
 						}
 					}
 
-					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit' . $step);
+					$cID = $securityHelper->sanitizeInt($_GET['cID']);
+
+					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $cID . '&mode=edit' . $step);
 					exit;
 				}
 				break; 
@@ -468,20 +531,22 @@
 						if(strlen(trim($newPresetName))) LayoutPreset::add(trim($newPresetName), $layout);
 					}	
 
-					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit' . $step);
+					$cID = $securityHelper->sanitizeInt($_GET['cID']);
+
+					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $cID . '&mode=edit' . $step);
 					exit;
 				}				
 				break;					
 		}
 	}
 	
-	if ($_REQUEST['ctask'] && $valt->validate()) {
+	if (isset($_REQUEST['ctask']) && $_REQUEST['ctask'] && $valt->validate()) {
 		
 		switch ($_REQUEST['ctask']) {
 			case 'delete':
 				if ($cp->canDeletePage() && $c->getCollectionID() != '1' && (!$c->isMasterCollection())) {
 					$children = $c->getNumChildren();
-					if ($children == 0 || $cp->canApprovePageVersions()) {
+					if ($children == 0 || $u->isSuperUser()) {
 						$obj = new stdClass;
 
 						if ($c->isExternalLink()) {
@@ -599,7 +664,7 @@
 		}
 	}			
 	
-	if ($_REQUEST['ptask'] && $valt->validate()) {
+	if (isset($_REQUEST['ptask']) && $_REQUEST['ptask'] && $valt->validate()) {
 		Loader::model('pile');
 
 		// piles !
@@ -613,7 +678,8 @@
 						$pc->delete();
 					}
 					if ($pcID && ($_REQUEST['sbURL'])) {
-						header('Location: ' . BASE_URL . $_GET['sbURL']);
+						$sbURL = $securityHelper->sanitizeInt($_GET['sbURL']);
+						header('Location: ' . BASE_URL . $sbURL);
 						exit;
 					}
 				//global scrapbooks
@@ -637,7 +703,7 @@
 		}
 	}
 	
-	if ($_REQUEST['processBlock'] && $valt->validate()) {
+	if (isset($_REQUEST['processBlock']) && $_REQUEST['processBlock'] && $valt->validate()) {
 		
 		// some admin (or unscrupulous person) is doing something to a block of content on the site
 		$edit = ($_REQUEST['enterViewMode']) ? "" : "&mode=edit";
@@ -863,7 +929,7 @@
 		}	
 	}
 
-	if ($_POST['processCollection'] && $valt->validate()) { 
+	if (isset($_POST['processCollection']) && $_POST['processCollection'] && $valt->validate()) {
 
 		if ($_POST['update_theme']) { 
 		
@@ -917,7 +983,8 @@
 					print Loader::helper('json')->encode($obj);
 					exit;
 				} else {
-					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit' . $step);
+					$cID = $securityHelper->sanitizeInt($_GET['cID']);
+					header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $cID . '&mode=edit' . $step);
 					exit;
 				}
 			}		

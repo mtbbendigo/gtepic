@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $pk = PermissionKey::getByHandle('empty_trash');
@@ -24,11 +24,7 @@ if (is_object($trash) && !$trash->isError()) {
 	}
 }
 
-if ($i == 1) {
-	$message = t('1 page deleted.');
-} else {
-	$message = t('%s pages deleted', $i);
-}
+$message = t2('%d page deleted.', '%d pages deleted.', $i, $i);
 
 $obj = new stdClass;
 $obj->message = $message;

@@ -1,10 +1,11 @@
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Rich Text Editor'), t('Control the options available for TinyMCE.'), false, false);?>
-<?php 
+<?php
 $h = Loader::helper('concrete/interface');
 ?>	
-<form method="post" id="txt-editor-form" class="form-horizontal" action="<?php  echo $this->url('/dashboard/system/basics/editor', 'txt_editor_config')?>">
+<form method="post" id="txt-editor-form" class="form-horizontal" action="<?php echo $this->url('/dashboard/system/basics/editor', 'txt_editor_config')?>">
 <div class="ccm-pane-body">
-	<?php  echo $this->controller->token->output('txt_editor_config')?>
+	<?php echo $this->controller->token->output('txt_editor_config')?>
 	
 	<div class="row">
       <div class="span5">
@@ -15,26 +16,26 @@ $h = Loader::helper('concrete/interface');
 			  <ul class="inputs-list">
 			    <li>
 			      <label>
-			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="SIMPLE" <?php  echo ( $txtEditorMode=='SIMPLE' || !strlen($txtEditorMode) )?'checked':''?> />
-			        <span><?php  echo t('Simple')?></span>
+			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="SIMPLE" <?php echo ( $txtEditorMode=='SIMPLE' || !strlen($txtEditorMode) )?'checked':''?> />
+			        <span><?php echo t('Simple')?></span>
 			      </label>
 			    </li>
 			    <li>
 			      <label>
-			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="ADVANCED" <?php  echo ($txtEditorMode=='ADVANCED')?'checked':''?> />
-			        <span><?php  echo t('Advanced')?></span>
+			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="ADVANCED" <?php echo ($txtEditorMode=='ADVANCED')?'checked':''?> />
+			        <span><?php echo t('Advanced')?></span>
 			      </label>
 			    </li>
 			    <li>
 			      <label>
-			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="OFFICE" <?php  echo ($txtEditorMode=='OFFICE')?'checked':''?> />
-			        <span><?php  echo t('Office')?></span>
+			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="OFFICE" <?php echo ($txtEditorMode=='OFFICE')?'checked':''?> />
+			        <span><?php echo t('Office')?></span>
 			      </label>
 			    </li>
 			    <li>
 			      <label class="disabled">
-			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="CUSTOM" <?php  echo ($txtEditorMode=='CUSTOM')?'checked':'' ?> /> 
-			        <span><?php  echo t('Custom')?></span>
+			        <input type="radio" name="CONTENTS_TXT_EDITOR_MODE" value="CUSTOM" <?php echo ($txtEditorMode=='CUSTOM')?'checked':'' ?> /> 
+			        <span><?php echo t('Custom')?></span>
 			      </label>
 			    </li>
 			  </ul>
@@ -46,8 +47,8 @@ $h = Loader::helper('concrete/interface');
       	<legend><h3><?php echo t('Editor Dimensions')?></h3></legend>
 
 			<div class="clearfix">
-				<label for="xlInput"><?php  echo t('Width ')?></label>
-				<div class="input"><?php 
+				<label for="xlInput"><?php echo t('Width ')?></label>
+				<div class="input"><?php
 					if (!$textEditorWidth) { 
 						$textEditorWidth = 580;
 					}
@@ -57,8 +58,8 @@ $h = Loader::helper('concrete/interface');
 			</div>
 			
 			<div class="clearfix">
-				<label for="xlInput"><?php  echo t('Height ')?></label>
-				<div class="input"><?php 
+				<label for="xlInput"><?php echo t('Height ')?></label>
+				<div class="input"><?php
 					if (!$textEditorHeight) { 
 						$textEditorHeight = 380;
 					}
@@ -71,24 +72,24 @@ $h = Loader::helper('concrete/interface');
     </div>
 	<br/>
 		
-	<div id="text-editor-simple" style=" display:<?php  echo ($txtEditorMode=='SIMPLE' || $txtEditorMode == '')?'block':'none' ?>">
+	<div id="text-editor-simple" style=" display:<?php echo ($txtEditorMode=='SIMPLE' || $txtEditorMode == '')?'block':'none' ?>">
 		<h4><?php echo t('Preview')?></h4>
 		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_simple.png" width="630" height="65"  />
 	</div>
 	
-	<div id="text-editor-advanced" style=" display:<?php  echo ($txtEditorMode=='ADVANCED')?'block':'none' ?>">
+	<div id="text-editor-advanced" style=" display:<?php echo ($txtEditorMode=='ADVANCED')?'block':'none' ?>">
 		<h4><?php echo t('Preview')?></h4>
 		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_advanced.png" width="630" height="81"  />
 	</div>
 	
-	<div id="text-editor-office" style=" display:<?php  echo ($txtEditorMode=='OFFICE')?'block':'none' ?>">
+	<div id="text-editor-office" style=" display:<?php echo ($txtEditorMode=='OFFICE')?'block':'none' ?>">
 		<h4><?php echo t('Preview')?></h4>
 		<img src="<?php echo ASSETS_URL_IMAGES?>/editor_office.png" width="630" height="107"  />
 	</div>
 	
-	<div id="cstmEditorTxtAreaWrap" style=" display:<?php  echo ($txtEditorMode=='CUSTOM')?'block':'none' ?>" >
-		<textarea wrap="off" name="CONTENTS_TXT_EDITOR_CUSTOM_CODE" cols="25" rows="20" style="width: 97%; height: 250px;"><?php  echo $txtEditorCstmCode?></textarea>
-		<div class="ccm-note"><a target="_blank" href="http://tinymce.moxiecode.com/"><?php  echo t('TinyMCE Reference')?></a></div>
+	<div id="cstmEditorTxtAreaWrap" style=" display:<?php echo ($txtEditorMode=='CUSTOM')?'block':'none' ?>" >
+		<textarea wrap="off" name="CONTENTS_TXT_EDITOR_CUSTOM_CODE" cols="25" rows="20" style="width: 97%; height: 250px;"><?php echo $txtEditorCstmCode?></textarea>
+		<div class="ccm-note"><a target="_blank" href="http://tinymce.moxiecode.com/"><?php echo t('TinyMCE Reference')?></a></div>
 	</div>
 		
 
@@ -120,7 +121,7 @@ $h = Loader::helper('concrete/interface');
 	</script>
 </div>
 <div class="ccm-pane-footer">
-		<?php   
+		<?php  
 		$b1 = $h->submit(t('Save'), 'txt-editor-form', 'right', 'primary');
 		print $b1;
 		?>

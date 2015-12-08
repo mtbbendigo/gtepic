@@ -4,7 +4,7 @@
 <div class="clearfix">
 <?php echo $form->label('akTextareaDisplayMode', t('Input Format'))?>
 <div class="input">
-	<?php  
+	<?php 
 	$akTextareaDisplayModeOptions = array(
 		'text' => t('Plain Text'),
 		'rich_text' => t('Rich Text - Simple (Default Setting)'),

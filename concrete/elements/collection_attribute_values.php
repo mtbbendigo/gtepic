@@ -1,4 +1,4 @@
-<?php 
+<?php
 //THIS PAGE IS DEPREICATED
 
 //Use elements/dashboard/attribute_values.php instead
@@ -31,7 +31,7 @@ function getAttributeOptionHTML($akValue="TEMPLATE"){
 			</span>		
 		</div>	
 		<div class="ccm-spacer">&nbsp;</div>
-<?php  } ?>
+<?php } ?>
 
 <div id="attributeValuesOffMsg" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'block':'none' ?>">
 	<?php echo t('(Not Applicable)')?>
@@ -40,7 +40,7 @@ function getAttributeOptionHTML($akValue="TEMPLATE"){
 <div id="attributeValuesInterface" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
 
 	<div id="attributeValuesWrap">
-	<?php 
+	<?php
 	Loader::helper('text');
 	if(!is_array($akValues)) $akValues=explode("\n",$akValues);
 	foreach($akValues as $akValue){ 
@@ -49,7 +49,7 @@ function getAttributeOptionHTML($akValue="TEMPLATE"){
 		<div id="akValueWrap_<?php echo $akValue?>" class="akValueWrap">
 			<?php echo getAttributeOptionHTML( $akValue )?>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 	</div>
 	<div class="ccm-spacer"></div>
 	
@@ -68,7 +68,7 @@ function getAttributeOptionHTML($akValue="TEMPLATE"){
 	</div>
 	
 	<div id="allowOtherValuesWrap" style="display:<?php echo ($akType != 'SELECT' && $akType != 'SELECT_MULTIPLE')?'none':'block' ?>">
-		<input type="checkbox" name="akAllowOtherValues" style="vertical-align: middle" <?php  if ($akAllowOtherValues) { ?> checked <?php  } ?> /> <?php echo t('Allow users to add to this list.')?>
+		<input type="checkbox" name="akAllowOtherValues" style="vertical-align: middle" <?php if ($akAllowOtherValues) { ?> checked <?php } ?> /> <?php echo t('Allow users to add to this list.')?>
 	</div>
 
 </div>

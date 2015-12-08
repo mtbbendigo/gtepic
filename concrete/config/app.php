@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *
  * When this file is run it basically queries the database for site config items and sets those up, possibly overriding items in the base.php.
@@ -223,7 +223,7 @@ if(!defined('USER_PRIVATE_MESSAGE_MAX_TIME_SPAN')) {
 //these are the hashkey types for registration related authentication
 define('UVTYPE_REGISTER', 0);
 define('UVTYPE_CHANGE_PASSWORD', 1);
-
+define('UVTYPE_LOGIN_FOREVER', 2);
 
 if (!defined('UPLOAD_FILE_EXTENSIONS_ALLOWED')) {
 	Config::getOrDefine('UPLOAD_FILE_EXTENSIONS_ALLOWED','*.flv;*.jpg;*.gif;*.jpeg;*.ico;*.docx;*.xla;*.png;*.psd;*.swf;*.doc;*.txt;*.xls;*.xlsx;*.csv;*.pdf;*.tiff;*.rtf;*.m4a;*.mov;*.wmv;*.mpeg;*.mpg;*.wav;*.3gp;*.avi;*.m4v;*.mp4;*.mp3;*.qt;*.ppt;*.pptx;*.kml;*.xml;*.svg;*.webm;*.ogg;*.ogv');
@@ -234,4 +234,12 @@ if (!defined('UPLOAD_FILE_EXTENSIONS_ALLOWED')) {
 
 if (!defined('SEO_EXCLUDE_WORDS')) {
 	Config::getOrDefine('SEO_EXCLUDE_WORDS', 'a, an, as, at, before, but, by, for, from, is, in, into, like, of, off, on, onto, per, since, than, the, this, that, to, up, via, with');
+}
+
+if (!defined('ENABLE_JOB_SCHEDULING')) {
+	Config::getOrDefine('ENABLE_JOB_SCHEDULING', true);
+}
+
+if (!defined('JOB_QUEUE_BATCH_SIZE')) {
+	define('JOB_QUEUE_BATCH_SIZE', 10);
 }

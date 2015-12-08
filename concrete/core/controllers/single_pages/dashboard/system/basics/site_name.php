@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_System_Basics_SiteName extends DashboardBaseController {
 
 	public function view() {
-		$this->set('site', SITE);
+		$this->set('site', h(SITE));
 	}
 
 	public function sitename_saved() {

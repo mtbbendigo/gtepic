@@ -1,7 +1,7 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-styleEditPane-fonts" class="ccm-styleEditPane">	
 	<div>
-	<h3><?php  echo t('Fonts')?></h3>
+	<h3><?php echo t('Fonts')?></h3>
 		<table class="ccm-style-property-table table" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td>

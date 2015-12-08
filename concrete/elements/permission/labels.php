@@ -1,5 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 if (!isset($pa)) {
 	$pa = $pk->getPermissionAccessObject();
 }
@@ -12,7 +12,7 @@ if (is_object($pa)) {
 
 ?>
 <div class="ccm-permission-access-line">
-<?php 
+<?php
 $str = '';
 
 if (count($assignments) > 0) {
@@ -41,13 +41,13 @@ if (count($assignments) > 0) {
 }
 
 ?>
-<?php  if (!$str) { ?>
+<?php if (!$str) { ?>
 	<span style="color: #ccc"><?php echo t('None')?></span>
-<?php  } else { ?>
+<?php } else { ?>
 	<?php echo $str?>
-<?php  } ?>
+<?php } ?>
 
-<input type="hidden" name="pkID[<?php echo $pk->getPermissionKeyID()?>]" value="<?php echo $paID?>" />
+<input type="hidden" name="pkID[<?php echo $pk->getPermissionKeyID()?>]" value="<?php echo $paID?>" data-pkID="<?php echo $pk->getPermissionKeyID()?>" />
 </div>
 
 <script type="text/javascript">
@@ -60,11 +60,14 @@ $(function() {
 		accept: '.ccm-permission-access-line',
 		hoverClass: 'ccm-permissions-grid-cell-active',
 		drop: function(ev, ui) {
+			var srcPKID = $(ui.draggable).find('input').attr('data-pkID');
+			$('#ccm-permission-grid-name-' + srcPKID + ' a').attr('data-duplicate', '1');
+			
 			var paID = $(ui.draggable).find('input').val();
 			var pkID = $(this).attr('id').substring(25);
 
 			$(ui.draggable).clone().appendTo($('#ccm-permission-grid-cell-' + pkID).html(''));
-			$('#ccm-permission-grid-name-' + pkID + ' a').attr('data-paID', paID);	
+			$('#ccm-permission-grid-name-' + pkID + ' a').attr('data-paID', paID).attr('data-duplicate', '1');
 			$('#ccm-permission-grid-cell-' + pkID + ' input[type=hidden]').attr('name', 'pkID[' + pkID + ']');	
 			$('#ccm-permission-grid-cell-' + pkID + ' div.ccm-permission-access-line').draggable({
 				helper: 'clone'

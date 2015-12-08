@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Displays a slideshow of images on a page.
@@ -226,6 +226,29 @@ class Concrete5_Controller_Block_Slideshow extends BlockController {
 			$this->images=$sortedImgs;
 		}
 	}
-}
 
-?>
+	protected function importAdditionalData($b, $blockNode) {
+		if (isset($blockNode->data)) {
+			foreach($blockNode->data as $data) {
+				if (strtoupper($data['table']) != strtoupper($this->getBlockTypeDatabaseTable())) {
+					$table = (string) $data['table'];
+					if (isset($data->record)) {
+						foreach($data->record as $record) {
+							$aar = new ADODB_Active_Record($table);
+							$aar->bID = $b->getBlockID();
+							foreach($record->children() as $node) {
+								$nodeName = $node->getName();
+								if((strcasecmp($table, 'btSlideshowImg') === 0) && (strcasecmp($nodeName, 'slideshowImgId') === 0)) {
+									continue;
+								}
+								$aar->{$nodeName} = ContentImporter::getValue((string) $node);
+							}
+							$aar->Save();
+						}
+					}								
+				}
+			}
+		}
+	}
+
+}

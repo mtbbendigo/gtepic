@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_Default extends AttributeTypeController  {
@@ -19,7 +19,9 @@ class Concrete5_Controller_AttributeType_Default extends AttributeTypeController
 	}
 
 	public function searchForm($list) {
-		$db = Loader::db();
+		if ($this->request('value') === '') {
+			return $list;
+		}
 		$list->filterByAttribute($this->attributeKey->getAttributeKeyHandle(), '%' . $this->request('value') . '%', 'like');
 		return $list;
 	}

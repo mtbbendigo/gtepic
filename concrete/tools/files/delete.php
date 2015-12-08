@@ -1,10 +1,10 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }
 
 if ($_POST['task'] == 'delete_files') {
@@ -52,9 +52,9 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 
 <div class="ccm-ui">
 <br/>
-<?php  if ($fcnt == 0) { ?>
+<?php if ($fcnt == 0) { ?>
 	<p><?php echo t("You do not have permission to delete any of the selected files."); ?><p>
-<?php  } else { ?>
+<?php } else { ?>
 
 	<p><?php echo t('Are you sure you want to delete the following files?')?></p>
 
@@ -62,7 +62,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	<?php echo $form->hidden('task', 'delete_files')?>
 	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
 	
-	<?php  foreach($files as $f) { 
+	<?php foreach($files as $f) { 
 		$fp = new Permissions($f);
 		if ($fp->canDeleteFile()) {
 			$fv = $f->getApprovedVersion();
@@ -78,7 +78,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 				<td><?php echo $fv->getAuthorName()?></td>
 			</tr>
 			
-			<?php  }
+			<?php }
 		}
 		
 	} ?>
@@ -86,7 +86,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	</form>
 	<br/>
 	
-	<?php  $ih = Loader::helper('concrete/interface')?>
+	<?php $ih = Loader::helper('concrete/interface')?>
 	<div class="dialog-buttons">
 	<?php echo $ih->button_js(t('Delete'), 'ccm_alDeleteFiles(\'' . $searchInstance . '\')', 'right', 'error')?>
 	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
@@ -94,7 +94,7 @@ $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 	
 </div>
 		
-	<?php 
+	<?php
 	
 }
 	

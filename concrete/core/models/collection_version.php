@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Contains the collection version object.
@@ -69,24 +69,28 @@
 			return $cv;
 		}
 
-		public function getAttribute($ak, $c) {
+		public function getAttribute($ak, $c, $displayMode = false) {
 			if (is_object($ak)) {
 				$akHandle = $ak->getAttributeKeyHandle();
 			} else {
 				$akHandle = $ak;
+				$ak = null;
 			}
+			$akHash = $akHandle . ':' . $displayMode;
 
-			if (!isset($this->attributes[$akHandle])) {
-				$this->attributes[$akHandle] = false;
-				$ak = CollectionAttributeKey::getByHandle($akHandle);
+			if (!isset($this->attributes[$akHash])) {
+				$this->attributes[$akHash] = false;
+				if(!$ak) {
+					$ak = CollectionAttributeKey::getByHandle($akHandle);
+				}
 				if (is_object($ak)) {
 					$av = $c->getAttributeValueObject($ak);
 					if (is_object($av)) {
-						$this->attributes[$akHandle] = $av->getValue();
+						$this->attributes[$akHash] = $av->getValue($displayMode);
 					}
 				}
 			}
-			return $this->attributes[$akHandle];
+			return $this->attributes[$akHash];
 		}
 
 		function isApproved() {return $this->cvIsApproved;}
@@ -168,9 +172,12 @@
 
 			$u = new User();
 			$versionComments = (!$versionComments) ? t("New Version %s", $newVID) : $versionComments;
-			
+			$cvIsNew = 1;
+			if ($c->getCollectionTypeHandle() == STACKS_PAGE_TYPE) {
+				$cvIsNew = 0;
+			}
 			$dh = Loader::helper('date');
-			$v = array($this->cID, $newVID, $c->getCollectionName(), $c->getCollectionHandle(), $c->getCollectionDescription(), $c->getCollectionDatePublic(), $dh->getSystemDateTime(), $versionComments, $u->getUserID(), 1, $this->ptID, $this->ctID);
+			$v = array($this->cID, $newVID, $c->getCollectionName(), $c->getCollectionHandle(), $c->getCollectionDescription(), $c->getCollectionDatePublic(), $dh->getSystemDateTime(), $versionComments, $u->getUserID(), $cvIsNew, $this->ptID, $this->ctID);
 			$q = "insert into CollectionVersions (cID, cvID, cvName, cvHandle, cvDescription, cvDatePublic, cvDateCreated, cvComments, cvAuthorUID, cvIsNew, ptID, ctID)
 				values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				

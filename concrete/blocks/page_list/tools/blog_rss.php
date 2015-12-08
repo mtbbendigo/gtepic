@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 //Permissions Check
@@ -19,7 +19,7 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 		$rssUrl = $controller->getRssUrl($b);
 		
 		$bp = new Permissions($b);
-		if( $bp->canViewBlock() && $controller->rss && ($b->getBlockFilename() == 'blog_index_thumbnail.php' || $b->getBlockFilename() == 'blog_index.php' || $b->getBlockFilename() == 'blog_index')) {
+		if( $bp->canViewBlock() && $controller->rss) {
 	
 			$cArray = $controller->getPages();
 			$nh = Loader::helper('navigation');
@@ -33,7 +33,7 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 				<title><?php echo $controller->rssTitle?></title>
 				<link><?php echo Loader::helper('navigation')->getLinkToCollection($c, true)?></link>
 				<description><?php echo $controller->rssDescription?></description> 
-	<?php 
+	<?php
 			for ($i = 0; $i < count($cArray); $i++ ) {
 				$cobj = $cArray[$i]; 
 				$title = $cobj->getCollectionName();
@@ -41,16 +41,16 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 				<item>
 				  <title><?php echo htmlspecialchars($title);?></title>
 				  <link>
-					<?php echo  BASE_URL.$nh->getLinkToCollection($cobj) ?>		  
+					<?php echo BASE_URL.$nh->getLinkToCollection($cobj) ?>		  
 				  </link>
 				  <description><![CDATA[
-					<?php 
+					<?php
 					$a = new Area('Main');
 					$a->disableControls();
 					$a->display($cobj);
 					?>
 				  ]]></description>
-                                  <?php  
+                                  <?php 
                                     $tags = preg_split('/\n/', $cobj->getAttribute('tags'));
                                     if ($tags) {
 										foreach($tags as $tag) {
@@ -60,15 +60,15 @@ if($_GET['bID'] && $_GET['cID'] && $nh->integer($_GET['bID']) && $nh->integer($_
 										}
 									}
                                   ?>
-				  <?php  /* <pubDate><?php echo $cobj->getCollectionDatePublic()?></pubDate>
+				  <?php /* <pubDate><?=$cobj->getCollectionDatePublic()?></pubDate>
 				  Wed, 23 Feb 2005 16:12:56 GMT  */ ?>
 				  <pubDate><?php echo date( 'D, d M Y H:i:s T',strtotime($cobj->getCollectionDatePublic())) ?></pubDate>
 				</item>
-			<?php  } ?>
+			<?php } ?>
 				 </channel>
 			</rss>
 			
-	<?php 	} else {  	
+	<?php	} else {  	
 			$v = View::getInstance();
 			$v->renderError(t('Permission Denied'), t("This page list doesn't use the custom blog template, or you don't have permission to access this RSS feed"));
 			exit;

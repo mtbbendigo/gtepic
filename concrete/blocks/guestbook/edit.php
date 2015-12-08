@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
 <div class="control-group">
 <?php echo $form->label('title', t('Title'))?>
@@ -6,7 +6,7 @@
 	<input type="text" name="title" value="<?php echo $title?>" />
 </div>
 </div>
-<?php 
+<?php
 if (!$dateFormat) {
 	$dateFormat = t('M jS, Y');
 }
@@ -50,8 +50,8 @@ if (!$dateFormat) {
 <div class="control-group">
 <?php echo $form->label('displayCaptcha', t('CAPTCHA Required.'))?>
 <div class="controls">
-	<label class="radio"><input type="radio" name="displayCaptcha" value="1" <?php  echo ($displayCaptcha?"checked=\"checked\"":"") ?> /> <span><?php echo t('Yes')?></span></label>
-	<label class="radio"><input type="radio" name="displayCaptcha" value="0" <?php  echo ($displayCaptcha?"":"checked=\"checked\"") ?> /> <span><?php echo t('No')?></span></label>
+	<label class="radio"><input type="radio" name="displayCaptcha" value="1" <?php echo ($displayCaptcha?"checked=\"checked\"":"") ?> /> <span><?php echo t('Yes')?></span></label>
+	<label class="radio"><input type="radio" name="displayCaptcha" value="0" <?php echo ($displayCaptcha?"":"checked=\"checked\"") ?> /> <span><?php echo t('No')?></span></label>
 
 </div>
 </div>

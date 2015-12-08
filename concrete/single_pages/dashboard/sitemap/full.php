@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $sh = Loader::helper('concrete/dashboard/sitemap');
 
@@ -26,22 +26,37 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 </script>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sitemap'), t('The sitemap allows you to view your site as a tree and easily organize its hierarchy.'), 'span10 offset1', false);?>
 <div class="ccm-pane-options">
-	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php  if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?>open<?php  } else { ?>closed<?php  } ?>"><?php echo t('Options')?></a>
-	<div class="ccm-pane-options-content" <?php  if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> style="display: block" <?php  } ?>>
-		<form>
-		<div id="ccm-show-all-pages" class="clearfix">
-			<label for="ccm-show-all-pages-cb"><?php echo t('Show System Pages')?></label>
-			<div class="input">
-			<ul class="inputs-list">
-				<li><input type="checkbox" id="ccm-show-all-pages-cb" <?php  if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> checked <?php  } ?> /></li>
-			</ul>		
-			</div>
+	<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?>open<?php } else { ?>closed<?php } ?>"><?php echo t('Options')?></a>
+	<div class="ccm-pane-options-content" <?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> style="display: block" <?php } ?>>
+		<div class="clearfix">
+			<form>
+				<label class="checkbox">
+					<input type="checkbox" id="ccm-show-all-pages-cb" <?php if ($_SESSION['dsbSitemapShowSystem'] == 1) { ?> checked <?php } ?> />
+					<?php echo t('Show System Pages')?>
+				</label>
+			</form>
 		</div>
-		</form>
 	</div>
 </div>
 <div class="ccm-pane-body ccm-pane-body-footer">
-	<?php  if ($sh->canRead()) { ?>
+
+	<?php $u = new User();
+	if ($u->isSuperUser()) {
+		if (Queue::exists('copy_page')) {
+		$q = Queue::get('copy_page');
+		if ($q->count() > 0) { ?>
+
+			<div style="position: relative" class="alert alert-warning">
+				<div style="position: absolute; top: 5px; right: 5px"><button class="btn btn-small" onclick="ccm_refreshCopyOperations()"><?php echo t('Resume Copy')?></button></div>
+				<?php echo t('Page copy operations pending.')?>
+			</div>
+
+		<?php }
+	}
+
+	} ?>
+
+	<?php if ($sh->canRead()) { ?>
 	
 		<div id="ccm-sitemap-message"></div>
 	
@@ -53,10 +68,10 @@ $listHTML = $sh->outputRequestHTML($instanceID, 'full', false, $nodes);
 		</div>
 		
 	
-	<?php  } else { ?>
+	<?php } else { ?>
 	
 		<p><?php echo t("You do not have access to the sitemap.");?></p>
 	
-	<?php  } ?>
+	<?php } ?>
 </div>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>

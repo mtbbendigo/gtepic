@@ -1,5 +1,5 @@
-<?php 
-defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php
+defined('C5_EXECUTE') or die("Access Denied.");
 
 if (isset($error) && $error != '') {
 	if ($error instanceof Exception) {
@@ -12,22 +12,24 @@ if (isset($error) && $error != '') {
 		$_error[] = $error;
 	}
 	?>
-	<?php  if ($format == 'block') { ?>
-	
-	<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>
-	<?php  foreach($_error as $e): ?>
-		<?php  echo $e?><br/>
-	<?php  endforeach; ?>
-	</div>
+	<?php if($_error) { ?>
+		<?php if ($format == 'block') { ?>
 
-	<?php  } else { ?>
-	
-	<ul class="ccm-error">
-	<?php  foreach($_error as $e): ?>
-		<li><?php  echo $e?></li>
-	<?php  endforeach; ?>
-	</ul>
-	<?php  } ?>
+		<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>
+		<?php foreach($_error as $e) { ?>
+			<?php echo $e?><br/>
+		<?php } ?>
+		</div>
+
+		<?php } else { ?>
+
+		<ul class="ccm-error">
+		<?php foreach($_error as $e) { ?>
+			<li><?php echo $e?></li>
+		<?php } ?>
+		</ul>
+		<?php } ?>
+	<?php } ?>
 	
 
-<?php  } ?>
+<?php } ?>

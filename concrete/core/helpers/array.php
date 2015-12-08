@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
  * Helpful functions for working with Arrays. Includes recursive fetching

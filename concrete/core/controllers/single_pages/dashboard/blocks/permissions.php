@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Blocks_Permissions extends DashboardBaseController {
 	
 	public function save() {

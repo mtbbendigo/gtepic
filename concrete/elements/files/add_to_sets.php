@@ -1,7 +1,7 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 <div class="ccm-ui">
-<?php  $form = Loader::helper('form'); ?>
-<?php 
+<?php $form = Loader::helper('form'); ?>
+<?php
 
 function checkbox($field, $value, $state, $miscFields = array()) {
 
@@ -124,14 +124,14 @@ $(function() {
 </script>
 
 
-<?php  if (!$disableForm) { ?>
+<?php if (!$disableForm) { ?>
 	<form method="post" id="ccm-<?php echo $searchInstance?>-add-to-set-form" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/add_to/">
 	<?php echo $form->hidden('task', 'add_to_sets')?>
-	<?php  foreach($files as $f) { ?>
+	<?php foreach($files as $f) { ?>
 		<input type="hidden" name="fID[]" value="<?php echo $f->getFileID();?>" />
-	<?php  } ?>
+	<?php } ?>
 
-<?php  } ?>
+<?php } ?>
 
 	<div class="clear"></div>
 	<div class="ccm-search-bar">
@@ -139,13 +139,13 @@ $(function() {
 	</div>
 
 	
-	<?php  $s1 = FileSet::getMySets(); ?>
-	<?php  if (count($s1) > 0) { ?>
+	<?php $s1 = FileSet::getMySets(); ?>
+	<?php if (count($s1) > 0) { ?>
 	<div class="clearfix">
 		<ul class="inputs-list">
 	
 	
-	<?php  foreach($sets as $s) { 
+	<?php foreach($sets as $s) { 
 		$displaySet = true;
 		
 		$pf = new Permissions($s);
@@ -168,35 +168,35 @@ $(function() {
 				<span><?php echo $s->getFileSetName()?></span>
 				</label>
 		</li>
-	<?php  } 
+	<?php } 
 	} ?>
 	
 		</ul>
 	</div>
-	<?php  } else { ?>
+	<?php } else { ?>
 		<?php echo t('You have not created any file sets yet.')?>
-	<?php  } ?>
+	<?php } ?>
 
-<?php  if (count($extensions) > 1) { ?>
+<?php if (count($extensions) > 1) { ?>
 
 	<div class="alert-message info"><p><?php echo t('If a file set does not appear above, you either have no access to add files to it, or it does not accept the file types %s.', implode(', ', $extensions));?></p></div>
 	
-<?php  } ?>
+<?php } ?>
 
 
 <h3><?php echo t('Add to New Set')?></h3>
 
 <?php echo $form->checkbox('fsNew', 1)?> <?php echo $form->text('fsNewText', array('style' => 'width: 120px', 'onclick' => '$(\'input[name=fsNew]\').attr(\'checked\',true)'))?> <?php echo $form->checkbox('fsNewShare', 1, true)?> <?php echo t('Make set public')?>
 
-<?php  if (!$disableForm) { ?>
+<?php if (!$disableForm) { ?>
 
 	<br/><br/>
-	<?php 
+	<?php
 	$h = Loader::helper('concrete/interface');
 	$b1 = $h->submit(t('Update'), false, 'left');
 	print $b1;
 	?>
 	</form>
 	
-<?php  } ?>
+<?php } ?>
 </div>

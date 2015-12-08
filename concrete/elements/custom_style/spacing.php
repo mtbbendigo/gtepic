@@ -1,8 +1,8 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-styleEditPane-spacing" class="ccm-styleEditPane" style="display:none">		
 	<div style="clear:both">
 		<table style="width:100%" border="0" cellspacing="0" cellpadding="0" class="table"><tr><td style="width:50%" valign="top">		
-			<h3><?php  echo t('Margin')?></h3>
+			<h3><?php echo t('Margin')?></h3>
 			<table class="ccm-style-property-table" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td> 
@@ -39,7 +39,7 @@
 			</table>	 
 		</td>
 		<td valign="top">		 
-			<h3><?php  echo t('Padding')?></h3>
+			<h3><?php echo t('Padding')?></h3>
 			<table class="ccm-style-property-table" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td> 

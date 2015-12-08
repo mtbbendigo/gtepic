@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Displays a search prompt and results.
@@ -31,13 +31,12 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		}
 
 		$this->hText = $fulltext;
-		$this->hHighlight  = str_replace(array('"',"'","&quot;"),'',$highlight); // strip the quotes as they mess the regex
-		$this->hText = @preg_replace( "#$this->hHighlight#ui", '<span style="background-color:'. $this->hColor .';">$0</span>', $this->hText );
+		$this->hHighlight  = $highlight;
+		$this->hText = @preg_replace('#' . preg_quote($this->hHighlight, '#') . '#ui', '<span style="background-color:'. $this->hColor .';">$0</span>', $this->hText );
 		return $this->hText;
 	}
 	
 	public function validate($post) {
-		$exception = array();
 		$errors = Loader::helper('validation/error');
 		if ($post['title'] === false || $post['title'] == '') {
 			$errors->add(t("Please enter your Search Title."));
@@ -63,7 +62,7 @@ class Concrete5_Controller_Block_Search extends BlockController {
 			return $text;
 		}
 
-		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. $highlight .'([[:alnum:]|\.|_|\s]{0,45})';
+		$regex = '([[:alnum:]|\'|\.|_|\s]{0,45})'. preg_quote($highlight, '#') .'([[:alnum:]|\.|_|\s]{0,45})';
 		preg_match_all("#$regex#ui", $text, $matches);
 
 		if(!empty($matches[0])) {
@@ -218,7 +217,7 @@ class Concrete5_Controller_Block_Search extends BlockController {
 		$res = $ipl->getPage();
 
 		foreach($res as $r) {
-			$results[] = new IndexedSearchResult($r['cID'], $r['cName'], $r['cDescription'], $r['score'], $r['cPath'], $r['content']);
+			$results[] = new IndexedSearchResult($r['cID'], $r['cName'], $r['cDescription'], $r['score'], $r['cPath'], $r['content'], $r['cDatePublic']);
 		}
 
 		$this->set('query', $q);

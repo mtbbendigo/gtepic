@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 
@@ -12,11 +12,11 @@ $cList = $ct->getPages();
 <div class="ccm-ui">
 <form method="post" id="ccmBlockMasterCollectionForm" action="<?php echo $b->getBlockMasterCollectionAliasAction()?>">
 
-	<?php  if (count($cList) == 0) { ?>
+	<?php if (count($cList) == 0) { ?>
 	
 	<?php echo t("There are no pages of this type added to your website. If there were, you'd be able to choose which of those pages this block appears on.")?>
 	
-	<?php  } else { ?>
+	<?php } else { ?>
 	
 	<p><?php echo t("Choose which pages below this particular block should appear on. Any previously selected blocks may also be removed using the checkbox. Click the checkbox in the header to select/deselect all pages.")?></p>
 	<br/>
@@ -30,22 +30,22 @@ $cList = $ct->getPages();
 			<th ><input type="checkbox" id="mc-cb-all" /></th>			
 		</tr>
 	
-	<?php 
+	<?php
 		
 		foreach($cList as $p) { ?>
 			<tr class="active">
 			<td><?php echo $p->getCollectionID()?></td>
 			<td><a href="<?php echo DIR_REL?>/<?php echo DISPATCHER_FILENAME?>?cID=<?php echo $p->getCollectionID()?>" target="_blank"><?php echo $p->getCollectionName()?></a></td>
-			<td ><?php echo $p->getCollectionDateAdded('m/d/Y','user')?></td>
-			<td ><?php  if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?php echo $p->getCollectionID()?>" /><?php  } ?><?php echo $p->getCollectionDateLastModified('m/d/Y','user')?></td>
-			<td ><input class="mc-cb" type="checkbox" name="cIDs[]" value="<?php echo $p->getCollectionID()?>" <?php  if ($b->isAlias($p)) { ?> checked <?php  } ?> /></td>
+			<td ><?php echo $p->getCollectionDateAdded(DATE_APP_GENERIC_MDY, 'user')?></td>
+			<td ><?php if ($b->isAlias($p)) { ?> <input type="hidden" name="checkedCIDs[]" value="<?php echo $p->getCollectionID()?>" /><?php } ?><?php echo $p->getCollectionDateLastModified(DATE_APP_GENERIC_MDY, 'user')?></td>
+			<td ><input class="mc-cb" type="checkbox" name="cIDs[]" value="<?php echo $p->getCollectionID()?>" <?php if ($b->isAlias($p)) { ?> checked <?php } ?> /></td>
 			</tr>
 		
-		<?php  } ?>
+		<?php } ?>
 	
 		</table>
 		
-	<?php  } ?>
+	<?php } ?>
 	
 	<div class="dialog-buttons">
 	<a href="#" class="ccm-dialog-close ccm-button-left btn cancel"><?php echo t('Cancel')?></a>

@@ -1,4 +1,4 @@
-<?php   defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!defined('FILE_PERMISSIONS_MODE')) {
 	$perm = Loader::helper('file')->getCreateFilePermissions()->file;

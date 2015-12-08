@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $subject = SITE.' '.t("Registration - A New User Has Registered");
@@ -9,23 +9,23 @@ $subject = SITE.' '.t("Registration - A New User Has Registered");
 ob_start();
 
 ?>
-<h2><?php echo  t('New User Registration') ?></h2>
-<?php echo  t('A new user has registered on your website.') ?><br />
+<h2><?php echo t('New User Registration') ?></h2>
+<?php echo t('A new user has registered on your website.') ?><br />
 <br />
-<?php echo  t('User Name') ?>: <b><?php echo  $uName ?></b><br />
-<?php echo  t('Email Address') ?>: <b><?php echo  $uEmail ?></b><br />
+<?php echo t('User Name') ?>: <b><?php echo $uName ?></b><br />
+<?php echo t('Email Address') ?>: <b><?php echo $uEmail ?></b><br />
 <br />
-<?php  if($attribs): ?>
+<?php if($attribs): ?>
 	<ul>
-	<?php  foreach($attribs as $item): ?>
-		<li><?php echo  $item ?></li>
-	<?php  endforeach ?>
+	<?php foreach($attribs as $item): ?>
+		<li><?php echo $item ?></li>
+	<?php endforeach ?>
 	</ul>
-<?php  endif ?>
+<?php endif ?>
 <br />
-<?php  t('This account may be managed directly at') ?><br />
-<a href="<?php echo  BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>"><?php echo  BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?></a>
-<?php 
+<?php t('This account may be managed directly at') ?><br />
+<a href="<?php echo BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>"><?php echo BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?></a>
+<?php
 
 $bodyHTML = ob_get_clean();
 /**
@@ -38,27 +38,28 @@ $bodyHTML = ob_get_clean();
 ob_start();
 
 ?>
-<?php echo  t('New User Registration') ?>
+<?php echo t('New User Registration') ?>
 
-<?php echo  t('A new user has registered on your website.') ?>
+<?php echo t('A new user has registered on your website.') ?>
 
-<?php echo  t('User Name') ?>: <?php echo  $uName ?>
+<?php echo t('User Name') ?>: <?php echo $uName ?>
 
-<?php echo  t('Email Address') ?>: <?php echo  $uEmail ?>
+<?php echo t('Email Address') ?>: <?php echo $uEmail ?>
 
-<?php  if($attribs): ?>
-	<?php  foreach($attribs as $item): ?>
-		<?php echo  $item ?>
+<?php if($attribs): ?>
+	<?php foreach($attribs as $item): ?>
+		<?php echo $item ?>
 
-	<?php  endforeach ?>
-<?php  endif ?>
+	<?php endforeach ?>
+<?php endif ?>
 
-<?php  t('This account may be managed directly at') ?>
+<?php t('This account may be managed directly at') ?>
 
-<?php echo  BASE_URL.View::url('/dashbard/users/search?uID='.$uID) ?>
-<?php 
+<?php echo BASE_URL.View::url('/dashbard/users/search?uID='.$uID) ?>
+<?php
 
-$body = ob_end_clean();
+$body = ob_get_clean();
+ob_end_clean();
 /**
  * PLAIN TEXT BODY END
  */

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the Youtube video block.
@@ -24,7 +24,7 @@
 		public $videoURL = "";
 		public $vHeight = "344";
 		public $vWidth = "425";
-		public $vPlayer ='0';
+		public $vPlayer ='1';
 		public $mode = "youtube";
 		
 		/** 

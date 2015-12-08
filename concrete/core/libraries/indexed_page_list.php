@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
 *
 * A wrapper class for results from the search engine, allowing for abstraction in case search engines are changed in the future.
@@ -23,7 +23,7 @@ class Concrete5_Library_IndexedPageList extends PageList {
 		$r = parent::getPage();
 		$results = array();
 		foreach($r as $c) {
-			$results[] = array('cID' => $c->getCollectionID(), 'cName' => $c->getCollectionName(), 'cDescription' => $c->getCollectionDescription(), 'score' => $c->getPageIndexScore(), 'cPath' => $c->getCollectionPath(), 'content' => $c->getPageIndexContent());
+			$results[] = array('cID' => $c->getCollectionID(), 'cName' => $c->getCollectionName(), 'cDescription' => $c->getCollectionDescription(), 'score' => $c->getPageIndexScore(), 'cPath' => $c->getCollectionPath(), 'content' => $c->getPageIndexContent(), 'cDatePublic' => $c->getCollectionDatePublic());
 		}
 		return $results;
 	}

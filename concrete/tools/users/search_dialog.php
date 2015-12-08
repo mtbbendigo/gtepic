@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
@@ -32,7 +32,7 @@ $v->outputHeaderItems();
 	<?php echo $searchForm?>
 </div>
 
-<?php  Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
+<?php Loader::element('users/search_results', array('columns' => $columns, 'mode' => $mode, 'users' => $users, 'userList' => $userList, 'pagination' => $pagination)); ?>
 </div>
 </div>
 

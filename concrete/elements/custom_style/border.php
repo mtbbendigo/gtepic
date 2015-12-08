@@ -1,7 +1,7 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-styleEditPane-border" class="ccm-styleEditPane" style="display:none">
 	<div>
-	  <h3><?php  echo t('Border')?></h3>  
+	  <h3><?php echo t('Border')?></h3>  
 		<table class="ccm-style-property-table table" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td> 

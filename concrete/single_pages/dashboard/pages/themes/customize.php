@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied."); 
 
 // HELPERS
@@ -7,7 +7,7 @@ $ih = Loader::helper('concrete/interface');
 
 ?>
 
-	<?php  if (count($styles) > 0) {
+	<?php if (count($styles) > 0) {
 	
 	// If styles can be customised, show edit pane.	
 		
@@ -18,7 +18,7 @@ $ih = Loader::helper('concrete/interface');
     <form action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/themes/preview_internal?themeID=<?php echo $themeID?>&previewCID=1" method="post" target="preview-theme" id="customize-form">
 	
 	<div class="ccm-pane-options">
-	<?php 	
+	<?php	
 		$customSt = false;
 		
 		foreach($styles as $sto) { 
@@ -30,39 +30,39 @@ $ih = Loader::helper('concrete/interface');
 			
 			?>
 			
-			<div class="ccm-theme-style-attribute <?php  if ($useSlots) { ?>ccm-theme-style-slots<?php  } ?>">
+			<div class="ccm-theme-style-attribute <?php if ($useSlots) { ?>ccm-theme-style-slots<?php } ?>">
 			<span class="ccm-theme-style-attribute-name"><?php echo $st->getName()?></span>
 	
-			<?php  
+			<?php 
 			for ($i = 0; $i < count($sto); $i++) { 
 				$slot = $i + 1;
 				$st = $sto[$i];
 				switch($st->getType()) {
 					case PageThemeEditableStyle::TSTYPE_COLOR: ?>
 						<?php echo $form->hidden('input_theme_style_' . $st->getHandle() . '_' . $st->getType(), $st->getValue())?>
-						<div class="ccm-theme-style-color <?php  if ($useSlots) { ?>ccm-theme-style-slot-<?php echo $slot?><?php  } ?>" id="theme_style_<?php echo $st->getHandle()?>_<?php echo $st->getType()?>"><div hex-color="<?php echo $st->getValue()?>" style="background-color: <?php echo $st->getValue()?>"></div></div>
-					<?php  
+						<div class="ccm-theme-style-color <?php if ($useSlots) { ?>ccm-theme-style-slot-<?php echo $slot?><?php } ?>" id="theme_style_<?php echo $st->getHandle()?>_<?php echo $st->getType()?>"><div hex-color="<?php echo $st->getValue()?>" style="background-color: <?php echo $st->getValue()?>"></div></div>
+					<?php 
 						break;
 					case PageThemeEditableStyle::TSTYPE_FONT: ?>
 						<?php echo $form->hidden('input_theme_style_' . $st->getHandle() . '_' . $st->getType(), $st->getShortValue())?>
-						<div class="ccm-theme-style-font <?php  if ($useSlots) { ?>ccm-theme-style-slot-<?php echo $slot?><?php  } ?>" font-panel-font="<?php echo $st->getFamily()?>" font-panel-weight="<?php echo $st->getWeight()?>" font-panel-style="<?php echo $st->getStyle()?>" font-panel-size="<?php echo $st->getSize()?>" id="theme_style_<?php echo $st->getHandle()?>_<?php echo $st->getType()?>"><div></div></div>
+						<div class="ccm-theme-style-font <?php if ($useSlots) { ?>ccm-theme-style-slot-<?php echo $slot?><?php } ?>" font-panel-font="<?php echo $st->getFamily()?>" font-panel-weight="<?php echo $st->getWeight()?>" font-panel-style="<?php echo $st->getStyle()?>" font-panel-size="<?php echo $st->getSize()?>" id="theme_style_<?php echo $st->getHandle()?>_<?php echo $st->getType()?>"><div></div></div>
 						
-					<?php  
+					<?php 
 						break;
 				}
 			} // END For loop ?>
 			</div>
 			
-		<?php  
+		<?php 
 		} // END Foreach loop
 		
 		if (isset($customST)) { ?>
-		<div class="ccm-theme-style-attribute <?php  if ($useSlots) { ?>ccm-theme-style-slots<?php  } ?>">
+		<div class="ccm-theme-style-attribute <?php if ($useSlots) { ?>ccm-theme-style-slots<?php } ?>">
 			<span class="ccm-theme-style-attribute-name"><?php echo t('Add Your CSS')?></span>
 			<?php echo $form->hidden('input_theme_style_' . $customST->getHandle() . '_' . $customST->getType(), $customST->getOriginalValue())?>
-			<div class="ccm-theme-style-custom <?php  if ($useSlots) { ?>ccm-theme-style-slot-1<?php  } ?>" id="theme_style_<?php echo $customST->getHandle()?>_<?php echo $customST->getType()?>"><div></div></div>
+			<div class="ccm-theme-style-custom <?php if ($useSlots) { ?>ccm-theme-style-slot-1<?php } ?>" id="theme_style_<?php echo $customST->getHandle()?>_<?php echo $customST->getType()?>"><div></div></div>
 		</div>
-		<?php  } ?>
+		<?php } ?>
 	</div>
 	
     <div class="ccm-pane-body">  
@@ -73,7 +73,7 @@ $ih = Loader::helper('concrete/interface');
     <?php echo $form->hidden('themeID', $themeID)?>
 	<?php echo $form->hidden('ttask', 'preview_theme_customization')?>
     
-    <?php  
+    <?php 
     $useSlots = false;
     // we use the slots if we have more than one style type for any given style
     foreach($styles as $tempStyles) {
@@ -94,16 +94,16 @@ $ih = Loader::helper('concrete/interface');
     </div><!-- END Pane body -->
     
     <div class="ccm-pane-footer">
-    	<?php  print $ih->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left'); ?>
-        <?php  print $ih->button_js(t('Save'), 'saveCustomizedTheme()', 'right', 'primary'); ?>
-        <?php  print $ih->button_js(t('Reset'), 'resetCustomizedTheme()', 'right'); ?>
+    	<?php print $ih->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left'); ?>
+        <?php print $ih->button_js(t('Save'), 'saveCustomizedTheme()', 'right', 'primary'); ?>
+        <?php print $ih->button_js(t('Reset'), 'resetCustomizedTheme()', 'right'); ?>
     </div>
 
     </form>
     
     <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
     
-	<?php 
+	<?php
     
     // Only include JS if editable styles found.
     
@@ -334,10 +334,10 @@ $ih = Loader::helper('concrete/interface');
     
     </script>
         
-	<?php 		
+	<?php		
     } else { ?>
         
-    <?php  // BEGIN No editable styles found for theme dialogue. ?>
+    <?php // BEGIN No editable styles found for theme dialogue. ?>
     
     <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Customize Theme'), false, 'span10 offset1', false)?>
     
@@ -346,9 +346,9 @@ $ih = Loader::helper('concrete/interface');
         </div>
             
         <div class="ccm-pane-footer">
-            <?php  print $ih->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left'); ?>
+            <?php print $ih->button(t('Return to Themes'), $this->url('/dashboard/pages/themes'), 'left'); ?>
         </div>
 
     <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
         
-    <?php  } // END No editable styles dialogue. ?>
+    <?php } // END No editable styles dialogue. ?>

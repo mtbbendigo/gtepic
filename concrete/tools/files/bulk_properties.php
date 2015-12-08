@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -7,7 +7,7 @@ $previewMode = false;
 
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }  
 
 $attribs = FileAttributeKey::getUserAddedList();
@@ -212,7 +212,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 	
 	$html = '
 	<tr class="ccm-attribute-editable-field">
-		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
+		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/files/bulk_properties">
 			<input type="hidden" name="fakID" value="' . $ak->getAttributeKeyID() . '" />
@@ -233,7 +233,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 
 	$html = '
 	<tr>
-		<td><strong>' . $ak->getAttributeKeyName() . '</strong></td>
+		<td><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -242,7 +242,7 @@ function printFileAttributeRow($ak, $fv, $value) {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-file-properties-wrapper">
-<?php  } ?>
+<?php } ?>
 
 <script type="text/javascript">
 var ccm_activeFileManagerAddCompleteTab = "ccm-file-manager-add-complete-basic";
@@ -267,28 +267,24 @@ table.ccm-grid th {width: 70px}
 
 </style>
 <div class="ccm-ui">
-<?php  if ($_REQUEST['uploaded']) { ?>
-	<?php  if (count($_REQUEST['fID']) == 1) { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?php echo t('Continue')?></a><?php echo t('1 file uploaded successfully.')?></div>
-	<?php  } else { ?>
-		<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?php echo t('Continue')?></a><?php echo t('%s files uploaded successfully.', count($_REQUEST['fID']))?></div>
-	<?php  } ?>
-<?php  } ?>
+<?php if ($_REQUEST['uploaded']) { ?>
+	<div class="block-message alert-message success" style="padding-right: 14px !important"><a class="btn success btn-mini" style="float: right;" onclick="jQuery.fn.dialog.closeTop()"><?php echo t('Continue')?></a><?php echo t2('%d file uploaded successfully.', '%d files uploaded successfully.', count($_REQUEST['fID']), count($_REQUEST['fID']))?></div>
+<?php } ?>
 
 <ul class="tabs" id="ccm-file-manager-add-complete-tabs">
 	<li class="active"><a href="javascript:void(0)" id="ccm-file-manager-add-complete-basic"><?php echo t('Basic Properties')?></a></li>
-	<?php  if (count($attribs) > 0) { ?>
+	<?php if (count($attribs) > 0) { ?>
 		<li><a href="javascript:void(0)" id="ccm-file-manager-add-complete-attributes"><?php echo t('Other Properties')?></a></li>
-	<?php  } ?>
-	<?php  if ($_REQUEST['uploaded']) { ?>
+	<?php } ?>
+	<?php if ($_REQUEST['uploaded']) { ?>
 		<li><a href="javascript:void(0)" id="ccm-file-manager-add-complete-sets"><?php echo t('Sets')?></a></li>
-	<?php  } ?>
+	<?php } ?>
 </ul>
 
 <div id="ccm-file-properties">
 <div id="ccm-file-manager-add-complete-basic-tab">
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">  
-<?php  if (count($files) == 1) { ?>
+<?php if (count($files) == 1) { ?>
 <tr>
 	<td><strong><?php echo t('ID')?></strong></td>
 	<td width="100%" colspan="2"><?php echo $fv->getFileID()?> <span style="color: #afafaf">(<?php echo t('Version')?> <?php echo $fv->getFileVersionID()?>)</span></td>
@@ -309,22 +305,22 @@ table.ccm-grid th {width: 70px}
 
 <tr>
 	<td><strong><?php echo t('Size')?></strong></td>
-	<td colspan="2"><?php echo $fv->getSize()?> (<?php echo number_format($fv->getFullSize())?> <?php echo t('bytes')?>)</td>
+	<td colspan="2"><?php echo $fv->getSize()?> (<?php echo Loader::helper('number')->formatSize($fv->getFullSize(), 'bytes')?>)</td>
 </tr>
-<?php  } ?>
+<?php } ?>
 
-<?php 
+<?php
 printCorePropertyRow(t('Title'), 'fvTitle', $defaultPropertyVals['title'], $form->text('fvTitle', $defaultPropertyVals['titleValue']));
 printCorePropertyRow(t('Description'), 'fvDescription', $defaultPropertyVals['description'], $form->textarea('fvDescription', $defaultPropertyVals['descriptionValue']));
 printCorePropertyRow(t('Tags'), 'fvTags', $defaultPropertyVals['tags'], $form->textarea('fvTags', $defaultPropertyVals['tagsValue']));
 ?>
 
-<?php  if (count($files) == 1) { ?>
+<?php if (count($files) == 1) { ?>
 <tr>
 	<td><strong><?php echo t('File Preview')?></strong></td>
 	<td colspan="2"><?php echo $fv->getThumbnail(2)?></td>
 </tr>
-<?php  } ?>
+<?php } ?>
 </table>
 
 </div>
@@ -332,7 +328,7 @@ printCorePropertyRow(t('Tags'), 'fvTags', $defaultPropertyVals['tags'], $form->t
 <div id="ccm-file-manager-add-complete-attributes-tab" style="display: none">
 
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid" width="100%">  
-<?php 
+<?php
 foreach($attribs as $at) { 
 	printFileAttributeRow($at, $fv, $defaultPropertyVals['ak' . $at->getAttributeKeyID()]);
 } ?>
@@ -341,13 +337,13 @@ foreach($attribs as $at) {
 </div>
 </div>
 
-<?php  if ($_REQUEST['uploaded']) { ?>
+<?php if ($_REQUEST['uploaded']) { ?>
 
 	<div id="ccm-file-manager-add-complete-sets-tab" style="display: none">	
-		<div class="ccm-files-add-to-sets-wrapper"><?php  Loader::element('files/add_to_sets', array('disableForm' => FALSE, 'disableTitle' => true)) ?></div>
+		<div class="ccm-files-add-to-sets-wrapper"><?php Loader::element('files/add_to_sets', array('disableForm' => FALSE, 'disableTitle' => true)) ?></div>
 	</div>
 
-<?php  } ?>
+<?php } ?>
 
 <script type="text/javascript">
 $(function() { 
@@ -357,7 +353,7 @@ $(function() {
 
 </div>
 
-<?php 
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<?php  }
+<?php }

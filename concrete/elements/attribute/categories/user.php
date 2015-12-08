@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (is_object($key)) {
 	$uakProfileDisplay = $key->isAttributeKeyDisplayedOnProfile();
 	$uakProfileEdit = $key->isAttributeKeyEditableOnProfile();
@@ -9,7 +9,7 @@ if (is_object($key)) {
 	$uakIsActive = $key->isAttributeKeyActive();
 }
 ?>
-<?php  $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 <fieldset>
 <legend><?php echo t('User Attribute Options')?></legend>
 <div class="clearfix">

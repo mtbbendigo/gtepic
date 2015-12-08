@@ -1,12 +1,12 @@
 
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php  $form = Loader::helper('form'); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php $form = Loader::helper('form'); ?>
 <div class="clearfix">
 <?php echo $form->label('cstFilename', t('File to include'))?>
 <div class="input">
 <select name="filename" id="cstFilename">
 	<option value="">** <?php echo t('Select a form')?></option>
-<?php  foreach($filenames as $ffilename) {
+<?php foreach($filenames as $ffilename) {
 	$selected = ($ffilename == $filename) ? " selected" : "";
 	
 	echo('<option value="' . $ffilename . '"' . $selected . '>' . $file->unfilename($ffilename) . '</option>');

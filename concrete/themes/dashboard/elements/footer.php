@@ -1,5 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 if ($_GET['_ccm_dashboard_external']) {
 	return;
 }
@@ -10,6 +10,6 @@ if ($_GET['_ccm_dashboard_external']) {
 </div>
 </div>
 
-<?php  Loader::element('footer_required', array('disableTrackingCode' => true)); ?>
+<?php Loader::element('footer_required', array('disableTrackingCode' => true)); ?>
 </body>
 </html>

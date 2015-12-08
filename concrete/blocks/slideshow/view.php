@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -75,7 +75,7 @@ var ccmSlideShowHelper<?php echo intval($bID)?> = {
 		//override for custom behavior
 	},
 	imgInfos:[
-	<?php  
+	<?php 
 	$notFirst=1;
 	foreach($images as $imgInfo) {
 		$f = File::getByID($imgInfo['fID']);
@@ -93,7 +93,7 @@ var ccmSlideShowHelper<?php echo intval($bID)?> = {
 				groupSet:<?php echo intval($imgInfo['groupSet'])?>,
 				imgHeight:<?php echo intval($imgInfo['imgHeight'])?>
 			}
-		<?php  }
+		<?php }
 		} ?>
 	]
 }
@@ -101,7 +101,7 @@ $(function(){ccmSlideShowHelper<?php echo intval($bID)?>.init();});
 //]]>
 </script>
 
-<div id="ccm-SlideshowBlock-display<?php echo intval($bID)?>" style="height:<?php  echo $maxHeight?>px" class="ccm-SlideshowBlock-display">
+<div id="ccm-SlideshowBlock-display<?php echo intval($bID)?>" style="height:<?php echo $maxHeight?>px" class="ccm-SlideshowBlock-display">
 <div id="ccm-SlideshowBlock-heightSetter<?php echo intval($bID)?>" class="ccm-SlideshowBlock-heightSetter"></div>
 <div class="ccm-SlideshowBlock-clear" ></div>
 </div>

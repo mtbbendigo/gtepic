@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $ch = Loader::helper('concrete/file');
@@ -70,9 +70,9 @@ $("#ccm-file-import-tabs a").click(function() {
 		</div>
 	</div>
 
-<h3><?php  echo t('Upload Multiple Files')?></h3>
+<h3><?php echo t('Upload Multiple Files')?></h3>
 
-<?php 
+<?php
 $umf = ini_get('upload_max_filesize');
 $umf = str_ireplace(array('M', 'K', 'G'), array(' MB', 'KB', ' GB'), $umf);
 ?>
@@ -94,11 +94,11 @@ $(function() {
 
 		flash_url : "<?php echo ASSETS_URL_FLASH?>/swfupload/swfupload.swf",
 		upload_url : "<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/multiple",
-		post_params: {'ccm-session' : "<?php  echo session_id(); ?>",'searchInstance': '<?php echo $searchInstance?>', 'ocID' : '<?php echo $ocID?>', 'ccm_token' : '<?php echo $valt->generate("upload")?>'},
+		post_params: {'ccm-session' : "<?php echo session_id(); ?>",'searchInstance': '<?php echo $searchInstance?>', 'ocID' : '<?php echo $ocID?>', 'ccm_token' : '<?php echo $valt->generate("upload")?>'},
 		file_size_limit : "<?php echo $umf?>",
 		/* file_types : "<?php echo $types?>", */
 		button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
-		file_types_description : "<?php  echo t('All Files') ?>",
+		file_types_description : "<?php echo t('All Files') ?>",
 		file_upload_limit : 100,
 		button_cursor: SWFUpload.CURSOR.HAND,
 		file_queue_limit : 0,
@@ -110,9 +110,9 @@ $(function() {
 
 		// Button settings
 		button_image_url: "<?php echo ASSETS_URL_IMAGES?>/icons/add_file_swfupload.png",	// Relative to the Flash file
-		button_width: "80",
+		button_width: "110",
 		button_text: '<span class="uploadButtonText"><?php echo t('Add Files')?><\/span>',
-		button_height: "16",
+		button_height: "18",
 		button_text_left_padding: 18,
 		button_text_style: ".uploadButtonText {background-color: #eee; font-family: Helvetica Neue, Helvetica, Arial}",
 		button_placeholder_id: "ccm-file-add-multiple-spanButtonPlaceHolder",
@@ -142,7 +142,7 @@ $(function() {
 				var progress = new FileProgress(file, this.customSettings.progressTarget);
 				progress.setProgress(percent);
 				
-				progress.setStatus("<?php  echo t('Uploading...')?> ("+percent+"%)");
+				progress.setStatus("<?php echo t('Uploading...')?> ("+percent+"%)");
 			} catch (ex) {
 				this.debug(ex);
 			}		
@@ -215,7 +215,7 @@ $(function() {
 		</div>
 		<br style="clear:left;"/> //-->
 		<div class="dialog-buttons">
-			<?php 
+			<?php
 			
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
@@ -223,9 +223,9 @@ $(function() {
 			?>
 		</div>
 		
-		<?php  // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
+		<?php // don't ask why we have to this. it's because we're swapping out buttons with the tabs. Ugh. ?>
 		<div style="display: none" id="dialog-buttons-multiple">
-			<?php 
+			<?php
 			
 			print $h->button_js(t('Start Uploads'), 'swfu.startUpload()', 'right', 'primary');
 			print $h->button_js(t('Cancel'), 'swfu.cancelQueue()', 'left', null,array('id'=>'ccm-file-add-multiple-btnCancel', 'disabled' => 1));
@@ -234,13 +234,13 @@ $(function() {
 		</div>
 		
 		<div style="display: none" id="dialog-buttons-incoming">
-			<?php 
+			<?php
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-incoming').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>
 		
 		<div id="dialog-buttons-remote" style="display: none">
-			<?php 
+			<?php
 				print $form->submit('submit', t('Import Files'), array('onclick' => "jQuery.fn.dialog.showLoader();$('#ccm-file-manager-multiple-remote').submit()", 'class' => 'primary ccm-button-right'));
 			?>
 		</div>
@@ -252,7 +252,7 @@ $(function() {
 
 </div>
 
-<?php 
+<?php
 	$valt = Loader::helper('validation/token');
 	$fh = Loader::helper('validation/file');
 	Loader::library('file/types');
@@ -261,7 +261,7 @@ $(function() {
 ?>
 <div id="ccm-file-add-incoming-tab" style="display: none">
 <h3><?php echo t('Add from Incoming Directory')?></h3>
-<?php  if(!empty($incoming_contents)) { ?>
+<?php if(!empty($incoming_contents)) { ?>
 <form id="ccm-file-manager-multiple-incoming" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/importers/incoming">
 	<input type="hidden" name="searchInstance" value="<?php echo $searchInstance?>" />
     <input type="hidden" name="ocID" value="<?php echo $ocID?>" />
@@ -272,20 +272,20 @@ $(function() {
 				<th width="45%" valign="middle" class="theader"><?php echo t('Filename')?></th>
 				<th width="25%" valign="middle" class="center theader"><?php echo t('Size')?></th>
 			</tr>
-		<?php  foreach($incoming_contents as $filenum=>$file_array) { 
+		<?php foreach($incoming_contents as $filenum=>$file_array) { 
 				$ft = FileTypeList::getType($file_array['name']);
 		?>
 			<tr>
 				<td width="10%" valign="middle" class="center">
-					<?php  if($fh->extension($file_array['name'])) { ?>
+					<?php if($fh->extension($file_array['name'])) { ?>
 						<input type="checkbox" name="send_file<?php echo $filenum?>" class="ccm-file-select-incoming" value="<?php echo $file_array['name']?>" />
-					<?php  } ?>
+					<?php } ?>
 				</td>
 				<td width="20%" valign="middle" class="center"><?php echo $ft->getThumbnail(1)?></td>
 				<td width="45%" valign="middle"><?php echo $file_array['name']?></td>
-				<td width="25%" valign="middle" class="center"><?php echo $file_array['size']?><?php echo t('Kb')?></td>
+				<td width="25%" valign="middle" class="center"><?php echo Loader::helper('number')->formatSize($file_array['size'], 'KB')?></td>
 			</tr>
-		<?php  } ?>
+		<?php } ?>
 		</table>
 		<input type="checkbox" name="removeFilesAfterPost" value="1" />
 		<?php echo t('Remove files from incoming/ directory.')?>
@@ -294,9 +294,9 @@ $(function() {
 	<?php echo $valt->output('import_incoming');?>
 
 </form>
-<?php  } else { ?>
+<?php } else { ?>
 	<?php echo t('No files found in %s', DIR_FILES_INCOMING)?>
-<?php  } ?>
+<?php } ?>
 </div>
 
 <div id="ccm-file-add-remote-tab" style="display: none">

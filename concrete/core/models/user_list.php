@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied."); 
 
@@ -24,8 +24,8 @@ class Concrete5_Model_UserList extends DatabaseItemList {
 	public $searchAgainstEmail=0;
 	
 	//Filter by uName
-	public function filterByUserName($type) {
-		$this->filter('u.uName', $type, '=');
+	public function filterByUserName($username) {
+		$this->filter('u.uName', $username, '=');
 	}
 	
 	public function filterByKeywords($keywords) {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * The controller for the core scrapbook display block. This block is automatically used when a block is copied into a page from a clipboard. It is a proxy block.
@@ -27,11 +27,20 @@
 			return $this->bOriginalID;
 		}
 		
-		public function on_page_view() {
+		public function getSearchableContent() {
+			$b = Block::getByID($this->bOriginalID);
+			$bc = ($b) ? $b->getInstance() : false;
+			
+			if ($bc && method_exists($bc, 'getSearchableContent')) {
+				return $bc->getSearchableContent();
+			}
+		}
+
+		public function on_page_view($page) {
 			$b = Block::getByID($this->bOriginalID);
 			$bc = $b->getInstance();
 			if (method_exists($bc, 'on_page_view')) {
-				$bc->on_page_view();
+				$bc->on_page_view($page);
 			}
 		}
 

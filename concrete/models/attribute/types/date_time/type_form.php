@@ -4,7 +4,7 @@
 <div class="clearfix">
 <?php echo $form->label('akDateDisplayMode', t('Ask User For'))?>
 <div class="input">
-<?php  
+<?php 
 	$akDateDisplayModeOptions = array(
 		'date_time' => t('Both Date and Time'),
 		'date' => t('Date Only'),

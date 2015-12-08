@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -178,26 +178,42 @@ class Concrete5_Model_Page extends Collection {
 	 * Format is like: $area[10][0] = 2, $area[10][1] = 8, $area[15][0] = 27, with the area ID being the 
 	 * key and the block IDs being 1-n values inside it
 	 * @param array $areas
+	 * @param array $affectedAreaIDs
+	 *		IDs of the areas affected by the process arrangement (source and destination when moving blocks between areas, only source if moving in the same area).
+	 *		If specified, we'll sort out only the blocks in the specified areas.
+	 *		If not specified, $areas must contain all the blocks from all the areas of the current collection.
 	 */
-	public function processArrangement($areas) {
+	public function processArrangement($areas, $affectedAreaIDs = array()) {
 
 		// this function is called via ajax, so it's a bit wonky, but the format is generally
 		// a{areaID} = array(b1, b2, b3) (where b1, etc... are blocks with ids appended.)
-		$db = Loader::db();
-		
-		$db->Execute('delete from CollectionVersionBlockStyles where cID = ? and cvID = ?', array($this->getCollectionID(), $this->getVersionID()));
-		
+		$db = Loader::db();		
+		$s = 'delete from CollectionVersionBlockStyles where cID = ? and cvID = ?';
+		$q = array($this->getCollectionID(), $this->getVersionID());
+		$onlySpecificAreas = false;
+		if(!empty($affectedAreaIDs)) {
+			foreach($affectedAreaIDs as $arID) {
+				if(!$onlySpecificAreas) {
+					$onlySpecificAreas = true;
+					$s .= ' and (';
+				}
+				else {
+					$s .= ' or ';
+				}
+				$s .= 'arHandle = ?';
+				$q[] = Area::getAreaHandleFromID($arID);
+			}
+		}
+		if($onlySpecificAreas) {
+			$s .= ')';
+		}
+		$db->Execute($s, $q);
 		foreach($areas as $arID => $blocks) {
 			if (intval($arID) > 0) {
 				// this is a serialized area;
-				$arHandle = $db->getOne("select arHandle from Areas where arID = ?", array($arID));
+				$arHandle =  Area::getAreaHandleFromID($arID);
 				$startDO = 0;
-
-				if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-					$ao = Area::getOrCreate($this, $arHandle);
-					$ap = new Permissions($ao);
-				}
-
+				
 				foreach($blocks as $bIdentifier) {
 
 					$bID = 0;
@@ -208,18 +224,6 @@ class Concrete5_Model_Page extends Collection {
 					$csrID = $bd2[1];
 
 					if (intval($bID) > 0) {
-	
-						if (PERMISSIONS_MODEL == 'advanced') { // for performance sake
-							$b = Block::getByID($bID);
-							$bt = $b->getBlockTypeObject();
-							if (!$ap->canAddBlockToArea($bt) && (!$bt->isBlockTypeInternal())) {
-								$obj = new stdClass;
-								$obj->error = true;
-								$obj->message = t('You may not add %s to area %s.', $bt->getBlockTypeName(), $arHandle);
-								return $obj;
-							}
-						}
-
 						$v = array($startDO, $arHandle, $bID, $this->getCollectionID(), $this->getVersionID());
 						try {
 							$db->query("update CollectionVersionBlocks set cbDisplayOrder = ?, arHandle = ? where bID = ? and cID = ? and (cvID = ? or cbIncludeAll = 1)", $v);
@@ -238,6 +242,7 @@ class Concrete5_Model_Page extends Collection {
 			}
 		}
 	}
+
 
 	/**
 	 * checks if the page is checked out, if it is return true
@@ -328,6 +333,8 @@ class Concrete5_Model_Page extends Collection {
 			$pa = $pk->getPermissionAccessObject();
 			if (!is_object($pa)) {
 				$pa = PermissionAccess::create($pk);
+			} else if ($pa->isPermissionAccessInUse()) {
+				$pa = $pa->duplicate();
 			}
 			$pa->addListItem($pe, false, $accessType);
 			$pt = $pk->getPermissionAssignmentObject();
@@ -341,6 +348,7 @@ class Concrete5_Model_Page extends Collection {
 		$pkHandles = array();
 		if ($node['canRead'] == '1') {
 			$pkHandles[] = 'view_page';
+			$pkHandles[] = 'view_page_in_sitemap';
 		}
 		if ($node['canWrite'] == '1') {
 			$pkHandles[] = 'view_page_versions';
@@ -596,7 +604,104 @@ class Concrete5_Model_Page extends Collection {
 			return $cIDRedir;
 		}
 	}
-	
+
+	public function populateRecursivePages($pages, $pageRow, $cParentID, $level, $includeThisPage = true) {
+		$db = Loader::db();
+		$children = $db->GetAll('select cID, cDisplayOrder from Pages where cParentID = ? order by cDisplayOrder asc', array($pageRow['cID']));
+		if ($includeThisPage) {	
+			$pages[] = array(
+				'cID' => $pageRow['cID'],
+				'cDisplayOrder' => $pageRow['cDisplayOrder'],
+				'cParentID' => $cParentID,
+				'level' => $level,
+				'total' => count($children)
+			);
+		}
+		$level++;
+		$cParentID = $pageRow['cID'];
+		if (count($children) > 0) {
+			foreach($children as $pageRow) {
+				$pages = $this->populateRecursivePages($pages, $pageRow, $cParentID, $level);
+			}
+		}
+		return $pages;
+	}
+
+	public function queueForDeletionSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return -1;
+		}
+		if ($a['level'] < $b['level']) {
+			return 1;
+		}
+		return 0;
+	}
+
+	public function queueForDuplicationSort($a, $b) {
+		if ($a['level'] > $b['level']) {
+			return 1;
+		}
+		if ($a['level'] < $b['level']) {
+			return -1;
+		}
+		if ($a['cDisplayOrder'] > $b['cDisplayOrder']) {
+			return 1;
+		}
+		if ($a['cDisplayOrder'] < $b['cDisplayOrder']) {
+			return -1;
+		}
+		if ($a['cID'] > $b['cID']) {
+			return 1;
+		}
+		if ($a['cID'] < $b['cID']) {
+			return -1;
+		}		
+		return 0;
+	}
+
+	public function queueForDeletion() {
+		$pages = array();
+		$includeThisPage = true;
+		if ($this->getCollectionPath() == TRASH_PAGE_PATH) {
+			// we're in the trash. we can't delete the trash. we're skipping over the trash node.
+			$includeThisPage = false;
+		}
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDeletionRequest() {
+		$pages = array();
+		$includeThisPage = true;
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeThisPage);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDeletionSort'));
+		$q = Queue::get('delete_page_request');
+		foreach($pages as $page) {
+			$q->send(serialize($page));
+		}
+	}
+
+	public function queueForDuplication($destination, $includeParent = true) {
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, $includeParent);
+		// now, since this is deletion, we want to order the pages by level, which
+		// should get us no funny business if the queue dies.
+		usort($pages, array('Page', 'queueForDuplicationSort'));
+		$q = Queue::get('copy_page');
+		foreach($pages as $page) {
+			$page['destination'] = $destination->getCollectionID();
+			$q->send(serialize($page));
+		}
+	}
+
 	public function export($pageNode) {
 		$p = $pageNode->addChild('page');
 		$p->addAttribute('name', Loader::helper('text')->entities($this->getCollectionName()));
@@ -653,7 +758,7 @@ class Concrete5_Model_Page extends Collection {
 	 */	
 	public static function getCollectionPathFromID($cID) {
 		$db = Loader::db();
-		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ?", array($cID));
+		$path = $db->GetOne("select cPath from PagePaths inner join CollectionVersions on (PagePaths.cID = CollectionVersions.cID and CollectionVersions.cvIsApproved = 1) where PagePaths.cID = ? order by PagePaths.ppIsCanonical desc", array($cID));
 		return $path;
 	}
 
@@ -712,21 +817,22 @@ class Concrete5_Model_Page extends Collection {
 	
 	/**
 	 * Check if a block is an alias from a page default
-	 * @param array $b
+	 * @param Block $b
 	 * @return bool
 	 */	
-	function isBlockAliasedFromMasterCollection(&$b) {
+	function isBlockAliasedFromMasterCollection($b) {
+		if(!$b->isAlias()) {
+			return false;
+		}
 		//Retrieve info for all of this page's blocks at once (and "cache" it)
 		// so we don't have to query the database separately for every block on the page.
 		if (is_null($this->blocksAliasedFromMasterCollection)) {
 			$db = Loader::db();
 			$q = 'SELECT bID FROM CollectionVersionBlocks WHERE cID = ? AND isOriginal = 0 AND cvID = ? AND bID IN (SELECT bID FROM CollectionVersionBlocks AS cvb2 WHERE cvb2.cid = ?)';
 			$v = array($this->getCollectionID(), $this->getVersionObject()->getVersionID(), $this->getMasterCollectionID());
-			$r = $db->execute($q, $v);
 			$this->blocksAliasedFromMasterCollection = $db->GetCol($q, $v);
 		}
-		
-		return ($b->isAlias() && in_array($b->getBlockID(), $this->blocksAliasedFromMasterCollection));
+		return in_array($b->getBlockID(), $this->blocksAliasedFromMasterCollection);
 	}
 
 	/**
@@ -812,20 +918,21 @@ class Concrete5_Model_Page extends Collection {
 	/**
 	 * Gets the date a the current version was made public, 
 	 * if user is specified, returns in the current user's timezone
-	 * @param string $dateFormat
+	 * @param string $mask
 	 * @param string $type (system || user)
-	 * @return string date formated like: 2009-01-01 00:00:00 
+	 * @return string 
 	*/
-	function getCollectionDatePublic($dateFormat = null, $type='system') {
-		if(!$dateFormat) {
-			$dateFormat = 'Y-m-d H:i:s';
-		}
+	function getCollectionDatePublic($mask = null, $type='system') {
 		$dh = Loader::helper('date');
 		if(ENABLE_USER_TIMEZONES && $type == 'user') {
-			$dh = Loader::helper('date');
-			return $dh->getLocalDateTime($this->vObj->cvDatePublic, $dateFormat);
+			$cDatePublic = $dh->getLocalDateTime($this->vObj->cvDatePublic);
 		} else {
-			return $dh->date($dateFormat, strtotime($this->vObj->cvDatePublic));
+			$cDatePublic = $this->vObj->cvDatePublic;
+		}
+		if ($mask == null) {
+			return $cDatePublic;
+		} else {
+			return $dh->date($mask, strtotime($cDatePublic));
 		}
 	}
 
@@ -1111,6 +1218,8 @@ class Concrete5_Model_Page extends Collection {
 		$cache = PageCache::getLibrary();
 		$cache->purge($this);
 
+		$this->refreshCache();
+		
 		$ret = Events::fire('on_page_update', $this);
 	}
 	
@@ -1236,9 +1345,9 @@ class Concrete5_Model_Page extends Collection {
 	
 	public function rescanAreaPermissions() {
 		$db = Loader::db();
-		$arHandles = $db->GetCol('select arHandle from Areas where cID = ?', $this->getCollectionID());
-		foreach($arHandles as $arHandle) {
-			$a = Area::getOrCreate($this, $arHandle);
+		$r = $db->Execute('select arHandle, arIsGlobal from Areas where cID = ?', $this->getCollectionID());
+		while ($row = $r->FetchRow()) {
+			$a = Area::getOrCreate($this, $row['arHandle'], $row['arIsGlobal']);
 			$a->rescanAreaPermissionsChain();
 		}
 	}
@@ -1285,8 +1394,19 @@ class Concrete5_Model_Page extends Collection {
 			$q = "insert into AreaPermissionAssignments (cID, arHandle, paID, pkID) values (?, ?, ?, ?)";
 			$db->query($q, $v);
 		}
-	}
 
+		// any areas that were overriding permissions on the current page need to be overriding permissions
+		// on the NEW page as well.
+		$v = array($permissionsCollectionID);
+		$q = "select * from Areas where cID = ?";
+		$r = $db->query($q, $v);
+		while($row = $r->fetchRow()) {
+			$v = array($this->cID, $row['arHandle'], $row['arOverrideCollectionPermissions'], $row['arInheritPermissionsFromAreaOnCID'], $row['arIsGlobal']);
+			$q = "insert into Areas (cID, arHandle, arOverrideCollectionPermissions, arInheritPermissionsFromAreaOnCID, arIsGlobal) values (?, ?, ?, ?, ?)";
+			$db->query($q, $v);
+		}
+	}
+	
 	function acquirePagePermissions($permissionsCollectionID) {
 		$v = array($this->cID);
 		$db = Loader::db();
@@ -1361,6 +1481,14 @@ class Concrete5_Model_Page extends Collection {
 		PageStatistics::incrementParents($cID);
 		if (!$this->isActive()) {
 			$this->activate();
+			// if we're moving from the trash, we have to activate recursively
+			if ($this->isInTrash()) {
+				$pages = array();
+				$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+				foreach($pages as $page) {
+					$db->Execute('update Pages set cIsActive = 1 where cID = ?', array($page['cID']));
+				}
+			}
 		}
 		
 		$this->rescanSystemPageStatus();
@@ -1449,11 +1577,15 @@ class Concrete5_Model_Page extends Collection {
 		if ($res) {
 			// rescan the collection path
 			$nc2 = Page::getByID($newCID);
-			
+
 			// now with any specific permissions - but only if this collection is set to override
 			if ($this->getCollectionInheritance() == 'OVERRIDE') {
 				$nc2->acquirePagePermissions($this->getPermissionsCollectionID());
 				$nc2->acquireAreaPermissions($this->getPermissionsCollectionID());
+				// make sure we update the proper permissions pointer to the new page ID
+				$q = "update Pages set cInheritPermissionsFromCID = ? where cID = ?";
+				$v = array($newCID, $newCID);
+				$r = $db->query($q, $v);
 			} else if ($this->getCollectionInheritance() == "PARENT") {
 				// we need to clear out any lingering permissions groups (just in case), and set this collection to inherit from the parent
 				$npID = $nc->getPermissionsCollectionID();
@@ -1494,55 +1626,61 @@ class Concrete5_Model_Page extends Collection {
 		if ($ret < 0) {
 			return false;
 		}
+		Log::addEntry(t('Page "%s" at path "%s" deleted', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 
-		parent::delete();
-		
-		$cID = $this->getCollectionID();
-		$cParentID = $this->getCollectionParentID();
-
-		// Now that all versions are gone, we can delete the collection information
-		$q = "delete from PagePaths where cID = '{$cID}'";
-		$r = $db->query($q);
-		
-		// remove all pages where the pointer is this cID
-		$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
-		while ($row = $r->fetchRow()) {
-			PageStatistics::decrementParents($row['cID']);
+		if($this->isAlias() && ($this->getCollectionPointerExternalLink() == '')) {
+			$this->removeThisAlias();
 		}
-
-		// Update cChildren for cParentID
-		PageStatistics::decrementParents($cID);
-		
-		$q = "delete from PagePermissionAssignments where cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from Pages where cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from Pages where cPointerID = '{$cID}'";
-		$r = $db->query($q);
-		
-		$q = "delete from Areas WHERE cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$q = "delete from ComposerDrafts WHERE cID = '{$cID}'";
-		$r = $db->query($q);
-
-		$db->query('delete from PageSearchIndex where cID = ?', array($cID));
-		
-		$q = "select cID from Pages where cParentID = '{$cID}'";
-		$r = $db->query($q);
-		if ($r) {
+		else {
+			parent::delete();
+			
+			$cID = $this->getCollectionID();
+			$cParentID = $this->getCollectionParentID();
+	
+			// Now that all versions are gone, we can delete the collection information
+			$q = "delete from PagePaths where cID = '{$cID}'";
+			$r = $db->query($q);
+			
+			// remove all pages where the pointer is this cID
+			$r = $db->query("select cID from Pages where cPointerID = ?", array($cID));
 			while ($row = $r->fetchRow()) {
-				if ($row['cID'] > 0) {
-					$nc = Page::getByID($row['cID']);  
-					if( $nc->isAlias() )
-						 $nc->removeThisAlias(); 
-					else $nc->delete();
+				PageStatistics::decrementParents($row['cID']);
+				$db->Execute('DELETE FROM PagePaths WHERE cID=?', array($row['cID']));
+			}
+	
+			// Update cChildren for cParentID
+			PageStatistics::decrementParents($cID);
+			
+			$q = "delete from PagePermissionAssignments where cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Pages where cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Pages where cPointerID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from Areas WHERE cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$q = "delete from ComposerDrafts WHERE cID = '{$cID}'";
+			$r = $db->query($q);
+	
+			$db->query('delete from PageSearchIndex where cID = ?', array($cID));
+			
+			$q = "select cID from Pages where cParentID = '{$cID}'";
+			$r = $db->query($q);
+			if ($r) {
+				while ($row = $r->fetchRow()) {
+					if ($row['cID'] > 0) {
+						$nc = Page::getByID($row['cID']);  
+						if( $nc->isAlias() )
+							 $nc->removeThisAlias(); 
+						else $nc->delete();
+					}
 				}
 			}
 		}
-
 		$cache = PageCache::getLibrary();
 		$cache->purge($this);
 
@@ -1550,8 +1688,15 @@ class Concrete5_Model_Page extends Collection {
 	
 	public function moveToTrash() {
 		$trash = Page::getByPath(TRASH_PAGE_PATH);
+		Log::addEntry(t('Page "%s" at path "%s" Moved to trash', $this->getCollectionName(), $this->getCollectionPath()),t('Page Action'));
 		$this->move($trash);
 		$this->deactivate();
+		$pages = array();
+		$pages = $this->populateRecursivePages($pages, array('cID' => $this->getCollectionID()), $this->getCollectionParentID(), 0, false);
+		$db = Loader::db();
+		foreach($pages as $page) {
+			$db->Execute('update Pages set cIsActive = 0 where cID = ?', array($page['cID']));
+		}
 	}
 
 	function rescanChildrenDisplayOrder() {
@@ -1623,18 +1768,14 @@ class Concrete5_Model_Page extends Collection {
 	}
 	
 	public function movePageDisplayOrderToBottom() {
-		// first, we take the current collection, stick it at the beginning of an array, then get all other items from the current level that aren't that cID, order by display order, and then update
+		// find the highest cDisplayOrder and increment by 1
 		$db = Loader::db();
-		$nodes = $db->GetCol('select cID from Pages where cParentID = ? and cID <> ? order by cDisplayOrder asc', array($this->getCollectionParentID(), $this->getCollectionID()));
-		$displayOrder = 0;
-		$nodes[] = $this->getCollectionID();
-		foreach($nodes as $do) {
-			$co = Page::getByID($do);
-			$co->updateDisplayOrder($displayOrder);
-			$displayOrder++;			
-		}
+		$mx = $db->GetRow("select max(cDisplayOrder) as m from Pages where cParentID = ?",array($this->getCollectionParentID()));
+		$max = $mx['m'];
+		$max++;
+		$this->updateDisplayOrder($max);
 	}
-	
+
 	function rescanCollectionPathIndividual($cID, $cPath, $retainOldPagePath = false) {
 		$db = Loader::db();
 		$q = "select CollectionVersions.cID, CollectionVersions.cvHandle, CollectionVersions.cvID, PagePaths.cID as cpcID from CollectionVersions left join PagePaths on (PagePaths.cID = CollectionVersions.cID) where CollectionVersions.cID = '{$cID}' and CollectionVersions.cvIsApproved = 1";
@@ -1932,6 +2073,9 @@ class Concrete5_Model_Page extends Collection {
 		$cDatePublic = ($data['cDatePublic']) ? $data['cDatePublic'] : null;		
 		
 		$data['ctID'] = $ct->getCollectionTypeID();
+		if ($ct->getCollectionTypeHandle() == STACKS_PAGE_TYPE) {
+			$data['cvIsNew'] = 0;
+		}
 		$cobj = parent::add($data);		
 		$cID = $cobj->getCollectionID();		
 		$ctID = $ct->getCollectionTypeID();

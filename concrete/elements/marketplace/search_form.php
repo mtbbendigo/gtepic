@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 ?>
@@ -24,9 +24,9 @@ $form = Loader::helper('form');
 		<?php echo $form->submit('submit', t('Search'))?>
 	</div>
 </div>
-<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php  if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>open<?php  } else{ ?>closed<?php  } ?>"><?php echo t('More Options')?></a>
+<a href="javascript:void(0)" onclick="ccm_paneToggleOptions(this)" class="ccm-icon-option-<?php if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>open<?php } else{ ?>closed<?php } ?>"><?php echo t('More Options')?></a>
 
-<div class="control-group ccm-pane-options-content" <?php  if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>style="display: block" <?php  } ?>>
+<div class="control-group ccm-pane-options-content" <?php if ($_REQUEST['marketplaceRemoteItemSortBy'] || $_REQUEST['marketplaceIncludeOnlyCompatibleAddons']) { ?>style="display: block" <?php } ?>>
 	<br/>
 	<table class="table table-striped ccm-search-advanced-fields">
 	<tr>

@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 $this->inc('elements/header.php'); ?>
 
@@ -6,7 +6,10 @@ $this->inc('elements/header.php'); ?>
 
 	<div id="main-content-container" class="grid_24">
 		<div id="main-content-inner">
-			<?php  print $innerContent; ?>
+			<?php 
+			Loader::element('system_errors', array('error' => $error));
+			print $innerContent;
+			?>
 			
 		</div>
 	
@@ -14,4 +17,4 @@ $this->inc('elements/header.php'); ?>
 	
 	<!-- end full width content area -->
 	
-<?php  $this->inc('elements/footer.php'); ?>
+<?php $this->inc('elements/footer.php'); ?>

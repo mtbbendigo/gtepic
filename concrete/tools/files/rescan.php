@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 function shutdownRescan() {
@@ -42,4 +42,4 @@ print '</ol>';
 
 if ($fcnt == 0) { ?>
 	<?php echo t('You do not have permission to rescan any of the selected files.'); ?>
-<?php  } ?>
+<?php } ?>

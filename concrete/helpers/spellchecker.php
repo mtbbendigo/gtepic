@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class SpellcheckerHelper extends Concrete5_Helper_Spellchecker {
 }

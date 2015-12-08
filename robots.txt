@@ -13,7 +13,15 @@ Disallow: /libraries
 Disallow: /mail 
 Disallow: /models 
 Disallow: /packages 
+<<<<<<< HEAD
 Disallow: /single_pages 
 Disallow: /themes 
 Disallow: /tools
+=======
+Disallow: /page_types 
+Disallow: /single_pages 
+Disallow: /themes 
+Disallow: /tools
+Disallow: /index.php/tools
+>>>>>>> c8ab72de222fa218030dc40156cfe6d736b9ee22
 Disallow: /updates

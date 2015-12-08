@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $cp = FilePermissions::getGlobal();
@@ -36,25 +36,25 @@ $v->outputHeaderItems();
 
 ?>
 
-<?php  if (!isset($_REQUEST['refreshDialog'])) { ?> 
+<?php if (!isset($_REQUEST['refreshDialog'])) { ?> 
 	<div id="ccm-<?php echo $searchInstance?>-overlay-wrapper">
-<?php  } ?>
+<?php } ?>
 <div id="ccm-<?php echo $searchInstance?>-search-overlay" class="ccm-ui">
 	<input type="hidden" name="dialogAction" value="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/search_dialog?ocID=<?php echo $_REQUEST['ocID']?>&searchInstance=<?php echo $searchInstance?>&disable_choose=<?php echo $_REQUEST['disable_choose']?>" />
 
 <div class="ccm-pane-options" id="ccm-<?php echo $searchInstance?>-pane-options">
 
-<div class="ccm-file-manager-search-form"><?php  Loader::element('files/search_form_advanced', array('searchInstance' => $searchInstance, 'searchRequest' => $searchRequest, 'searchType' => 'DIALOG')); ?></div>
+<div class="ccm-file-manager-search-form"><?php Loader::element('files/search_form_advanced', array('searchInstance' => $searchInstance, 'searchRequest' => $searchRequest, 'searchType' => 'DIALOG')); ?></div>
 </div>
 
 <?php echo $searchForm?>
 
 </div>
 
-<?php  if (!isset($_REQUEST['refreshDialog'])) { ?> 
+<?php if (!isset($_REQUEST['refreshDialog'])) { ?> 
 	</div>
-<?php  } ?>
-<?php 
+<?php } ?>
+<?php
 print '<script type="text/javascript">
 $(function() {
 	ccm_activateFileManager(\'' . $alType . '\', \'' . $searchInstance . '\');

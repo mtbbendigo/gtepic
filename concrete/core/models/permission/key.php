@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 abstract class Concrete5_Model_PermissionKey extends Object {
 	
@@ -29,6 +29,23 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	 */
 	public function getPermissionKeyName() { return $this->pkName;}
 
+	/** Returns the display name for this permission key (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display name won't be escaped.
+	* @return string
+	*/
+	public function getPermissionKeyDisplayName($format = 'html') {
+		$value = tc('PermissionKeyName', $this->getPermissionKeyName());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	/** 
 	 * Returns the handle for this permission key
 	 */
@@ -38,7 +55,24 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	 * Returns the description for this permission key
 	 */
 	public function getPermissionKeyDescription() { return $this->pkDescription;}
-	
+
+	/** Returns the display description for this permission key (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display description won't be escaped.
+	* @return string
+	*/
+	public function getPermissionKeyDisplayDescription($format = 'html') {
+		$value = tc('PermissionKeyDescription', $this->getPermissionKeyDescription());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	/** 
 	 * Returns the ID for this permission key
 	 */
@@ -216,7 +250,7 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	/** 
 	 * Adds an permission key. 
 	 */
-	public function add($pkCategoryHandle, $pkHandle, $pkName, $pkDescription, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkg = false) {
+	public static function add($pkCategoryHandle, $pkHandle, $pkName, $pkDescription, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkg = false) {
 		
 		$vn = Loader::helper('validation/numbers');
 		$txt = Loader::helper('text');
@@ -236,13 +270,11 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 		if ($pkHasCustomClass) {
 			$pkHasCustomClass = 1;
 		} else {
-			$$pkHasCustomClass = 0;
+			$pkHasCustomClass = 0;
 		}
 		$pkCategoryID = $db->GetOne("select pkCategoryID from PermissionKeyCategories where pkCategoryHandle = ?", $pkCategoryHandle);
 		$a = array($pkHandle, $pkName, $pkDescription, $pkCategoryID, $pkCanTriggerWorkflow, $pkHasCustomClass, $pkgID);
 		$r = $db->query("insert into PermissionKeys (pkHandle, pkName, pkDescription, pkCategoryID, pkCanTriggerWorkflow, pkHasCustomClass, pkgID) values (?, ?, ?, ?, ?, ?, ?)", $a);
-		
-		$category = PermissionKeyCategory::getByID($pkCategoryID);
 		
 		if ($r) {
 			$pkID = $db->Insert_ID();
@@ -303,9 +335,18 @@ abstract class Concrete5_Model_PermissionKey extends Object {
 	
 	public function getPermissionAssignmentObject() {
 		if (is_object($this->permissionObject)) {
-			$class = Loader::helper('text')->camelcase(get_class($this->permissionObject) . 'PermissionAssignment');
-			if (!class_exists($class) && $this->permissionObject instanceof Page) {
-				$class = 'PagePermissionAssignment';
+			if (method_exists($this->permissionObject, 'getPermissionObjectPermissionKeyCategoryHandle')) {
+				$objectClass = Loader::helper('text')->camelcase($this->permissionObject->getPermissionObjectPermissionKeyCategoryHandle());
+			} else {
+				$objectClass = get_class($this->permissionObject);
+			}
+			$class = $objectClass . 'PermissionAssignment';
+			if (!class_exists($class)) {
+				if ($this->permissionObject instanceof Page) {
+					$class = 'PagePermissionAssignment';
+				} else if ($this->permissionObject instanceof Area) {
+					$class = 'AreaPermissionAssignment';
+				}
 			}
 			$targ = new $class();
 			$targ->setPermissionObject($this->permissionObject);

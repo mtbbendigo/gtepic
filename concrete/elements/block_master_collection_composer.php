@@ -1,7 +1,7 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;?>
-<?php 
+<?php
 $form = Loader::helper('form');
 $bt = BlockType::getByID($b->getBlockTypeID());
 $templates = $bt->getBlockTypeComposerTemplates();
@@ -27,28 +27,24 @@ $txt = Loader::helper('text');
 	</div>
 
 
-	<?php  if (count($templates) > 0) { ?>
+	<?php if (count($templates) > 0) { ?>
 
 	<div class="clearfix">
 	<?php echo $form->label('cbFilename', t('Custom Composer Template'))?>
 	<div class="input">
 		<select name="cbFilename">
 			<option value="">(<?php echo t('None selected')?>)</option>
-			<?php  foreach($templates as $tpl) { ?>
-				<option value="<?php echo $tpl?>" <?php  if ($b->getBlockComposerFilename() == $tpl) { ?> selected <?php  } ?>><?php 	
-					if (strpos($tpl, '.') !== false) {
-						print substr($txt->unhandle($tpl), 0, strrpos($tpl, '.'));
-					} else {
-						print $txt->unhandle($tpl);
-					}
-					?></option>		
-			<?php  } ?>
+			<?php
+			foreach($templates as $tpl) {
+				?><option value="<?php echo $tpl->getTemplateFileFilename()?>" <?php if ($b->getBlockComposerFilename() == $tpl->getTemplateFileFilename()) { ?> selected <?php } ?>><?php echo $tpl->getTemplateFileDisplayName()?></option><?php
+			}
+			?>
 		</select>
 	</div>
 	</div>
 	
-	<?php  } ?>
-<?php 
+	<?php } ?>
+<?php
 $valt = Loader::helper('validation/token');
 $valt->output();
 ?>

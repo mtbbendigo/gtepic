@@ -1,18 +1,18 @@
-<?php   defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php  defined('C5_EXECUTE') or die("Access Denied.");?>
 <div class="ccm-ui">
-<?php 
+<?php
 
 Loader::library('marketplace');
 $mi = Marketplace::getInstance();
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
 	<p><?php echo t('You do not have permission to download packages from the marketplace.')?></p>
-	<?php  exit;
+	<?php exit;
 } else if (!$mi->isConnected()) { ?>
 	<div class="ccm-pane-body-inner">
-		<?php  Loader::element('dashboard/marketplace_connect_failed')?>
+		<?php Loader::element('dashboard/marketplace_connect_failed')?>
 	</div>
-<?php  } else {	
+<?php } else {	
 	$ch = Loader::helper('concrete/interface'); 
 	Loader::library('marketplace');
 	Loader::model('marketplace_remote_item');
@@ -23,7 +23,7 @@ if (!$tp->canInstallPackages()) { ?>
 	}
 	if (is_object($mri)) { ?>
 	
-		<?php  $screenshots = $mri->getScreenshots(); ?>
+		<?php $screenshots = $mri->getScreenshots(); ?>
 		
 		
 		<table class="ccm-marketplace-details-table">
@@ -31,13 +31,13 @@ if (!$tp->canInstallPackages()) { ?>
 			<td valign="top">
 				<div id="ccm-marketplace-item-screenshots-wrapper">	
 				<div id="ccm-marketplace-item-screenshots">
-				<?php 
+				<?php
 				$i = 0;
 				
 				if (count($screenshots) > 0) { 
 					foreach($screenshots as $si) { ?>
-						<img src="<?php echo $si->src?>" width="<?php echo $si->width?>" height="<?php echo $si->height?>" <?php  if ($i != 0) { ?>style="display: none" <?php  } ?> />	
-					<?php  
+						<img src="<?php echo $si->src?>" width="<?php echo $si->width?>" height="<?php echo $si->height?>" <?php if ($i != 0) { ?>style="display: none" <?php } ?> />	
+					<?php 
 					$i++;
 					}
 					
@@ -45,17 +45,17 @@ if (!$tp->canInstallPackages()) { ?>
 					<div class="ccm-marketplace-item-screenshots-none">
 						<?php echo t('No screenshots')?>
 					</div>
-				<?php  } ?>
+				<?php } ?>
 				</div>
 				</div>
 						
-				<?php  if (!$mri->getMarketplaceItemVersionForThisSite()) { ?>
+				<?php if (!$mri->getMarketplaceItemVersionForThisSite()) { ?>
 					<Div class="clearfix" style="clear: both">
 					<div class="block-message alert-message error">
 						<p><?php echo t('This add-on is marked as incompatible with this version of concrete5. Please contact the author of the add-on for assistance.')?></p>
 					</div>
 					</div>
-				<?php  } ?>
+				<?php } ?>
 			</td>
 			<td valign="top">
 			
@@ -64,17 +64,17 @@ if (!$tp->canInstallPackages()) { ?>
 		<h1><?php echo $mri->getName()?></h1>
 		</div>
 
-		<?php  if ($mri->getReviewBody() != '') { ?>
+		<?php if ($mri->getReviewBody() != '') { ?>
 			<div class="ccm-marketplace-item-review-quote">
 			<?php echo $mri->getReviewBody()?>
 			</div>
-		<?php  } ?>
+		<?php } ?>
 		<div class="ccm-marketplace-item-rating">
 			<?php echo Loader::helper('rating')->outputDisplay($mri->getAverageRating())?>
 			<?php echo t2('%d review', '%d reviews', $mri->getTotalRatings(), $mri->getTotalRatings())?>
-			<?php  if ($mri->getTotalRatings() > 0) { ?>
+			<?php if ($mri->getTotalRatings() > 0) { ?>
 				<a href="<?php echo $mri->getRemoteReviewsURL()?>" target="_blank" class="ccm-marketplace-item-reviews-link"><?php echo t('Read Reviews')?></a>
-			<?php  } ?>
+			<?php } ?>
 		</div>
 
 		<div>
@@ -82,7 +82,7 @@ if (!$tp->canInstallPackages()) { ?>
 		<p><?php echo $mri->getBody()?></p>	
 		</div>
 		</div>
-	<?php 
+	<?php
 		if ($mri->purchaseRequired()) {
 			$buttonText = t('Purchase - %s', '$' . $mri->getPrice());
 			$buttonAction = 'javascript:ccm_getMarketplaceItem({mpID: \'' . $mri->getMarketplaceItemID() . '\'})';
@@ -102,12 +102,12 @@ if (!$tp->canInstallPackages()) { ?>
 	?>
 	
 		<div class="dialog-buttons">
-			<input type="button" class="btn primary <?php  if (!$mri->getMarketplaceItemVersionForThisSite()) { ?> disabled<?php  } ?> ccm-button-right" value="<?php echo $buttonText?>" onclick="<?php echo $buttonAction?>" />
+			<input type="button" class="btn primary <?php if (!$mri->getMarketplaceItemVersionForThisSite()) { ?> disabled<?php } ?> ccm-button-right" value="<?php echo $buttonText?>" onclick="<?php echo $buttonAction?>" />
 			<input type="button" class="btn" value="<?php echo t('View in Marketplace')?>" onclick="window.open('<?php echo $mri->getRemoteURL()?>')" /> 
-			<?php  if ($mri->getMarketplaceItemType() == 'theme') { ?>
-				<a title="<?php  echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(1, <?php  echo intval($mri->getRemoteCollectionID())?>,'<?php  echo addslashes($mri->getName()) ?>','<?php  echo addslashes($mri->getHandle()) ?>')" 
+			<?php if ($mri->getMarketplaceItemType() == 'theme') { ?>
+				<a title="<?php echo t('Preview')?>" onclick="ccm_previewMarketplaceTheme(1, <?php echo intval($mri->getRemoteCollectionID())?>,'<?php echo addslashes($mri->getName()) ?>','<?php echo addslashes($mri->getHandle()) ?>')" 
 				href="javascript:void(0)" class="btn"><?php echo t('Preview')?></a>
-			<?php  } ?>
+			<?php } ?>
 		</div>
 		<br/>
 		
@@ -116,11 +116,11 @@ if (!$tp->canInstallPackages()) { ?>
 	</tr>
 	</table>
 	
-	<?php  } else { ?>
+	<?php } else { ?>
 		<div class="block-message alert-message error"><p><?php echo t('Invalid marketplace item.')?></p></div>
-	<?php  } ?>
+	<?php } ?>
 
-<?php  } ?>
+<?php } ?>
 
 </div>
 <script type="text/javascript">

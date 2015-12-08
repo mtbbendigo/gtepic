@@ -1,8 +1,8 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?php  if (isset($wf)) { ?>
+<?php if (isset($wf)) { ?>
 
-<?php  if ($this->controller->getTask() == 'edit_details') { ?>
+<?php if ($this->controller->getTask() == 'edit_details') { ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Workflow'), false, 'span10 offset1', false)?>
 <form method="post"  action="<?php echo $this->action('save_workflow_details')?>" method="post" class="form-horizontal">
@@ -10,7 +10,7 @@
 <?php echo Loader::helper('validation/token')->output('save_workflow_details')?>
 
 <div class="ccm-pane-body">
-	<?php  Loader::element("workflow/edit_type_form_required", array('workflow' => $wf)); ?>
+	<?php Loader::element("workflow/edit_type_form_required", array('workflow' => $wf)); ?>
 </div>
 <div class="ccm-pane-footer">
 	<a href="<?php echo $this->url('/dashboard/workflow/list/view_detail', $wf->getWorkflowID())?>" class="btn"><?php echo t("Cancel")?></a>
@@ -20,19 +20,19 @@
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php  } else { ?>
+<?php } else { ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper($wf->getWorkflowName(), false, 'span10 offset1', false)?>
 
-<?php  Loader::element("workflow/type_form_required", array('workflow' => $wf)); ?>
+<?php Loader::element("workflow/type_form_required", array('workflow' => $wf)); ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php  } ?>
+<?php } ?>
 
 
 
-<?php  } else if ($this->controller->getTask() == 'add' || $this->controller->getTask() == 'submit_add') { ?>
+<?php } else if ($this->controller->getTask() == 'add' || $this->controller->getTask() == 'submit_add') { ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Workflow'), false, 'span10 offset1', false)?>
 
@@ -57,10 +57,10 @@
 	</div>
 	</div>
 
-	<?php  foreach($typeObjects as $type) { ?>
+	<?php foreach($typeObjects as $type) { ?>
 		
 		<div style="display: none" class="ccm-workflow-type-form" id="ccm-workflow-type-<?php echo $type->getWorkflowTypeID()?>">
-			<?php  
+			<?php 
 			if ($type->getPackageID() > 0) { 
 				@Loader::packageElement('workflow/types/' . $type->getWorkflowTypeHandle()  . '/add_type_form', $type->getPackageHandle(), array('type' => $type));
 			} else {
@@ -68,7 +68,7 @@
 			}
 			?>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 
 	</div>
 	<div class="ccm-pane-footer">
@@ -89,13 +89,13 @@
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php  } else { ?>
+<?php } else { ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Workflows'), false, 'span10 offset1')?>
 
 	<a href="<?php echo View::url('/dashboard/workflow/list', 'add')?>" style="float: right" class="btn primary"><?php echo t("Add Workflow")?></a>
 	
-	<h4><?php echo count($workflows)?> <?php 
+	<h4><?php echo count($workflows)?> <?php
 		if (count($workflows) == 1) {
 			print t('Workflow');
 		} else {
@@ -103,11 +103,11 @@
 		}
 	?></h4>
 	<br/>
-	<?php  foreach($workflows as $workflow) { ?>
+	<?php foreach($workflows as $workflow) { ?>
 	<div class="ccm-workflow">
 		<a href="<?php echo $this->url('/dashboard/workflow/list', 'view_detail', $workflow->getWorkflowID())?>"><?php echo $workflow->getWorkflowName()?></a>
 	</div>
-	<?php  } ?>
+	<?php } ?>
 		
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>
-<?php  } ?>
+<?php } ?>

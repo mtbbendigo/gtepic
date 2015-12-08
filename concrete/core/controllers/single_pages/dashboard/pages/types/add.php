@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Pages_Types_Add extends DashboardBaseController {
 	
@@ -19,6 +19,10 @@ class Concrete5_Controller_Dashboard_Pages_Types_Add extends DashboardBaseContro
 			$this->error->add(t("Handle required."));
 		} else if (!$vs->handle($ctHandle)) {
 			$this->error->add(t('Handles must contain only letters, numbers or the underscore symbol.'));
+		}
+
+		if (CollectionType::getByHandle($ctHandle)) {
+			$this->error->add(t('Handle already exists.'));
 		}
 		
 		if (!$ctName) {

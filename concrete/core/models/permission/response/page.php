@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 	
@@ -21,6 +21,15 @@ class Concrete5_Model_PagePermissionResponse extends PermissionResponse {
 		$pk = $this->category->getPermissionKeyByHandle('add_subpage');
 		$pk->setPermissionObject($this->object);
 		return $pk->validate($ct);
+	}
+
+	public function canViewPageInSitemap() {
+		if (PERMISSIONS_MODEL != 'simple') {
+			$pk = $this->category->getPermissionKeyByHandle('view_page_in_sitemap');
+			$pk->setPermissionObject($this->object);
+			return $pk->validate();
+		}
+		return $this->canViewPage();
 	}
 	
 	public function canEditPageProperties($obj = false) {

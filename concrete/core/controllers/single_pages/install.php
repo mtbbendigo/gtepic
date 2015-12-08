@@ -1,8 +1,13 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ini_set('display_errors', 1);
 if (!ini_get('safe_mode')) {
 	@set_time_limit(150);
+}
+
+// The higher this is the longer it will take to create password hashes, to check them, and to crack them.
+if(!defined('PASSWORD_HASH_COST_LOG2')) {
+	define('PASSWORD_HASH_COST_LOG2', 12);
 }
 
 date_default_timezone_set(@date_default_timezone_get());
@@ -26,17 +31,7 @@ class Concrete5_Controller_Install extends Controller {
 	public $helpers = array('form', 'html');
 	
 	protected function getLocales() {
-		Loader::library('3rdparty/Zend/Locale');
-		$languages = Localization::getAvailableInterfaceLanguages();
-		if (count($languages) > 0) { 
-			array_unshift($languages, 'en_US');
-		}
-		$locales = array();
-		foreach($languages as $lang) {
-			$loc = new Zend_Locale($lang);
-			$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', $lang);
-		}
-		return $locales;
+		return Localization::getAvailableInterfaceLanguageDescriptions();
 	}
 	
 	public function view() {
@@ -274,11 +269,10 @@ class Concrete5_Controller_Install extends Controller {
 
 				// write the config file
 				$vh = Loader::helper('validation/identifier');
-				$salt = ( defined('MANUAL_PASSWORD_SALT') ) ? MANUAL_PASSWORD_SALT : $vh->getString(64);
 				$this->fp = @fopen(DIR_CONFIG_SITE . '/site_install.php', 'w+');
 				$this->fpu = @fopen(DIR_CONFIG_SITE . '/site_install_user.php', 'w+');
 				if ($this->fp) {
-					$configuration = "<?php \n";
+					$configuration = "<?php\n";
 					$configuration .= "define('DB_SERVER', '" . addslashes($_POST['DB_SERVER']) . "');\n";
 					$configuration .= "define('DB_USERNAME', '" . addslashes($_POST['DB_USERNAME']) . "');\n";
 					$configuration .= "define('DB_PASSWORD', '" . addslashes($_POST['DB_PASSWORD']) . "');\n";
@@ -286,7 +280,6 @@ class Concrete5_Controller_Install extends Controller {
 					if (isset($setPermissionsModel)) {
 						$configuration .= "define('PERMISSIONS_MODEL', '" . addslashes($setPermissionsModel) . "');\n";
 					}
-					$configuration .= "define('PASSWORD_SALT', '{$salt}');\n";
 					if (is_array($_POST['SITE_CONFIG'])) {
 						foreach($_POST['SITE_CONFIG'] as $key => $value) { 
 							$configuration .= "define('" . $key . "', '" . $value . "');\n";
@@ -300,9 +293,11 @@ class Concrete5_Controller_Install extends Controller {
 				}
 
 				if ($this->fpu) {
-					$configuration = "<?php \n";
+					Loader::library('3rdparty/phpass/PasswordHash');
+					$hasher = new PasswordHash(PASSWORD_HASH_COST_LOG2, PASSWORD_HASH_PORTABLE);
+					$configuration = "<?php\n";
 					$configuration .= "define('INSTALL_USER_EMAIL', '" . $_POST['uEmail'] . "');\n";
-					$configuration .= "define('INSTALL_USER_PASSWORD_HASH', '" . User::encryptPassword($_POST['uPassword'], $salt) . "');\n";
+					$configuration .= "define('INSTALL_USER_PASSWORD_HASH', '" . $hasher->HashPassword($_POST['uPassword']) . "');\n";
 					$configuration .= "define('INSTALL_STARTING_POINT', '" . $this->post('SAMPLE_CONTENT') . "');\n";
 					$configuration .= "define('SITE', '" . addslashes($_POST['SITE']) . "');\n";
 					if (defined('ACTIVE_LOCALE') && ACTIVE_LOCALE != '' && ACTIVE_LOCALE != 'en_US') {

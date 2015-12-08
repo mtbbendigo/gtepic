@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $section = 'groups';
 
@@ -54,7 +54,7 @@ $gResults = $gl->getPage();
 ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Groups'), false, 'span10 offset1', false)?>
-<?php 
+<?php
 $tp = new TaskPermission();
 if ($tp->canAccessGroupSearch()) { ?>
 
@@ -62,7 +62,7 @@ if ($tp->canAccessGroupSearch()) { ?>
 <form method="get" class="form-horizontal" action="<?php echo $this->url('/dashboard/users/groups')?>">
 <div class="ccm-pane-options-permanent-search">
 <div class="span8">
-<?php  $form = Loader::helper('form'); ?>
+<?php $form = Loader::helper('form'); ?>
 <?php echo $form->label('gKeywords', t('Keywords'))?>
 <div class="controls">
 	<input type="text" name="gKeywords" value="<?php echo htmlentities($_REQUEST['gKeywords'])?>"  />
@@ -73,11 +73,11 @@ if ($tp->canAccessGroupSearch()) { ?>
 </div>
 </form>
 </div>
-<div class="ccm-pane-body <?php  if (!$gl->requiresPaging()) { ?> ccm-pane-body-footer <?php  } ?>">
+<div class="ccm-pane-body <?php if (!$gl->requiresPaging()) { ?> ccm-pane-body-footer <?php } ?>">
 
-	<a href="<?php  echo View::url('/dashboard/users/add_group')?>" style="float: right; position:relative;top:-5px"  class="btn primary"><?php  echo t("Add Group")?></a>
+	<a href="<?php echo View::url('/dashboard/users/add_group')?>" style="float: right; position:relative;top:-5px"  class="btn primary"><?php echo t("Add Group")?></a>
 
-<?php  if (count($gResults) > 0) { 
+<?php if (count($gResults) > 0) { 
 	$gl->displaySummary();
 $gp = new Permissions();
 $canEditGroups = $gp->canEditGroups();
@@ -87,47 +87,47 @@ $canEditGroups = $gp->canEditGroups();
 	div.ccm-paging-top {padding-bottom:10px;}
 	</style>
 
-<?php 
+<?php
 	
 foreach ($gResults as $g) { ?>
 	
 	<div class="ccm-group">
-		<<?php  if ($canEditGroups) { ?>a<?php  } else {?>span<?php  } ?> class="ccm-group-inner" <?php  if ($canEditGroups) { ?>href="<?php echo $this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<?php  } ?> style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo t($g['gName'])?><?php  if ($canEditGroups) { ?></a><?php  } else {?></span><?php  } ?>
-		<?php  if ($g['gDescription']) { ?>
-			<div class="ccm-group-description"><?php echo $g['gDescription']?></div>
-		<?php  } ?>
+		<<?php if ($canEditGroups) { ?>a<?php } else {?>span<?php } ?> class="ccm-group-inner" <?php if ($canEditGroups) { ?>href="<?php echo $this->url('/dashboard/users/groups?task=edit&gID=' . $g['gID'])?>"<?php } ?> style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo h(tc('GroupName', $g['gName']))?><?php if ($canEditGroups) { ?></a><?php } else {?></span><?php } ?>
+		<?php if ($g['gDescription']) { ?>
+			<div class="ccm-group-description"><?php echo h(tc('GroupDescription', $g['gDescription']))?></div>
+		<?php } ?>
 	</div>
 
 
-<?php  }
+<?php }
 
 } else { ?>
 
 	<p><?php echo t('No groups found.')?></p>
 	
-<?php  } ?>
+<?php } ?>
 </div>
-<?php  if ($gl->requiresPaging()) { ?>
+<?php if ($gl->requiresPaging()) { ?>
 <div class="ccm-pane-footer">
 	<?php echo $gl->displayPagingV2();?>
 </div>
-<?php  } ?>
+<?php } ?>
 
-<?php  } else { ?>
+<?php } else { ?>
 <div class="ccm-pane-body ccm-pane-body-footer">
 	<p><?php echo t('You do not have access to group search. This setting may be changed in the access section of the dashboard settings page.')?></p>
 </div>
-<?php  } ?>
+<?php } ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php  } else { ?>
+<?php } else { ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Group'), false, false, false)?>
 <form method="post"  class="form-horizontal" id="update-group-form" action="<?php echo $this->url('/dashboard/users/groups/', 'update_group')?>">
 <?php echo $valt->output('add_or_update_group')?>
 <div class="ccm-pane-body">
-	<?php 
+	<?php
 	$form = Loader::helper('form');
 	$date = Loader::helper('form/date_time');
 	$u=new User();
@@ -135,7 +135,7 @@ foreach ($gResults as $g) { ?>
 	$delConfirmJS = t('Are you sure you want to permanently remove this group?');
 	if($u->isSuperUser() == false){ ?>
 		<?php echo t('You must be logged in as %s to remove groups.', USER_SUPER)?>			
-	<?php  }else{ ?>   
+	<?php }else{ ?>   
 
 		<script type="text/javascript">
 		deleteGroup = function() {
@@ -145,13 +145,13 @@ foreach ($gResults as $g) { ?>
 		}
 		</script>
 
-	<?php  } ?>
+	<?php } ?>
 
 	<fieldset>
 	<div class="control-group">
 	<?php echo $form->label('gName', t('Name'))?>
 	<div class="controls">
-		<input type="text" name="gName" class="span6" value="<?php echo Loader::helper('text')->entities(t($gName))?>" />
+		<input type="text" name="gName" class="span6" value="<?php echo Loader::helper('text')->entities($gName)?>" />
 	</div>
 	</div>
 	
@@ -197,7 +197,7 @@ foreach ($gResults as $g) { ?>
 	<div class="controls">
 	<table class="table table-condensed" style="width: auto">
 	<tr>
-	<?php 
+	<?php
 	$days = $g->getGroupExpirationIntervalDays();
 	$hours = $g->getGroupExpirationIntervalHours();
 	$minutes = $g->getGroupExpirationIntervalMinutes();
@@ -236,13 +236,13 @@ foreach ($gResults as $g) { ?>
 </div>
 <div class="ccm-pane-footer">
 	<?php echo $ih->submit(t('Update'), 'update-group-form', 'right', 'primary')?>
-	<?php  print $ih->button_js(t('Delete'), "deleteGroup()", 'right', 'error');?>
+	<?php print $ih->button_js(t('Delete'), "deleteGroup()", 'right', 'error');?>
 	<?php echo $ih->button(t('Cancel'), $this->url('/dashboard/users/groups'), 'left')?>
 </div>
 </form>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-<?php  } ?>
+<?php } ?>
 
 <script type="text/javascript">
 ccm_checkGroupExpirationOptions = function() {

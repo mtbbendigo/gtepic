@@ -1,9 +1,10 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 
 // HELPERS
 $valt = Loader::helper('validation/token');
 $th = Loader::helper('text');
+$dh = Loader::helper('date');
 
 
 // VARIABLES
@@ -15,7 +16,7 @@ $areEntries = count($entries) > 0 ? true : false;
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Logs'), false, false, false);?>
     
-    <?php  if(!$areEntries) { ?>
+    <?php if(!$areEntries) { ?>
     
     <div class="ccm-pane-body ccm-pane-body-footer">
     
@@ -25,7 +26,7 @@ $areEntries = count($entries) > 0 ? true : false;
     
     <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
     
-    <?php  } else { ?>
+    <?php } else { ?>
     
     <div class="ccm-pane-options ccm-pane-options-permanent-search">
     	<form method="post" id="ccm-log-search"  action="<?php echo $pageBase?>">
@@ -47,7 +48,7 @@ $areEntries = count($entries) > 0 ? true : false;
         </form>
     </div>
         
-	<div class="ccm-pane-body <?php  if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <?php  } ?>">
+	<div class="ccm-pane-body <?php if(!$paginator || !strlen($paginator->getPages())>0) { ?>ccm-pane-body-footer <?php } ?>">
 
         <table class="table table-bordered">
         	<thead>
@@ -59,13 +60,19 @@ $areEntries = count($entries) > 0 ? true : false;
                 </tr>
 			</thead>
             <tbody>
-				<?php  foreach($entries as $ent) { ?>
+				<?php foreach($entries as $ent) { ?>
                 <tr>
-                    <td valign="top" style="white-space: nowrap" class="active"><?php echo date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user')))?><?php  if (date('m-d-y') != date('m-d-y', strtotime($ent->getTimestamp('user')))) { ?>
-                        <?php echo t(' at ')?><?php echo date(DATE_APP_GENERIC_MDY, strtotime($ent->getTimestamp('user')))?>
-                    <?php  } ?></td>
+                    <td valign="top" style="white-space: nowrap" class="active"><?php
+                        if (date('m-d-y') == date('m-d-y', strtotime($ent->getTimestamp('user')))) {
+                            echo t(/*i18n %s is a time*/'Today at %s', $dh->date(DATE_APP_GENERIC_TS, strtotime($ent->getTimestamp('user'))));
+                        }
+                        else {
+                            echo $dh->date(DATE_APP_GENERIC_MDYT, strtotime($ent->getTimestamp('user')));
+                        }
+                        
+                    ?></td>
                     <td valign="top"><strong><?php echo $ent->getType()?></strong></td>
-                    <td valign="top"><strong><?php 
+                    <td valign="top"><strong><?php
                     if($ent->getUserID() == NULL){
                         echo t("Guest");
                     }
@@ -76,21 +83,21 @@ $areEntries = count($entries) > 0 ? true : false;
                     ?></strong></td>
                     <td style="width: 100%"><?php echo $th->makenice($ent->getText())?></td>
                 </tr>
-                <?php  } ?>
+                <?php } ?>
 			</tbody>
 		</table>
     
     </div>
     <!-- END Body Pane -->
     
-	<?php  if($paginator && strlen($paginator->getPages())>0){ ?>
+	<?php if($paginator && strlen($paginator->getPages())>0){ ?>
     <div class="ccm-pane-footer">
         
         	<div class="pagination">
               <ul>
                   <li class="prev"><?php echo $paginator->getPrevious()?></li>
                   
-                  <?php  // Call to pagination helper's 'getPages' method with new $wrapper var ?>
+                  <?php // Call to pagination helper's 'getPages' method with new $wrapper var ?>
                   <?php echo $paginator->getPages('li')?>
                   
                   <li class="next"><?php echo $paginator->getNext()?></li>
@@ -99,8 +106,8 @@ $areEntries = count($entries) > 0 ? true : false;
 
 
 	</div>
-        <?php  } // PAGINATOR ?>
+        <?php } // PAGINATOR ?>
     
     <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
     
-    <?php  } ?>
+    <?php } ?>

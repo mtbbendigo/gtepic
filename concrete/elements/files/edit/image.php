@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -88,18 +88,18 @@ if (!$fp->canEditFileContents()) {
             selector:{        
               centered:true,
               borderColor:'blue',
-              <?php  if ($_REQUEST['maxWidth']) { ?>
+              <?php if ($_REQUEST['maxWidth']) { ?>
               	maxWidth: <?php echo $_REQUEST['maxWidth']?>,
-              <?php  } ?>
-              <?php  if ($_REQUEST['maxHeight']) { ?>
+              <?php } ?>
+              <?php if ($_REQUEST['maxHeight']) { ?>
               	maxHeight: <?php echo $_REQUEST['maxHeight']?>,
-              <?php  } ?>
-              <?php  if ($_REQUEST['minWidth']) { ?>
+              <?php } ?>
+              <?php if ($_REQUEST['minWidth']) { ?>
               	minWidth: <?php echo $_REQUEST['minWidth']?>,
-              <?php  } ?>
-              <?php  if ($_REQUEST['minHeight']) { ?>
+              <?php } ?>
+              <?php if ($_REQUEST['minHeight']) { ?>
               	minHeight: <?php echo $_REQUEST['minHeight']?>,
-              <?php  } ?>
+              <?php } ?>
               borderColorHover:'red'
             },
             image:{
@@ -111,7 +111,7 @@ if (!$fp->canEditFileContents()) {
                 maxZoom:300
             }
         });
-        <?php 
+        <?php
         $selectorStartWidth = $f->getAttribute('width');
         $selectorStartHeight = $f->getAttribute('height');
         if ($_REQUEST['maxWidth'] && ($_REQUEST['maxWidth'] < $selectorStartWidth)) {

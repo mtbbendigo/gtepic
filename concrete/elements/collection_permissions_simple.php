@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if ($cp->canEditPagePermissions()) {
 	$editAccess = array();
@@ -39,26 +39,26 @@ if ($cp->canEditPagePermissions()) {
 		$gArray[] = Group::getByID($g['gID']);
 	}
 
-	$rel = SecurityHelper::sanitizeString($_REQUEST['rel']);
+	$rel = Loader::helper('security')->sanitizeString($_REQUEST['rel']);
 ?>
 
 <div class="ccm-ui">
 <form method="post" id="ccmPermissionsForm" name="ccmPermissionsForm" action="<?php echo $c->getCollectionAction()?>">
-<input type="hidden" name="rel" value="<?php  echo h($rel); ?>" />
+<input type="hidden" name="rel" value="<?php echo h($rel); ?>" />
 
 <div class="clearfix">
 <h3><?php echo t('Who can view this page?')?></h3>
 
 <ul class="inputs-list">
 
-<?php 
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="readGID[]" value="<?php echo $g->getGroupID()?>" <?php  if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php  } ?> /> <?php echo t($g->getGroupName())?></label></li>
+<li><label><input type="checkbox" name="readGID[]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $viewAccess)) { ?> checked <?php } ?> /> <?php echo $g->getGroupDisplayName()?></label></li>
 
-<?php  } ?>
+<?php } ?>
 
 </ul>
 </div>
@@ -69,14 +69,14 @@ foreach ($gArray as $g) {
 
 <ul class="inputs-list">
 
-<?php 
+<?php
 
 foreach ($gArray as $g) {
 ?>
 
-<li><label><input type="checkbox" name="editGID[]" value="<?php echo $g->getGroupID()?>" <?php  if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php  } ?> /> <?php echo t($g->getGroupName())?></label></li>
+<li><label><input type="checkbox" name="editGID[]" value="<?php echo $g->getGroupID()?>" <?php if (in_array($g->getGroupID(), $editAccess)) { ?> checked <?php } ?> /> <?php echo $g->getGroupDisplayName()?></label></li>
 
-<?php  } ?>
+<?php } ?>
 
 </ul>
 </div>
@@ -113,4 +113,4 @@ $(function() {
 <div class="ccm-spacer">&nbsp;</div>
 </form>
 </div>
-<?php  } ?>
+<?php } ?>

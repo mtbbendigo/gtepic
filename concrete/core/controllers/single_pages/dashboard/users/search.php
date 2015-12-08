@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 
@@ -7,17 +7,20 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 	}
 
 	public function view() {
-		$html = Loader::helper('html');
+		// this is hacky as hell, we need to make this page MVC
+		if ($_REQUEST['task'] != 'edit' && !$_REQUEST['uID']) {
+			$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_setupAdvancedSearch(\'user\'); });</script>');
+			$userList = $this->getRequestedSearchResults();
+			$users = $userList->getPage();
+					
+			$this->set('userList', $userList);		
+			$this->set('users', $users);		
+			$this->set('pagination', $userList->getPagination());	
+		}
+
 		$form = Loader::helper('form');
 		$this->set('form', $form);
-		$this->addHeaderItem('<script type="text/javascript">$(function() { ccm_setupAdvancedSearch(\'user\'); });</script>');
-		$userList = $this->getRequestedSearchResults();
-		$users = $userList->getPage();
-				
-		$this->set('userList', $userList);		
-		$this->set('users', $users);		
-		$this->set('pagination', $userList->getPagination());	
-		
+
 		if($_POST['edit'])	{
 			$this->validate_user();
 		}
@@ -101,12 +104,12 @@ class Concrete5_Controller_Dashboard_Users_Search extends Controller {
 				
 				if (strlen($username) >= USER_USERNAME_MINIMUM && !$valc->username($username)) {
 					if(USER_USERNAME_ALLOW_SPACES) {
-						$this->error->add(t('A username may only contain letters, numbers and spaces.'));
+						$this->error->add(t('A username may only contain letters, numbers, spaces, dots (not at the beginning/end), underscores (not at the beginning/end).'));
 					} else {
-						$this->error->add(t('A username may only contain letters or numbers.'));
+						$this->error->add(t('A username may only contain letters numbers, dots (not at the beginning/end), underscores (not at the beginning/end).'));
 					}
 				}
-				if (!$valc->isUniqueUsername($username) && $uo->getUserName() != $username) {
+				if (strcasecmp($uo->getUserName(), $username) && !$valc->isUniqueUsername($username)) {
 					$this->error->add(t("The username '%s' already exists. Please choose another",$username));
 				}		
 			}

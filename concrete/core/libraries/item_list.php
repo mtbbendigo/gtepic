@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
 *
 * @package Utilities
@@ -43,7 +43,7 @@ class Concrete5_Library_ItemList {
 		$_SESSION[get_class($this) . $namespace . 'SearchFields'] = array();
 	}
 	
-	public function addToSearchRequest($key, $val) {
+	public function addToSearchRequest($key, $value) {
 		$_SESSION[get_class($this) . $this->stickySearchRequestNameSpace . 'SearchFields'][$key] = $value;
 	}
 	
@@ -66,7 +66,9 @@ class Concrete5_Library_ItemList {
 	}
 	
 	public function setItemsPerPage($num) {
-		$this->itemsPerPage = $num;
+		if (Loader::helper('validation/numbers')->integer($num)) {
+			$this->itemsPerPage = $num;
+		}
 	}
 	
 	public function getItemsPerPage() {
@@ -100,7 +102,7 @@ class Concrete5_Library_ItemList {
 		$this->setCurrentPage($page);
 		$offset = 0;
 		if ($this->currentPage > 1) {
-			$offset = $this->itemsPerPage * ($this->currentPage - 1);
+			$offset = min($this->itemsPerPage * ($this->currentPage - 1), 2147483647); 
 		}
 		return $this->get($this->itemsPerPage, $offset);
 	}
@@ -161,7 +163,7 @@ class Concrete5_Library_ItemList {
 		);
 
 		foreach($additionalVars as $k => $v) {
-			$args[$k] = $v;
+			$args[$k] = Loader::helper('text')->alphanum($v);
 		}
 		$url = $uh->setVariable($args, false, $baseURL);
 		print strip_tags($url);
@@ -207,10 +209,10 @@ class Concrete5_Library_ItemList {
 			$prevClass = 'prev';
 			$nextClass = 'next';
 			if (!$paginator->hasPreviousPage()) {
-				$prevClass = 'disabled';
+				$prevClass = 'prev disabled';
 			}
 			if (!$paginator->hasNextPage()) {
-				$nextClass = 'disabled';
+				$nextClass = 'next disabled';
 			}
 			$html .= '<li class="' . $prevClass . '">' . $paginator->getPrevious(false, 'a') . '</li>';
 			$html .= $paginator->getPages('li');
@@ -300,10 +302,16 @@ class Concrete5_Library_ItemList {
 
 	/** 
 	 * Sets up a multiple columns to search by. Each argument is taken "as-is" (including asc or desc) and concatenated with commas
-	 * Note that this is overrides any previous sortByMultiple() call, and all sortBy() calls
+	 * Note that this is overrides any previous sortByMultiple() call, and all sortBy() calls. Alternatively, you can pass a single
+	 * array with multiple columns to sort by as its values.
+	 * e.g. $list->sortByMultiple('columna desc', 'columnb asc');
+	 * or $list->sortByMultiple(array('columna desc', 'columnb asc'));
 	 */
 	public function sortByMultiple() {
 		$args = func_get_args();
+		if(count($args) == 1 && is_array($args[0])) {
+			$args = $args[0];
+		}
 		$this->sortByString = implode(', ', $args);
 	}
 }

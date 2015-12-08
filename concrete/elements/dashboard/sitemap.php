@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::helper('concrete/dashboard/sitemap');
 
@@ -31,13 +31,13 @@ var CCM_TARGET_ID = "<?php echo $target_id?>";
 var CCM_SITEMAP_EXPLORE_NODE = "<?php echo $node?>";
 </script>
 
-<?php  $display_mode = $_REQUEST['display_mode'];
+<?php $display_mode = $_REQUEST['display_mode'];
 if ($display_mode != 'explore') { 
 	$display_mode = 'full';
 }
 ?>
 
-<div id="tree" sitemap-wrapper="1" sitemap-select-callback="<?php echo $callback?>" sitemap-instance-id="<?php echo $instance_id?>" <?php  if ($display_mode == 'explore') { ?>class="ccm-sitemap-explore"<?php  } ?>>
+<div id="tree" sitemap-wrapper="1" sitemap-select-callback="<?php echo $callback?>" sitemap-instance-id="<?php echo $instance_id?>" <?php if ($display_mode == 'explore') { ?>class="ccm-sitemap-explore"<?php } ?>>
 	<ul id="tree-root0" tree-root-node-id="0" sitemap-select-callback="<?php echo $sitemap_select_callback?>" sitemap-display-mode="<?php echo $display_mode?>" sitemap-select-mode="<?php echo $select_mode?>" sitemap-instance-id="<?php echo $instance_id?>">
 	</ul>
 </div>

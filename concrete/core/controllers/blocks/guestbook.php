@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Controller for the guestbook block, which allows site owners to add comments onto any concrete page.
@@ -13,7 +13,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 	class Concrete5_Controller_Block_Guestbook extends BlockController {		
 		protected $btTable = 'btGuestBook';
-		protected $btInterfaceWidth = "350";
+		protected $btInterfaceWidth = "370";
 		protected $btInterfaceHeight = "480";	
 		protected $btWrapperClass = 'ccm-ui';
 		protected $btExportPageColumns = array('cID');
@@ -139,6 +139,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 				if($_POST['entryID']) { // update
 					$bp = $this->getPermissionObject(); 
 					if($bp->canWrite()) {
+						$E->loadData(intval($_POST['entryID']));
+						$uID = $E->uID;
 						$E->updateEntry($_POST['entryID'], $_POST['commentText'], $_POST['name'], $_POST['email'], $uID );
 						$this->set('response', t('The comment has been saved') );
 					} else {

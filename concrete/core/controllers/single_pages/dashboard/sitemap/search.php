@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Sitemap_Search extends Controller {
 	
@@ -105,6 +105,9 @@ class Concrete5_Controller_Dashboard_Sitemap_Search extends Controller {
 								$req['cvIsApproved'] = $req['_cvIsApproved'];
 							}
 							$pageList->filterByIsApproved($req['cvIsApproved']);
+							break;
+						case 'permissions_inheritance':
+							$pageList->filter('cInheritPermissionsFrom', $req['cInheritPermissionsFrom']);
 							break;
 						case "date_public":
 							$dateFrom = $req['date_public_from'];

@@ -3,9 +3,9 @@
 
 	<input class="layout_column_count" name="layout_column_count" type="hidden" value="<?php echo intval($layout->columns) ?>" /> 
 	
-	<input id="layout_col_break_points_<?php echo intval($layout->cvalID) ?>" class="layout_col_break_points" name="layout_col_break_points" type="hidden" value="<?php echo  htmlspecialchars(join('|',$layout->breakpoints )) ?>" />
+	<input id="layout_col_break_points_<?php echo intval($layout->cvalID) ?>" class="layout_col_break_points" name="layout_col_break_points" type="hidden" value="<?php echo htmlspecialchars(join('|',$layout->breakpoints )) ?>" />
 	
-	<input class="layout_locked" name="layout_locked" type="hidden" value="<?php echo  intval($layout->locked) ?>" />
+	<input class="layout_locked" name="layout_locked" type="hidden" value="<?php echo intval($layout->locked) ?>" />
 	
 	<div class="ccm-layout-menu-button">
 	
@@ -15,7 +15,7 @@
 	<script type="text/javascript">
 	
 	$(function(){ 
-		<?php  if( intval($layout->cvalID) ){ ?>var<?php  } ?> ccmLayout<?php echo intval($layout->cvalID) ?> = new ccmLayout( <?php echo intval($layout->areaNameNumber) ?>, <?php echo intval($layout->cvalID) ?>, <?php echo intval($layout->layoutID) ?>, "<?php echo  $layout->getAreaHandle() ?>", <?php echo intval($layout->locked) ?> );
+		<?php if( intval($layout->cvalID) ){ ?>var<?php } ?> ccmLayout<?php echo intval($layout->cvalID) ?> = new ccmLayout( <?php echo intval($layout->areaNameNumber) ?>, <?php echo intval($layout->cvalID) ?>, <?php echo intval($layout->layoutID) ?>, "<?php echo $layout->getAreaHandle() ?>", <?php echo intval($layout->locked) ?> );
 		ccmLayout<?php echo intval($layout->cvalID) ?>.init(); 
 		
 	});

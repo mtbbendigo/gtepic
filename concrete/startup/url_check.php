@@ -1,8 +1,8 @@
-<?php  
+<?php 
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-if (REDIRECT_TO_BASE_URL == true) {
+if (REDIRECT_TO_BASE_URL == true && C5_ENVIRONMENT_ONLY == false) {
 	$protocol = 'http://';
 	$base_url = BASE_URL;
 	if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
@@ -17,7 +17,7 @@ if (REDIRECT_TO_BASE_URL == true) {
 		}
 	}
 
-	$uri = $_SERVER['REQUEST_URI'];
+	$uri = Loader::helper('security')->sanitizeURL($_SERVER['REQUEST_URI']);
 	if (strpos($uri, '%7E') !== false) {
 		$uri = str_replace('%7E', '~', $uri);
 	}

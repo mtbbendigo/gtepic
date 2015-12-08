@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * Contains the collection attribute key and value objects.
@@ -159,8 +159,18 @@ class Concrete5_Model_CollectionAttributeKey extends AttributeKey {
 
 class Concrete5_Model_CollectionAttributeValue extends AttributeValue {
 
+	/**
+	 * @param Collection $cObj
+	 */
 	public function setCollection($cObj) {
 		$this->c = $cObj;
+	}
+
+	/**
+	 * @return Collection
+	 */
+	public function getCollection() {
+		return $this->c;
 	}
 	
 	public static function getByID($avID) {

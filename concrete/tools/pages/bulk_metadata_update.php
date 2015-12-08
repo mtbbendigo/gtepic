@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $sh = Loader::helper('concrete/dashboard/sitemap');
@@ -90,7 +90,7 @@ function printAttributeRow($ak) {
 	
 	$html = '
 	<tr class="ccm-attribute-editable-field">
-		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
+		<td><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
 		<td width="100%" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/pages/bulk_metadata_update">
 			<input type="hidden" name="cakID" value="' . $ak->getAttributeKeyID() . '" />
@@ -111,7 +111,7 @@ function printAttributeRow($ak) {
 
 	$html = '
 	<tr>
-		<td><strong>' . $ak->getAttributeKeyName() . '</strong></td>
+		<td><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td width="100%" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -120,12 +120,12 @@ function printAttributeRow($ak) {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-page-properties-wrapper">
-<?php  } ?>
+<?php } ?>
 
 <div id="ccm-page-properties" class="ccm-ui">
 
 <table border="0" cellspacing="0" cellpadding="0" class="ccm-grid">
-<?php 
+<?php
 
 foreach($attribs as $at) {
 
@@ -146,7 +146,7 @@ $(function() {
 });
 </script>
 
-<?php 
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<?php  }
+<?php }

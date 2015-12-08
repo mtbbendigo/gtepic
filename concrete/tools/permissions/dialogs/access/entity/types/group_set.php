@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -22,25 +22,25 @@ if (!$tp->canAccessGroupSearch()) {
 	?>
 	<div id="ccm-list-wrapper">
 	
-	<?php  if ($gl->getTotal() > 0) { 
+	<?php if ($gl->getTotal() > 0) { 
 	
 		foreach ($gl->get() as $gs) { ?>
 	
 		<div class="ccm-group">
 			<div style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)" class="ccm-group-inner-indiv">
-				<a class="ccm-group-inner-atag" id="g<?php echo $g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?php echo $gs->getGroupSetID()?>)"><?php echo $gs->getGroupSetName()?></a>
+				<a class="ccm-group-inner-atag" id="g<?php echo $g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?php echo $gs->getGroupSetID()?>)"><?php echo $gs->getGroupSetDisplayName()?></a>
 			</div>
 		</div>
 	
-	<?php  } ?>
+	<?php } ?>
 	
-	<?php 
+	<?php
 	
 	} else { ?>
 	
 		<p><?php echo t('No group sets found.')?></p>
 		
-	<?php  } ?>
+	<?php } ?>
 	
 	</div>
 	
@@ -57,4 +57,4 @@ if (!$tp->canAccessGroupSearch()) {
 		});
 	}	
 	</script>
-<?php  } ?>
+<?php } ?>

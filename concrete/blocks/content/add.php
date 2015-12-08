@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 //$replaceOnUnload = 1;
 $bt->inc('editor_init.php');

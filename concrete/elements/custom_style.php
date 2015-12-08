@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 if (ENABLE_CUSTOM_DESIGN == false) {
 	die(t('Custom design options have been disabled.'));
@@ -42,15 +42,15 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 }
 ?>
 
-<?php  if (!$_REQUEST['refresh']) { ?>
+<?php if (!$_REQUEST['refresh']) { ?>
 	<div class="ccm-ui" id="ccm-custom-style-wrapper">
-<?php  } ?>
+<?php } ?>
 
 <form class="form-stacked" method="post" id="ccmCustomCssForm" action="<?php echo $action?>" style="width:96%; margin:auto;">
 
 	<input id="ccm-reset-style" name="reset_css" type="hidden" value="0" />
 	
-	<?php  if (count($presets) > 0) { ?>
+	<?php if (count($presets) > 0) { ?>
 		<h3><?php echo t('Saved Presets')?></h3>
 	
 		<?php echo $form->select('cspID', $presetsArray, $cspID, array('style' => 'vertical-align: middle'))?>
@@ -59,7 +59,7 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 		<br/><br/>
 		
 		<input type="hidden" id="ccm-custom-style-refresh-action" value="<?php echo $refreshAction?>" /> 
-	<?php  } ?>
+	<?php } ?>
 	
 	<input type="hidden" name="selectedCsrID" value="<?php echo $selectedCsrID?>" />
 	<ul id="ccm-styleEditPane-tabs" class="ccm-dialog-tabs" style="margin-left:0px">
@@ -72,35 +72,37 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 	
 	<div id="ccmCustomCssFormTabs">
 	
-		<?php  Loader::element('custom_style/fonts', array('cssData' => $cssData, 'fh' => $fh));?>
+		<?php Loader::element('custom_style/fonts', array('cssData' => $cssData, 'fh' => $fh));?>
 	
-		<?php  Loader::element('custom_style/background', array('cssData' => $cssData, 'fh' => $fh, 'ah' => $ah));?>
+		<?php Loader::element('custom_style/background', array('cssData' => $cssData, 'fh' => $fh, 'ah' => $ah));?>
 	
-		<?php  Loader::element('custom_style/border', array('cssData' => $cssData, 'fh' => $fh));?>
+		<?php Loader::element('custom_style/border', array('cssData' => $cssData, 'fh' => $fh));?>
 
-		<?php  Loader::element('custom_style/spacing', array('cssData' => $cssData, 'fh' => $fh));?>
+		<?php Loader::element('custom_style/spacing', array('cssData' => $cssData, 'fh' => $fh));?>
 		
-		<?php  Loader::element('custom_style/css', array('style' => $style));?>
+		<?php Loader::element('custom_style/css', array('style' => $style));?>
 
 	</div>
 	
 	<br/>
 	
-	<?php  if ($cspID > 0) { 
+	<?php if ($cspID > 0) { 
 		$cspx = CustomStylePreset::getByID($cspID);?>
 		<div id="cspFooterPreset" style="display: none">
 			<div class="ccm-note-important">
 				<h2><?php echo t('You are changing a preset')?></h2>
-				<div><?php echo $form->radio('cspPresetAction', 'update_existing_preset', true)?> <?php echo t('Update "%s" preset everywhere it is used', $cspx->getCustomStylePresetName())?></div>
-				<div><?php echo $form->radio('cspPresetAction', 'save_as_custom_style')?> <?php echo t('Use this style here, and leave "%s" unchanged', $cspx->getCustomStylePresetName())?></div>
-				<div><?php echo $form->radio('cspPresetAction', 'create_new_preset')?> <?php echo t('Save this style as a new preset')?><br/><span style="margin-left: 20px"><?php echo $form->text('cspName', array('style' => 'width:  127px', 'disabled' => true))?></span></div>
+				<label class="radio"><?php echo $form->radio('cspPresetAction', 'update_existing_preset', true)?> <?php echo t('Update "%s" preset everywhere it is used', $cspx->getCustomStylePresetName())?></label>
+				<label class="radio"><?php echo $form->radio('cspPresetAction', 'save_as_custom_style')?> <?php echo t('Use this style here, and leave "%s" unchanged', $cspx->getCustomStylePresetName())?></label>
+				<label class="radio"><?php echo $form->radio('cspPresetAction', 'create_new_preset')?> <?php echo t('Save this style as a new preset')?><br/><span style="margin-left: 20px"><?php echo $form->text('cspName', array('style' => 'width:  127px', 'disabled' => true))?></span></label>
 			</div>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 	
 	<div id="cspFooterNoPreset" >
-		<?php echo $form->checkbox('cspPresetAction', 'create_new_preset')?>
-		<?php echo t('Save this style as a new preset.')?>
+		<label for="cspPresetAction" class="checkbox inline">
+			<?php echo $form->checkbox('cspPresetAction', 'create_new_preset')?>
+			<?php echo t('Save this style as a new preset.')?>
+		</label>
 		<span style="margin-left: 10px">
 			<?php echo $form->text('cspName', array('style' => 'width:  140px', 'disabled' => true))?>
 		</span>
@@ -108,15 +110,15 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 	
 	<br/>
 	
-	<?php  if (!$_REQUEST['refresh']) { ?>
+	<?php if (!$_REQUEST['refresh']) { ?>
 		<div class="dialog-buttons">
 			<a href="#" class="ccm-button-left cancel btn" onclick="jQuery.fn.dialog.closeTop(); return false"><?php echo t('Cancel')?></a>
 			<a href="javascript:void(0)" onclick="$('#ccmCustomCssForm').submit()" class="btn primary ccm-button-right accept"><span><?php echo t('Save')?></span></a>
-			<?php  if ($cspID < 1) { ?>
+			<?php if ($cspID < 1) { ?>
 				<a onclick="return ccmCustomStyle.resetAll();" id="ccm-reset-style-button" class="btn ccm-button-right accept" style="margin-right:8px; "><span><?php echo t('Reset Styles')?></span></a>
-			<?php  } ?>
+			<?php } ?>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 
 	<div class="ccm-spacer"></div> 
 	
@@ -124,7 +126,7 @@ if ($_REQUEST['subtask'] == 'delete_custom_style_preset') {
 		<?php echo t('Note: Styles set here are often overridden by those defined within the various block types.')?>
 	</div>		
 	
-<?php 
+<?php
 $valt = Loader::helper('validation/token');
 $valt->output();
 ?>
@@ -136,6 +138,6 @@ $valt->output();
 	});
 </script>
 
-<?php  if (!$_REQUEST['refresh']) { ?>
+<?php if (!$_REQUEST['refresh']) { ?>
 	</div>
-<?php  } ?>
+<?php } ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_DownloadFile extends Controller {
@@ -18,6 +18,16 @@ class Concrete5_Controller_DownloadFile extends Controller {
 			$file = File::getByID($fID);
 			if ($file instanceof File && $file->getFileID() > 0) {
 
+				$rcID = Loader::helper('security')->sanitizeInt($rcID);
+				if ($rcID > 0) {
+					$rc = Page::getByID($rcID, 'ACTIVE');
+					if (is_object($rc) && !$rc->isError()) {
+						$rcp = new Permissions($rc);
+						if ($rcp->canViewPage()) {
+							$this->set('rc', $rc);
+						}
+					}
+				}
 				$fp = new Permissions($file);
 				if (!$fp->canViewFile()) {
 					return false;
@@ -68,6 +78,7 @@ class Concrete5_Controller_DownloadFile extends Controller {
 			$f = File::getByID($fID);
 			
 			$rcID = ($this->post('rcID')?$this->post('rcID'):NULL);
+			$rcID = Loader::helper('security')->sanitizeInt($rcID);
 
 			if ($f->getPassword() == $this->post('password')) {
 				if($this->post('force')) {
@@ -79,7 +90,7 @@ class Concrete5_Controller_DownloadFile extends Controller {
 			
 			$this->set('error', t("Password incorrect. Please try again."));
 			
-			$this->set('force',($this->post('force')?1:0));
+			$this->set('force', ($this->post('force') ? 1 : 0));
 			
 			$this->view($fID, $rcID);
 		}

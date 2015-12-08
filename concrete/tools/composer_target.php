@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $navigation = Loader::helper('navigation');
 $th = Loader::helper('text');
 $sh = Loader::helper('concrete/dashboard');
@@ -30,7 +30,7 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 	
 	<h1><?php echo t("Where do you want to publish this page?")?></h1>
 	<ul class="item-select-list">
-	<?php  foreach($pages as $p) { 
+	<?php foreach($pages as $p) { 
 		$trail = $navigation->getTrailToCollection($p);
 		$crumbs = array();
 		if(is_array($trail) && count($trail)) {
@@ -41,12 +41,12 @@ switch($ct->getCollectionTypeComposerPublishMethod()) {
 		}
 		?>
 		<li class="item-select-page"><a href="javascript:void(0)" onclick="<?php echo $function?>(<?php echo $p->getCollectionID()?>)"><?php echo $p->getCollectionName()?></a>
-			<div class="ccm-note" style="padding-left: 8px;"><?php  echo implode(" &gt; ",$crumbs)?></div>
+			<div class="ccm-note" style="padding-left: 8px;"><?php echo implode(" &gt; ",$crumbs)?></div>
 		</li>
-	<?php  } ?>
+	<?php } ?>
 	</ul>
 	
-	<?php 
+	<?php
 		break;
 	case 'CHOOSE':
 		$args['sitemapCombinedMode'] = $sitemapCombinedMode;

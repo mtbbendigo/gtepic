@@ -1,7 +1,7 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 ?>
-<?php 
+<?php
 $bo = Block::getByID($bOriginalID);
 $bp = new Permissions($bo);
 $bo->setProxyBlock($b);
@@ -12,7 +12,7 @@ if ($bp->canWrite()) {
 			<div class="alert alert-info"><?php echo t("This block was copied from another location. Editing it will create a new instance of it.")?></div>
 		</div>
 		
-	<?php 
+	<?php
 	
 	$bv->render($bo, 'edit', array(
 		'c' => $c,

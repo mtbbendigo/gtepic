@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 Loader::model("system/captcha/library");
 Loader::model("system/captcha/controller");

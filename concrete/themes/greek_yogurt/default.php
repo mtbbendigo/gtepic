@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 $this->inc('elements/header.php'); ?>
 	
@@ -7,7 +7,7 @@ $this->inc('elements/header.php'); ?>
 	<div id="main-content-container" class="grid_16">
 		<div id="main-content-inner">
 		
-			<?php  
+			<?php 
 			$a = new Area('Main');
 			$a->display($c);
 			?>
@@ -20,7 +20,7 @@ $this->inc('elements/header.php'); ?>
 
 		<div id="right-sidebar-inner">
 	
-			<?php  
+			<?php 
 			$a = new Area('Sidebar');
 			$a->display($c);
 			?>
@@ -31,4 +31,4 @@ $this->inc('elements/header.php'); ?>
 	
 	<!-- end sidebar -->
 	
-<?php  $this->inc('elements/footer.php'); ?>
+<?php $this->inc('elements/footer.php'); ?>

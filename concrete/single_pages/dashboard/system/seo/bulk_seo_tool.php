@@ -1,5 +1,5 @@
-<?php   defined('C5_EXECUTE') or die('Access Denied');?>
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bulk SEO Tool'), t('Manage Search Engine Optimization (SEO) Related Page Properties.'), false, false); 
+<?php  defined('C5_EXECUTE') or die('Access Denied');?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Bulk SEO Updater'), t('Manage Search Engine Optimization (SEO) Related Page Properties.'), false, false); 
 $pageSelector = Loader::helper('form/page_selector');
 $nh = Loader::helper('navigation');
 $th = Loader::helper('text');
@@ -66,10 +66,6 @@ $th = Loader::helper('text');
 			min-height: 0;
 		}
 		
-		.pageChecks {
-			float: left;
-		}
-		
 		a.url-path {
 			word-wrap: break-word;
 			width: 300px;
@@ -92,20 +88,20 @@ $th = Loader::helper('text');
 		</script>
 <form action="<?php echo $this->action('view')?>">
 	<div class="ccm-pane-options">
-			<label style="width: auto; margin-right: 1em; margin-left: 20px;">Keywords</label><?php  echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?php echo t(' # Per Page'); ?></span>
+			<label style="width: auto; margin-right: 1em; margin-left: 20px;"><?php echo t('Keywords'); ?></label><?php echo $form->text('keywords', '', array('style' => 'width: 130px')); ?><span style="margin-left: 30px;"><?php echo t(' # Per Page'); ?></span>
 			<?php echo $form->select('numResults', array(
 				'10' => '10',
 				'25' => '25',
 				'50' => '50',
 				'100' => '100',
 				'500' => '500'
-			), $searchRequest['numResults'], array('style' => 'width:65px; margin: 0px 10px 0px 10px;'))?>
-			<?php  print $concrete_interface->submit('Search', $formID, $buttonAlign = 'left', 'searchSubmit'); ?><br />
-			<a href="javascript:void(0)" class="ccm-icon-option-closed" id="searchUnderParent"><?php  echo t('Advanced Search'); ?></a>
-			<div id="parentOptions" style="margin-left: 25px; display: <?php  echo $parentDialogOpen ? 'block' : 'none'; ?>">
+			), Loader::helper('text')->specialchars($searchRequest['numResults']), array('style' => 'width:65px; margin: 0px 10px 0px 10px;'))?>
+			<?php print $concrete_interface->submit(t('Search'), $formID, $buttonAlign = 'left', 'searchSubmit'); ?><br />
+			<a href="javascript:void(0)" class="ccm-icon-option-closed" id="searchUnderParent"><?php echo t('Advanced Search'); ?></a>
+			<div id="parentOptions" style="margin-left: 25px; display: <?php echo $parentDialogOpen ? 'block' : 'none'; ?>">
 			<div id="pageSelectorHolder" style="float: left; width: 400px; margin-top: 15px;">
-			<strong style="display: block; margin-top: 10px;"><?php  echo t('Parent Page'); ?></strong>
-			<?php  print $pageSelector->selectPage('cParentIDSearchField', 'ccm_selectSitemapNode');?>
+			<strong style="display: block; margin-top: 10px;"><?php echo t('Parent Page'); ?></strong>
+			<?php print $pageSelector->selectPage('cParentIDSearchField', 'ccm_selectSitemapNode');?>
 			</div>
 			<div id="searchOptionHolder" style="width: 400px; margin-left: 65px; float: left; margin-top: 15px;">
 				<br/><strong style="display: block;"><?php echo t('How Many Levels Below Parent?')?></strong><br/>
@@ -113,8 +109,8 @@ $th = Loader::helper('text');
 					<li><label><?php echo $form->radio('cParentAll', 0, false)?> <span><?php echo t('First Level')?></span></label></li>
 					<li><label><?php echo $form->radio('cParentAll', 1, false)?> <span><?php echo t('All Levels')?></span></label></li>
 				</ul>
-				<div class="pageChecks"><?php  echo $form->checkbox('noDescription', 1, $descCheck, array('style' => 'margin-left: 15px;'));  ?><span><?php echo t(' No Meta Description'); ?></span></div>
-				<div class="pageChecks"><?php  echo $form->checkbox('noKeywords', 1, $keywordCheck, array('style' => 'margin-left: 15px;'));  ?><span><?php echo t(' No Meta Keywords'); ?></span></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noDescription', 1, $descCheck);  ?> <span><?php echo t(' No Meta Description'); ?></span></label></div>
+				<div class="pageChecks"><label class="checkbox"> <?php echo $form->checkbox('noKeywords', 1, $keywordCheck);  ?> <span><?php echo t(' No Meta Keywords'); ?></span></label></div>
 			</div>
 				<div style="clear: both;"></div>
 			</div>
@@ -122,7 +118,7 @@ $th = Loader::helper('text');
 </form>
 
 <div class="ccm-pane-body">
-<?php 
+<?php
 if (count($pages) > 0) {
 	  $i = 0;
 		foreach($pages as $cobj) {
@@ -132,33 +128,33 @@ if (count($pages) > 0) {
 			$stripe = ($i % 2?'stripe':'');
 			?>
 			<div class="ccm-results-list">
-				<div class="rowHolder <?php  echo $stripe; ?> ccm-seoRow-<?php  echo $cID; ?>" style="float: left;">
-					<form id="seoForm<?php  echo $cID; ?>" action="<?php  echo View::url('/dashboard/system/seo/page_data/', 'saveRecord')?>" method="post" class="pageForm">
+				<div class="rowHolder <?php echo $stripe; ?> ccm-seoRow-<?php echo $cID; ?>" style="float: left;">
+					<form id="seoForm<?php echo $cID; ?>" action="<?php echo View::url('/dashboard/system/seo/page_data/', 'saveRecord')?>" method="post" class="pageForm">
 						<div class="headingsContainer">
 						
 							<div class="headings">
-								<?php  echo $form->hidden('cID', $cID) ?>
-								<strong><?php  echo t('Page Name'); ?></strong>
+								<?php echo $form->hidden('cID', $cID) ?>
+								<strong><?php echo t('Page Name'); ?></strong>
 								<br />
 								<br />
-								<?php  echo $cobj -> getCollectionName() ? $cobj->getCollectionName() : ''; ?>
+								<?php echo $cobj -> getCollectionName() ? $cobj->getCollectionName() : ''; ?>
 								<br />
 								<br />
 							</div>
 						
 							<div class="headings">
-								<strong><?php  echo t('Page Type'); ?></strong>
+								<strong><?php echo t('Page Type'); ?></strong>
 								<br />
 								<br />
-								<?php  echo $cobj->getCollectionTypeName() ? $cobj->getCollectionTypeName() : t('Single Page'); ?>
+								<?php echo $cobj->getCollectionTypeName() ? $cobj->getCollectionTypeName() : t('Single Page'); ?>
 								<br />
 								<br />
 							</div>
 								
-							<div class="headings"><strong><?php  echo t('Modified'); ?></strong>
+							<div class="headings"><strong><?php echo t('Modified'); ?></strong>
 								<br />
 								<br />
-								<?php  echo $cobj->getCollectionDateLastModified() ? $cobj->getCollectionDateLastModified() : ''; ?>
+								<?php echo $cobj->getCollectionDateLastModified() ? $cobj->getCollectionDateLastModified(DATE_APP_GENERIC_MDYT) : ''; ?>
 								<br />
 								<br />
 							</div>
@@ -167,11 +163,11 @@ if (count($pages) > 0) {
 						
 						
 						<div class="metaFieldContainer">
-							<div><strong><?php  echo t('Meta Title'); ?></strong>
+							<div><strong><?php echo t('Meta Title'); ?></strong>
 							<br />
 							<br />
 								<div class="metaInput">
-									<?php  $pageTitle = $cobj->getCollectionName();
+									<?php $pageTitle = $cobj->getCollectionName();
 									$pageTitle = htmlspecialchars($pageTitle, ENT_COMPAT, APP_CHARSET);
 									$autoTitle = sprintf(PAGE_TITLE_FORMAT, SITE, $pageTitle);
 									$titleInfo = array('title' => $cID);
@@ -183,11 +179,11 @@ if (count($pages) > 0) {
 								</div>
 							</div>
 								
-							<div style="margin-left: 30px;"><strong><?php  echo t('Meta Description'); ?></strong>
+							<div style="margin-left: 30px;"><strong><?php echo t('Meta Description'); ?></strong>
 							<br />
 							<br />
 								<div class="metaInput">
-									<?php  $pageDescription = $cobj->getCollectionDescription();
+									<?php $pageDescription = $cobj->getCollectionDescription();
 									$autoDesc = htmlspecialchars($pageDescription, ENT_COMPAT, APP_CHARSET);
 									$descInfo = array('title' => $cID); 
 									if(strlen($cobj -> getAttribute('meta_description')) <= 0) {
@@ -200,56 +196,56 @@ if (count($pages) > 0) {
 							</div>
 								
 							<div>
-								<strong><?php  echo t('Meta Keywords'); ?></strong>
+								<strong><?php echo t('Meta Keywords'); ?></strong>
 								<br />
 								<br />
-								<?php  echo $form->textarea('meta_keywords', $cobj->getAttribute('meta_keywords'), array('title' => $cID)); ?>
+								<?php echo $form->textarea('meta_keywords', $cobj->getAttribute('meta_keywords'), array('title' => $cID)); ?>
 							</div>
 								
-							<?php  if ($cobj->getCollectionID() != HOME_CID) { ?>
+							<?php if ($cobj->getCollectionID() != HOME_CID) { ?>
 							
 							<div style="margin-left: 30px;">
-								<strong><?php  echo t('Slug'); ?></strong>
+								<strong><?php echo t('Slug'); ?></strong>
 								<br />
 								<br />
-								<?php  echo $form->text('collection_handle', $cobj->getCollectionHandle(), array('title' => $cID, 'class' => 'collectionHandle')); ?>
+								<?php echo $form->text('collection_handle', $cobj->getCollectionHandle(), array('title' => $cID, 'class' => 'collectionHandle')); ?>
 								<br />
-								<?php 
+								<?php
 									Page::rescanCollectionPath($cID);
 									$path = $cobj->getCollectionPath();
 									$tokens = explode('/', $path);
 									$lastkey = array_pop(array_keys($tokens));
 									$tokens[$lastkey] = '<strong class="collectionPath">' . $tokens[$lastkey] . '</strong>';
 									$untokens = implode('/', $tokens);
-									?><a class="help-inline url-path" href="<?php  echo $nh->getLinkToCollection($cobj); ?>" target="_blank"><?php  echo BASE_URL . DIR_REL . $untokens; ?></a><?php 
+									?><a class="help-inline url-path" href="<?php echo $nh->getLinkToCollection($cobj); ?>" target="_blank"><?php echo BASE_URL . DIR_REL . $untokens; ?></a><?php
 								?>
 							</div>
-							<?php  } ?>
+							<?php } ?>
 									
 							<div class="updateButton">
 								<br />
 								<br />
-								<?php  print $concrete_interface->submit('Save', $formID, $buttonAlign = 'right', 'seoSubmit update' . $cID, array('title' => $cID)); ?>
+								<?php print $concrete_interface->submit(t('Save'), $formID, $buttonAlign = 'right', 'seoSubmit update' . $cID, array('title' => $cID)); ?>
 							</div>
 							<div>
-								<img style="display: none; position: absolute; top: 20px; right: 20px;" id="throbber<?php  echo $cID ?>"  class="throbber<?php  echo $cID ?>" src="<?php  echo ASSETS_URL_IMAGES . '/throbber_white_32.gif' ?>" />
+								<img style="display: none; position: absolute; top: 20px; right: 20px;" id="throbber<?php echo $cID ?>"  class="throbber<?php echo $cID ?>" src="<?php echo ASSETS_URL_IMAGES . '/throbber_white_32.gif' ?>" />
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 			<div style="clear: left"></div>	
-		<?php  } ?>
-	<?php  } else { ?>
-		<div class="ccm-results-list-none"><?php  echo t('No pages found.')?></div>
-	<?php   }
+		<?php } ?>
+	<?php } else { ?>
+		<div class="ccm-results-list-none"><?php echo t('No pages found.')?></div>
+	<?php  }
 	print $concrete_interface->button(t('Update All'), 'javascript:void(0)', $buttonAlign='right', $innerClass=null, $args = array('id'=>'allSeoSubmit'));
  	?>
 	<div style="clear: left;"></div>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		var options = { 
-			url: '<?php  echo $this->action("saveRecord") ?>',
+			url: '<?php echo $this->action("saveRecord") ?>',
 			dataType: 'json',
 			success:function(res) {
 				if(res.success) {
@@ -293,9 +289,9 @@ if (count($pages) > 0) {
 	});
 	
 	</script>
-	<?php  $pageList->displaySummary(); ?>
+	<?php $pageList->displaySummary(); ?>
 </div>
 <div class="ccm-pane-footer">
-	<?php  $pageList->displayPagingV2(); ?>
+	<?php $pageList->displayPagingV2(); ?>
 </div>
-<?php  echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>

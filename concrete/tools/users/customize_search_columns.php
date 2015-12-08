@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
 Loader::model('attribute/categories/user');
@@ -45,7 +45,7 @@ $list = UserAttributeKey::getList();
 	<div class="input">
 	<ul class="inputs-list">
 	
-	<?php 
+	<?php
 	$columns = $fldca->getColumns();
 	foreach($columns as $col) { 
 
@@ -53,7 +53,7 @@ $list = UserAttributeKey::getList();
 
 		<li><label><?php echo $form->checkbox($col->getColumnKey(), 1, $fldc->contains($col))?> <span><?php echo $col->getColumnName()?></span></label></li>
 	
-	<?php  } ?>
+	<?php } ?>
 	
 	</ul>
 	</div>
@@ -64,14 +64,14 @@ $list = UserAttributeKey::getList();
 	<div class="input">
 	<ul class="inputs-list">
 	
-	<?php 
+	<?php
 	$pk = PermissionKey::getByHandle('view_user_attributes');
 	foreach($list as $ak) { 
 		if ($pk->validate($ak)) { ?>
 
-		<li><label><?php echo $form->checkbox('ak_' . $ak->getAttributeKeyHandle(), 1, $fldc->contains($ak))?> <span><?php echo $ak->getAttributeKeyDisplayHandle()?></span></label></li>
+		<li><label><?php echo $form->checkbox('ak_' . $ak->getAttributeKeyHandle(), 1, $fldc->contains($ak))?> <span><?php echo $ak->getAttributeKeyDisplayName()?></span></label></li>
 	
-	<?php  } 
+	<?php } 
 	
 	}?>
 	
@@ -84,9 +84,9 @@ $list = UserAttributeKey::getList();
 	<p><?php echo t('Click and drag to change column order.')?></p>
 	
 	<ul class="ccm-search-sortable-column-wrapper" id="ccm-<?php echo $searchInstance?>-sortable-column-wrapper">
-	<?php  foreach($fldc->getColumns() as $col) { ?>
+	<?php foreach($fldc->getColumns() as $col) { ?>
 		<li id="field_<?php echo $col->getColumnKey()?>"><input type="hidden" name="column[]" value="<?php echo $col->getColumnKey()?>" /><?php echo $col->getColumnName()?></li>	
-	<?php  } ?>	
+	<?php } ?>	
 	</ul>
 	
 	<br/>
@@ -95,16 +95,16 @@ $list = UserAttributeKey::getList();
 	
 	<div class="ccm-sortable-column-sort-controls">
 	
-	<?php  $ds = $fldc->getDefaultSortColumn(); ?>
+	<?php $ds = $fldc->getDefaultSortColumn(); ?>
 	
-	<select <?php  if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php  } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
-	<?php  foreach($fldc->getSortableColumns() as $col) { ?>
-		<option id="opt_<?php echo $col->getColumnKey()?>" value="<?php echo $col->getColumnKey()?>" <?php  if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <?php  } ?>><?php echo $col->getColumnName()?></option>
-	<?php  } ?>	
+	<select <?php if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default" name="fSearchDefaultSort">
+	<?php foreach($fldc->getSortableColumns() as $col) { ?>
+		<option id="opt_<?php echo $col->getColumnKey()?>" value="<?php echo $col->getColumnKey()?>" <?php if ($col->getColumnKey() == $ds->getColumnKey()) { ?> selected="true" <?php } ?>><?php echo $col->getColumnName()?></option>
+	<?php } ?>	
 	</select>
-	<select <?php  if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php  } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
-		<option value="asc" <?php  if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <?php  } ?>><?php echo t('Ascending')?></option>
-		<option value="desc" <?php  if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <?php  } ?>><?php echo t('Descending')?></option>	
+	<select <?php if (count($fldc->getSortableColumns()) == 0) { ?>disabled="true"<?php } ?> id="ccm-<?php echo $searchInstance?>-sortable-column-default-direction" name="fSearchDefaultSortDirection">
+		<option value="asc" <?php if ($ds->getColumnDefaultSortDirection() == 'asc') { ?> selected="true" <?php } ?>><?php echo t('Ascending')?></option>
+		<option value="desc" <?php if ($ds->getColumnDefaultSortDirection() == 'desc') { ?> selected="true" <?php } ?>><?php echo t('Descending')?></option>	
 	</select>	
 	</div>
 

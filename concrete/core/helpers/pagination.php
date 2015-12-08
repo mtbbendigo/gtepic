@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 /**
  * Class to paginate record sets.
@@ -117,7 +117,7 @@ class Concrete5_Helper_Pagination {
 	
 	public function getRequestedPage() {
 		if (isset($_REQUEST[$this->queryStringPagingVariable])) {
-			return $_REQUEST[$this->queryStringPagingVariable];
+			return intval($_REQUEST[$this->queryStringPagingVariable]);
 		} else {
 			return 1;
 		}
@@ -230,9 +230,9 @@ class Concrete5_Helper_Pagination {
 			if ($this->current_page==$i){ 
 			
 					if($wrapper == 'li'){
-						$pages.="<li class=\"{$this->classCurrent} disabled\"><a href=\"#\">".($i+1)."</a></li>";
+						$pages.="<li class=\"{$this->classCurrent} numbers disabled\"><a href=\"#\">".($i+1)."</a></li>";
 					} else {
-						$pages.="<span class=\"{$this->classCurrent}\"><strong>".($i+1)."</strong></span>";
+						$pages.="<span class=\"{$this->classCurrent} numbers\"><strong>".($i+1)."</strong></span>";
 					}
 					
 			} else {
@@ -240,9 +240,9 @@ class Concrete5_Helper_Pagination {
 				   $linkURL=str_replace("%pageNum%", $i+1, $this->URL);
 				   
 					if($wrapper == 'li'){
-						$pages.="<li class=\"{$this->classOn}\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></li>";
+						$pages.="<li class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></li>";
 					} else {
-						$pages.="<span class=\"{$this->classOn}\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></span>";
+						$pages.="<span class=\"{$this->classOn} numbers\"><a href=\"{$linkURL}\" ".$this->getJSFunctionCall($i+1).">".($i+1)."</a></span>";
 					}
 					
 			} //end if not current page

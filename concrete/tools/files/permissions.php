@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $form = Loader::helper('form');
@@ -35,25 +35,25 @@ if ($_POST['task'] == 'set_location') {
 <div class="ccm-ui" id="ccm-file-permissions-dialog-wrapper">
 
 <ul class="tabs" id="ccm-file-permissions-tabs">
-	<?php  if (PERMISSIONS_MODEL != 'simple') { ?>
+	<?php if (PERMISSIONS_MODEL != 'simple') { ?>
 		<li class="active"><a href="javascript:void(0)" id="ccm-file-permissions-advanced"><?php echo t('Permissions')?></a></li>
-	<?php  } ?>
-	<li <?php  if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <?php  } ?>><a href="javascript:void(0)" id="ccm-file-password"><?php echo t('Protect with Password')?></a></li>
+	<?php } ?>
+	<li <?php if (PERMISSIONS_MODEL == 'simple') { ?> class="active" <?php } ?>><a href="javascript:void(0)" id="ccm-file-password"><?php echo t('Protect with Password')?></a></li>
 	<li><a href="javascript:void(0)" id="ccm-file-storage"><?php echo t('Storage Location')?></a></li>
 </ul>
 
 <div class="clearfix"></div>
 
-<?php  if (PERMISSIONS_MODEL != 'simple') { ?>
+<?php if (PERMISSIONS_MODEL != 'simple') { ?>
 
 <div id="ccm-file-permissions-advanced-tab">
 
-	<?php  Loader::element('permission/lists/file', array('f' => $f)); ?>
+	<?php Loader::element('permission/lists/file', array('f' => $f)); ?>
 
 </div>
-<?php  } ?>
+<?php } ?>
 
-<div id="ccm-file-password-tab" <?php  if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <?php  } ?>>
+<div id="ccm-file-password-tab" <?php if (PERMISSIONS_MODEL != 'simple') { ?> style="display: none" <?php } ?>>
 <br/>
 
 <h4><?php echo t('Requires Password to Access')?></h4>
@@ -86,13 +86,13 @@ if ($_POST['task'] == 'set_location') {
 
 <?php echo $form->hidden('task', 'set_location')?>
 <?php echo $form->hidden('fID', $f->getFileID())?>
-<div><?php echo $form->radio('fslID', 0, $f->getStorageLocationID()) ?> <?php echo t('Default Location')?> (<?php echo DIR_FILES_UPLOADED?>)</div>
+<label class="radio"><?php echo $form->radio('fslID', 0, $f->getStorageLocationID()) ?> <?php echo t('Default Location')?> (<?php echo DIR_FILES_UPLOADED?>)</label>
 
-<?php 
+<?php
 $fsl = FileStorageLocation::getByID(FileStorageLocation::ALTERNATE_ID);
 if (is_object($fsl)) { ?>
-	<div><?php echo $form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?php echo $fsl->getName()?> (<?php echo $fsl->getDirectory()?>)</div>
-<?php  } ?>
+	<label class="radio"><?php echo $form->radio('fslID', FileStorageLocation::ALTERNATE_ID, $f->getStorageLocationID()) ?> <?php echo $fsl->getName()?> (<?php echo $fsl->getDirectory()?>)</label>
+<?php } ?>
 </form>
 
 <div id="ccm-file-storage-buttons" style="display: none">
@@ -129,11 +129,11 @@ ccm_filePermissionsSetupButtons = function() {
 var ccm_fpActiveTab;
 
 $(function() {
-<?php  if (PERMISSIONS_MODEL == 'simple') { ?>
+<?php if (PERMISSIONS_MODEL == 'simple') { ?>
 	ccm_fpActiveTab = "ccm-file-password";
-<?php  } else { ?>
+<?php } else { ?>
 	ccm_fpActiveTab = "ccm-file-permissions-advanced";
-<?php  } ?>
+<?php } ?>
 
 	ccm_filePermissionsSetupButtons();
 	ccm_setupGridStriping('ccmPermissionsTable');

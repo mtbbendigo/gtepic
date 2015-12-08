@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
@@ -15,17 +15,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 <thead>
 <tr>
 	<td></td>
-	<?php  foreach($pageViews as $day => $total) { ?>
+	<?php foreach($pageViews as $day => $total) { ?>
 		<th><?php echo $day?></th>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
 	<th><?php echo t('Page Views')?></th>
-	<?php  foreach($pageViews as $total) { ?>
+	<?php foreach($pageViews as $total) { ?>
 		<td><?php echo $total?></td>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </table>
 
@@ -39,17 +39,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 <thead>
 <tr>
 	<td></td>
-	<?php  foreach($userRegistrations as $day => $total) { ?>
+	<?php foreach($userRegistrations as $day => $total) { ?>
 		<th><?php echo $day?></th>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
 	<th><?php echo t('User Registrations')?></th>
-	<?php  foreach($userRegistrations as $total) { ?>
+	<?php foreach($userRegistrations as $total) { ?>
 		<td><?php echo $total?></td>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </table>
 
@@ -71,24 +71,24 @@ defined('C5_EXECUTE') or die("Access Denied.");
 <thead>
 <tr>
 	<td></td>
-	<?php  foreach($newPages as $day => $total) { ?>
+	<?php foreach($newPages as $day => $total) { ?>
 		<th><?php echo $day?></th>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </thead>
 <tbody>
 <tr>
 	<th><?php echo t('Pages Created')?></th>
-	<?php  foreach($newPages as $total) { ?>
+	<?php foreach($newPages as $total) { ?>
 		<td><?php echo $total?></td>
-	<?php  } ?>
+	<?php } ?>
 </tr>
 </table>
 
 <br/>
 
-<p><?php  echo t('Total page versions')?>: <strong><?php  echo $totalVersions?></strong></p>
-<p><?php  echo t('Total pages in edit mode')?>: <strong><?php  echo $totalEditMode?></strong></p>
+<p><?php echo t('Total page versions')?>: <strong><?php echo $totalVersions?></strong></p>
+<p><?php echo t('Total pages in edit mode')?>: <strong><?php echo $totalEditMode?></strong></p>
 
 
 </div>
@@ -108,12 +108,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 </tr>
 </thead>
 <tbody>
-<?php  if (count($downloads) == 0) { ?>
+<?php if (count($downloads) == 0) { ?>
 	<tr>
 		<td colspan="3" style="text-align: center"><?php echo t('No files have been downloaded.')?></td>
 	</tr>
-<?php  } else { ?>
-<?php 
+<?php } else { ?>
+<?php
 	foreach($downloads as $download) {
 		$f = File::getByID($download['fID']);
 		if (!is_object($f)) {
@@ -121,7 +121,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		}
 		?>
 	<tr>
-		<td class='ccm-site-statistics-downloads-title'><a href="<?php echo $f->getDownloadURL()?>" title="<?php echo $f->getTitle();?>"><?php 
+		<td class='ccm-site-statistics-downloads-title'><a href="<?php echo $f->getDownloadURL()?>" title="<?php echo $f->getTitle();?>"><?php
 		$title = $f->getTitle();
 		$maxlen = 20;
 		if (strlen($title) > ($maxlen-4)) {
@@ -132,7 +132,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		echo $title;
 		?></a></td>
 		<td>
-			<?php 
+			<?php
 			$uID=intval($download['uID']);
 			if(!$uID){
 				echo t('Anonymous');
@@ -148,8 +148,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		</td>
 		<td><?php echo date(DATE_APP_GENERIC_MDYT, strtotime($download['timestamp']))?></td>
 	</tr>
-	<?php  } ?>
-<?php  } ?>
+	<?php } ?>
+<?php } ?>
 </table>
 
 

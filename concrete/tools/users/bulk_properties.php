@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 $tp = new TaskPermission();
@@ -91,7 +91,7 @@ function printAttributeRow($ak, $ek) {
 	
 	$html = '
 	<tr class="ccm-attribute-editable-field">
-		<td width="250" style="vertical-align: middle"><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyName() . '</a></strong></td>
+		<td width="250" style="vertical-align: middle"><strong><a href="javascript:void(0)">' . $ak->getAttributeKeyDisplayName() . '</a></strong></td>
 		<td style="vertical-align: middle" class="ccm-attribute-editable-field-central"><div class="ccm-attribute-editable-field-text">' . $text . '</div>
 		<form method="post" action="' . REL_DIR_FILES_TOOLS_REQUIRED . '/users/bulk_properties">
 			<input type="hidden" name="fakID" value="' . $ak->getAttributeKeyID() . '" />
@@ -112,7 +112,7 @@ function printAttributeRow($ak, $ek) {
 
 	$html = '
 	<tr>
-		<td width="250"><strong>' . $ak->getAttributeKeyName() . '</strong></td>
+		<td width="250"><strong>' . $ak->getAttributeKeyDisplayName() . '</strong></td>
 		<td style="vertical-align: middle" class="ccm-attribute-editable-field-central" colspan="2">' . $text . '</td>
 	</tr>';	
 	}
@@ -121,7 +121,7 @@ function printAttributeRow($ak, $ek) {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-properties-wrapper">
-<?php  } ?>
+<?php } ?>
 
 <div id="ccm-user-properties" class="ccm-ui">
 
@@ -132,7 +132,7 @@ if (!isset($_REQUEST['reload'])) { ?>
 </tr>
 </thead>
 <tbody>
-<?php 
+<?php
 
 foreach($attribs as $at) {
 
@@ -154,7 +154,7 @@ $(function() {
 });
 </script>
 
-<?php 
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<?php  }
+<?php }

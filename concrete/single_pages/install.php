@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
 <script type="text/javascript" src="<?php echo ASSETS_URL_JAVASCRIPT?>/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo ASSETS_URL_JAVASCRIPT?>/jquery.cookie.js"></script>
@@ -10,7 +10,7 @@ $(function() {
 });
 </script>
 
-<?php  
+<?php 
 
 $introMsg = t('To install concrete5, please fill out the form below.');
 
@@ -19,13 +19,13 @@ if (isset($successMessage)) { ?>
 <script type="text/javascript">
 $(function() {
 	
-<?php  for ($i = 1; $i <= count($installRoutines); $i++) {
+<?php for ($i = 1; $i <= count($installRoutines); $i++) {
 	$routine = $installRoutines[$i-1]; ?>
 
 	ccm_installRoutine<?php echo $i?> = function() {
-		<?php  if ($routine->getText() != '') { ?>
+		<?php if ($routine->getText() != '') { ?>
 			$("#install-progress-summary").html('<?php echo addslashes($routine->getText())?>');
-		<?php  } ?>
+		<?php } ?>
 		$.ajax('<?php echo $this->url("/install", "run_routine", $installPackage, $routine->getMethod())?>', {
 			dataType: 'json',
 			error: function(r) {
@@ -40,19 +40,19 @@ $(function() {
 					$("#install-progress-error-wrapper").fadeIn(300);
 				} else {
 					$('#install-progress-bar div.bar').css('width', '<?php echo $routine->getProgress()?>%');
-					<?php  if ($i < count($installRoutines)) { ?>
+					<?php if ($i < count($installRoutines)) { ?>
 						ccm_installRoutine<?php echo $i+1?>();
-					<?php  } else { ?>
+					<?php } else { ?>
 						$("#install-progress-wrapper").fadeOut(300, function() {
 							$("#success-message").fadeIn(300);
 						});
-					<?php  } ?>
+					<?php } ?>
 				}
 			}
 		});
 	}
 	
-<?php  } ?>
+<?php } ?>
 
 	ccm_installRoutine1();
 
@@ -64,6 +64,7 @@ $(function() {
 <div class="span10 offset1">
 <div class="page-header">
 <h1><?php echo t('Install concrete5')?></h1>
+<p><?php echo t('Version %s', APP_VERSION)?></p>
 </div>
 </div>
 </div>
@@ -104,7 +105,7 @@ $(function() {
 </div>
 </div>
 
-<?php  } else if ($this->controller->getTask() == 'setup' || $this->controller->getTask() == 'configure') { ?>
+<?php } else if ($this->controller->getTask() == 'setup' || $this->controller->getTask() == 'configure') { ?>
 
 <script type="text/javascript">
 $(function() {
@@ -121,6 +122,7 @@ $(function() {
 
 <div class="page-header">
 <h1><?php echo t('Install concrete5')?></h1>
+<p><?php echo t('Version %s', APP_VERSION)?></p>
 </div>
 
 </div>
@@ -211,32 +213,32 @@ $(function() {
 <h3><?php echo t('Sample Content')?></h3>
 
 		
-		<?php 
+		<?php
 		$uh = Loader::helper('concrete/urls');
 		?>
 		
 		<table class="table table-striped" id="sample-content-selector">
 		<tbody>
-		<?php  
+		<?php 
 		$availableSampleContent = StartingPointPackage::getAvailableList();
 		foreach($availableSampleContent as $spl) { 
 			$pkgHandle = $spl->getPackageHandle();
 		?>
 
-		<tr class="<?php  if ($this->post('SAMPLE_CONTENT') == $pkgHandle || (!$this->post('SAMPLE_CONTENT') && $pkgHandle == 'standard') || count($availableSampleContent) == 1) { ?>package-selected<?php  } ?>">
+		<tr class="<?php if ($this->post('SAMPLE_CONTENT') == $pkgHandle || (!$this->post('SAMPLE_CONTENT') && $pkgHandle == 'standard') || count($availableSampleContent) == 1) { ?>package-selected<?php } ?>">
 			<td><?php echo $form->radio('SAMPLE_CONTENT', $pkgHandle, ($pkgHandle == 'standard' || count($availableSampleContent) == 1))?></td>
 			<td class="sample-content-thumbnail"><img src="<?php echo $uh->getPackageIconURL($spl)?>" width="97" height="97" alt="<?php echo $spl->getPackageName()?>" /></td>
 			<td class="sample-content-description" width="100%"><h4><?php echo $spl->getPackageName()?></h4><p><?php echo $spl->getPackageDescription()?></td>
 		</tr>
 		
-		<?php  } ?>
+		<?php } ?>
 		
 		</tbody>
 		</table>
 		<br/>
-		<?php  if (!StartingPointPackage::hasCustomList()) { ?>
+		<?php if (!StartingPointPackage::hasCustomList()) { ?>
 			<div class="alert-message block-message info"><?php echo t('concrete5 veterans can choose "Empty Site," but otherwise we recommend starting with some sample content.')?></div>
-		<?php  } ?>
+		<?php } ?>
 
 	
 </div>
@@ -255,7 +257,7 @@ $(function() {
 </form>
 
 
-<?php  } else if (isset($locale) || count($locales) == 0) { ?>
+<?php } else if (isset($locale) || count($locales) == 0) { ?>
 
 <script type="text/javascript">
 
@@ -263,11 +265,11 @@ $(function() {
 	$("#install-errors").hide();
 });
 
-<?php  if ($this->controller->passedRequiredItems()) { ?>
+<?php if ($this->controller->passedRequiredItems()) { ?>
 	var showFormOnTestCompletion = true;
-<?php  } else { ?>
+<?php } else { ?>
 	var showFormOnTestCompletion = false;
-<?php  } ?>
+<?php } ?>
 
 
 $(function() {
@@ -312,6 +314,7 @@ $(function() {
 <div class="span10 offset1">
 <div class="page-header">
 	<h1><?php echo t('Install concrete5')?></h1>
+	<p><?php echo t('Version %s', APP_VERSION)?></p>
 </div>
 
 <h3><?php echo t('Testing Required Items')?></h3>
@@ -324,9 +327,9 @@ $(function() {
 <table class="table table-striped">
 <tbody>
 <tr>
-	<td class="ccm-test-phpversion"><?php  if ($phpVtest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php  } ?></td>
+	<td class="ccm-test-phpversion"><?php if ($phpVtest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php } ?></td>
 	<td width="100%"><?php echo t(/*i18n: %s is the php version*/'PHP %s', $phpVmin)?></td>
-	<td><?php  if (!$phpVtest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires at least PHP %s', $phpVmin)?>" /><?php  } ?></td>
+	<td><?php if (!$phpVtest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires at least PHP %s', $phpVmin)?>" /><?php } ?></td>
 </tr>
 <tr>
 	<td class="ccm-test-js"><img id="ccm-test-js-success" src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" style="display: none" />
@@ -335,10 +338,10 @@ $(function() {
 	<td class="ccm-test-js"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('Please enable JavaScript in your browser.')?>" /></td>
 </tr>
 <tr>
-	<td><?php  if ($mysqlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php  } ?></td>
+	<td><?php if ($mysqlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php } ?></td>
 	<td width="100%"><?php echo t('MySQL Available')?>
 	</td>
-	<td><?php  if (!$mysqlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo $this->controller->getDBErrorMsg()?>" /><?php  } ?></td>
+	<td><?php if (!$mysqlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo $this->controller->getDBErrorMsg()?>" /><?php } ?></td>
 </tr>
 <tr>
 	<td><img id="ccm-test-request-loading"  src="<?php echo ASSETS_URL_IMAGES?>/dashboard/sitemap/loading.gif" /></td>
@@ -354,22 +357,22 @@ $(function() {
 <table class="table table-striped">
 
 <tr>
-	<td><?php  if ($imageTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php  } ?></td>
+	<td><?php if ($imageTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php } ?></td>
 	<td width="100%"><?php echo t('Image Manipulation Available')?>
 	</td>
-	<td><?php  if (!$imageTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires GD library 2.0.1 or greater')?>" /><?php  } ?></td>
+	<td><?php if (!$imageTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires GD library 2.0.1 or greater')?>" /><?php } ?></td>
 </tr>
 <tr>
-	<td><?php  if ($xmlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php  } ?></td>
+	<td><?php if ($xmlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php } ?></td>
 	<td width="100%"><?php echo t('XML Support')?>
 	</td>
-	<td><?php  if (!$xmlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires PHP XML Parser and SimpleXML extensions')?>" /><?php  } ?></td>
+	<td><?php if (!$xmlTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('concrete5 requires PHP XML Parser and SimpleXML extensions')?>" /><?php } ?></td>
 </tr>
 <tr>
-	<td><?php  if ($fileWriteTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php  } ?></td>
+	<td><?php if ($fileWriteTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/error.png" /><?php } ?></td>
 	<td width="100%"><?php echo t('Writable Files and Configuration Directories')?>
 	</td>
-	<td><?php  if (!$fileWriteTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('The config/, packages/ and files/ directories must be writable by your web server.')?>" /><?php  } ?></td>
+	<td><?php if (!$fileWriteTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('The config/, packages/ and files/ directories must be writable by your web server.')?>" /><?php } ?></td>
 </tr>
 <tr>
 	<td><img id="ccm-test-cookies-enabled-loading"  src="<?php echo ASSETS_URL_IMAGES?>/dashboard/sitemap/loading.gif" /></td>
@@ -399,10 +402,10 @@ $(function() {
 <table class="table table-striped">
 <tbody>
 <tr>
-	<td><?php  if ($remoteFileUploadTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php  } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/warning.png" /><?php  } ?></td>
+	<td><?php if ($remoteFileUploadTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/success.png" /><?php } else { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/warning.png" /><?php } ?></td>
 	<td width="100%"><?php echo t('Remote File Importing Available')?>
 	</td>
-	<td><?php  if (!$remoteFileUploadTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('Remote file importing through the file manager requires the iconv PHP extension.')?>" /><?php  } ?></td>
+	<td><?php if (!$remoteFileUploadTest) { ?><img src="<?php echo ASSETS_URL_IMAGES?>/icons/tooltip.png" class="launch-tooltip" title="<?php echo t('Remote file importing through the file manager requires the iconv PHP extension.')?>" /><?php } ?></td>
 </tr>
 </table>
 
@@ -434,12 +437,13 @@ $(function() {
 </div>
 </div>
 
-<?php  } else { ?>
+<?php } else { ?>
 
 <div class="row">
 <div class="span10 offset1">
 <div class="page-header">
 	<h1><?php echo t('Install concrete5')?></h1>
+	<p><?php echo t('Version %s', APP_VERSION)?></p>
 </div>
 </div>
 </div>
@@ -470,4 +474,4 @@ $(function() {
 </div>
 </div>
 
-<?php  } ?>
+<?php } ?>

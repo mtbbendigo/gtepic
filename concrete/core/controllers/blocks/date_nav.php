@@ -1,4 +1,4 @@
-<?php  
+<?php 
 
 	defined('C5_EXECUTE') or die("Access Denied.");
 /**
@@ -19,6 +19,7 @@
 		protected $btExportPageColumns = array('cParentID');
 		protected $btExportPageTypeColumns = array('ctID');
 		protected $btCacheBlockRecord = true;
+		protected $btWrapperClass = 'ccm-ui';
 		
 		/** 
 		 * Used for localization. If we want to localize the name/description we have to include this
@@ -144,5 +145,3 @@
 			parent::save($args);		
 		} 
 	}
-
-?>

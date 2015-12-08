@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $form = Loader::helper('form');
 $searchWithinOther=($searchObj->baseSearchPath!=$c->getCollectionPath() && $searchObj->baseSearchPath!='' && strlen($searchObj->baseSearchPath)>0)?true:false;
@@ -20,9 +20,9 @@ if (is_object($basePostPage) && $basePostPage->isError()) {
 }
 ?>
 
-<?php  if (!$controller->indexExists()) { ?>
+<?php if (!$controller->indexExists()) { ?>
 	<div class="ccm-error"><?php echo t('The search index does not appear to exist. This block will not function until the reindex job has been run at least once in the dashboard.')?><br/><br/></div>
-<?php  } ?>
+<?php } ?>
 
 <fieldset>
 
@@ -63,7 +63,7 @@ if (is_object($basePostPage) && $basePostPage->isError()) {
 					<?php echo t('beneath another page')?>
 					<div id="basePathSelector" style="display:<?php echo ($searchWithinOther)?'block':'none'?>" >
 
-						<?php  $select_page = Loader::helper('form/page_selector');
+						<?php $select_page = Loader::helper('form/page_selector');
 						if ($searchWithinOther) {
 							$cpo = Page::getByPath($baseSearchPath);
 							if (is_object($cpo)) {
@@ -93,7 +93,7 @@ if (is_object($basePostPage) && $basePostPage->isError()) {
 					</label>
 				</li>
 				<li id="ccm-searchBlock-resultsURL-wrap" style=" <?php echo (strlen($searchObj->resultsURL) || $basePostPage !== NULL)?'':'display:none'?>" >
-					<?php 
+					<?php
 					if ($basePostPage !== NULL) {
 						print $select_page->selectPage('postTo_cID', $basePostPage->getCollectionID());
 					} else {

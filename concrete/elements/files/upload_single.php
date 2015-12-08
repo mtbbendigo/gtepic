@@ -1,6 +1,6 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?> 
-<?php  $valt = Loader::helper('validation/token'); ?>
-<?php  if ($mode == 'replace') { ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php $valt = Loader::helper('validation/token'); ?>
+<?php if ($mode == 'replace') { ?>
 
 
 <div id="ccm-files-add-asset-replace">
@@ -15,7 +15,7 @@
 </form>
 </div>
 
-<?php  } else { 
+<?php } else { 
 
 $form = Loader::helper("form");
 $fp = FilePermissions::getGlobal();
@@ -35,7 +35,7 @@ if ($fp->canAddFiles()) {
 </form>
 </div>
 
-<?php  } 
+<?php } 
 
 }
 ?>

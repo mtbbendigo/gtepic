@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * An object that represents metadata added to users.
@@ -367,10 +367,20 @@ class Concrete5_Model_UserAttributeKey extends AttributeKey {
 
 class Concrete5_Model_UserAttributeValue extends AttributeValue {
 
+	/**
+	 * @param UserInfo $uo
+	 */
 	public function setUser($uo) {
 		$this->u = $uo;
 	}
-	
+
+	/**
+	 * @return UserInfo
+	 */
+	public function getUser() {
+		return $this->u;
+	}
+
 	public static function getByID($avID) {
 		$uav = new UserAttributeValue();
 		$uav->load($avID);

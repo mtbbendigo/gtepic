@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $dh = Loader::helper('concrete/dashboard');
 
@@ -6,9 +6,9 @@ echo $dh->getDashboardPaneHeaderWrapper(t('Proxy Server Settings'), t('Configure
 ?>
 
 <form method="post" class="form-stacked" id="proxy-form"
-	action="<?php  echo $this->action('update_proxy'); ?>">
+	action="<?php echo $this->action('update_proxy'); ?>">
 	<div class="ccm-pane-body">
-		<?php  echo $this->controller->token->output('update_proxy'); ?>
+		<?php echo $this->controller->token->output('update_proxy'); ?>
 
 		<div class="clearfix">
 			<fieldset>
@@ -44,8 +44,8 @@ echo $dh->getDashboardPaneHeaderWrapper(t('Proxy Server Settings'), t('Configure
 	</div>
 
 	<div class="ccm-pane-footer">
-		<?php  echo $interface->submit(t('Save'), 'proxy-form', 'right', 'primary'); ?>
+		<?php echo $interface->submit(t('Save'), 'proxy-form', 'right', 'primary'); ?>
 	</div>
 </form>
 
-<?php  echo $dh->getDashboardPaneFooterWrapper(false); ?>
+<?php echo $dh->getDashboardPaneFooterWrapper(false); ?>

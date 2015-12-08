@@ -1,3 +1,5 @@
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Storage Locations'), false, 'span6 offset3', false)?>
 
 	<form method="post" class="form-inline" id="file-access-storage" action="<?php echo $this->url('/dashboard/system/environment/file_storage_locations', 'save')?>">
@@ -29,10 +31,14 @@
 			</fieldset>
 	</div>
 	<div class="ccm-pane-footer">
-			<?php 		
-				$b1 = $concrete_interface->submit(t('Save'), 'file-storage', 'right', 'primary');
-				print $b1;
-			?>		
+		<?php		
+			$b1 = $concrete_interface->submit(t('Save'), 'file-storage', 'right', 'primary');
+			print $b1;
+		?>		
+		<?php if (is_object($fsl)) { ?>
+			<button type="submit" name="delete" value="1" onclick="return confirm('<?php echo t('Are you sure? (Note: this will not remove any files, it will simply remove the pointer to the directory, and reset any files that are set to this location.)')?>')" class="pull-right btn btn-danger"><?php echo t('Delete Alternate')?></button>
+		<?php } ?>
+
 	</div>
 	</form>
 

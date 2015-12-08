@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 global $c;
 Loader::model('collection_types');
@@ -20,11 +20,11 @@ if ($_REQUEST['approveImmediately'] == 1) {
 }
 ?>
 <div class="ccm-pane-controls ccm-ui">
-<?php  if ($approveImmediately) { ?>
+<?php if ($approveImmediately) { ?>
 	<div class="alert-message block-message notice">
 		<?php echo t("Note: Since you haven't checked this page out for editing, these changes will immediately be approved.")?>
 	</div>
-<?php  } ?>
+<?php } ?>
 
 <form method="post" name="permissionForm" id="ccmMetadataForm" action="<?php echo $c->getCollectionAction()?>">
 <input type="hidden" name="approveImmediately" value="<?php echo $approveImmediately?>" />
@@ -75,78 +75,79 @@ if ($_REQUEST['approveImmediately'] == 1) {
 	</script>
 	
 
-	<div id="ccm-required-meta">
+	<div id="ccm-required-meta"></div>
 	
 	
-	<?php  if (!$c->isMasterCollection()) { ?>
+	<?php if (!$c->isMasterCollection()) { ?>
 	<ul class="nav-tabs nav" id="ccm-properties-tabs">
 		<li class="active"><a href="javascript:void(0)" id="ccm-properties-standard"><?php echo t('Standard Properties')?></a></li>
 		<li><a href="javascript:void(0)" id="ccm-properties-custom"><?php echo t('Custom Attributes')?></a></li>
-		<li <?php  if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<?php  } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?php echo t('Page Paths and Location')?></a></li>
+		<li <?php if ($c->isMasterCollection() || !$asl->allowEditPaths()) { ?>style="display: none"<?php } ?>><a href="javascript:void(0)" id="ccm-page-paths"><?php echo t('Page Paths and Location')?></a></li>
 	</ul>
-	<?php  } ?>
+	<?php } ?>
 
-	<div id="ccm-properties-standard-tab" <?php  if ($c->isMasterCollection()) { ?>style="display: none" <?php  } ?>>
+	<div id="ccm-properties-standard-tab" <?php if ($c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
 	
-	<?php  if ($asl->allowEditName()) { ?>
+	<?php if ($asl->allowEditName()) { ?>
 	<div class="clearfix">
 		<label for="cName"><?php echo t('Name')?></label>
 		<div class="input"><input type="text" id="cName" name="cName" value="<?php echo htmlentities( $c->getCollectionName(), ENT_QUOTES, APP_CHARSET) ?>" />
 			<span class="help-inline"><?php echo t("Page ID: %s", $c->getCollectionID())?></span>
 		</div>
 	</div>
-	<?php  } ?>
+	<?php } ?>
 
-	<?php  if ($asl->allowEditDateTime()) { ?>
+	<?php if ($asl->allowEditDateTime()) { ?>
 	<div class="clearfix">
 		<label for="cDatePublic"><?php echo t('Public Date/Time')?></label>
-		<div class="input"><?php  print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
+		<div class="input"><?php print $dt->datetime('cDatePublic', $c->getCollectionDatePublic(null, 'user')); ?></div>
 	</div>
-	<?php  } ?>
+	<?php } ?>
 	
-	<?php  if ($asl->allowEditUserID()) { ?>
+	<?php if ($asl->allowEditUserID()) { ?>
 	<div class="clearfix">
 	<label><?php echo t('Owner')?></label>
 	<div class="input">
-		<?php  
+		<?php 
 		print $uh->selectUser('uID', $c->getCollectionUserID());
 		?>
 	</div>
 	</div>
-	<?php  } ?>
+	<?php } ?>
 	
 
-	<?php  if ($asl->allowEditDescription()) { ?>
+	<?php if ($asl->allowEditDescription()) { ?>
 	<div class="clearfix">
 	<label for="cDescription"><?php echo t('Description')?></label>
-	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?php echo $c->getCollectionDescription()?></textarea></div>
+	<div class="input"><textarea id="cDescription" name="cDescription" class="ccm-input-text" style="width: 495px; height: 50px"><?php echo h($c->getCollectionDescription())?></textarea></div>
 	</div>
-	<?php  } ?>
+	<?php } ?>
 	
 	</div>
 	
-	<?php  if ($asl->allowEditPaths()) { ?>
+	<?php if ($asl->allowEditPaths()) { ?>
 	<div id="ccm-page-paths-tab" style="display: none">
-		
+		<?php if ($c->getCollectionID() != 1) { ?>
 		<div class="clearfix">
-		<label for="cHandle"><?php echo  t('Canonical URL')?></label>
+		<label for="cHandle"><?php echo t('Canonical URL')?></label>
 		<div class="input">
-		<?php  if (!$c->isGeneratedCollection()) { ?>
-			<?php echo BASE_URL . DIR_REL;?><?php  if (URL_REWRITING == false) { ?>/<?php echo DISPATCHER_FILENAME?><?php  } ?><?php 
+		<?php if (!$c->isGeneratedCollection()) { ?>
+			<?php echo BASE_URL . DIR_REL;?><?php if (URL_REWRITING == false) { ?>/<?php echo DISPATCHER_FILENAME?><?php } ?><?php
 			$cPath = substr($c->getCollectionPath(), strrpos($c->getCollectionPath(), '/') + 1);
-			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php  echo $cPath?>" id="cHandle"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php  echo $c->getCollectionHandle()?>"><br /><br />
-		<?php   } else { ?>
-			<?php  echo $c->getCollectionHandle()?><br /><br />
-		<?php   } ?>
+			print substr($c->getCollectionPath(), 0, strrpos($c->getCollectionPath(), '/'))?>/<input type="text" name="cHandle" value="<?php echo $cPath?>" id="cHandle" maxlength="128"><input type="hidden" name="oldCHandle" id="oldCHandle" value="<?php echo $c->getCollectionHandle()?>"><br /><br />
+		<?php  } else { ?>
+			<?php echo $c->getCollectionHandle()?><br /><br />
+		<?php  } ?>
 			<span class="help-block"><?php echo t('This page must always be available from at least one URL. That URL is listed above.')?></span>
 		</div>
 		</div>
+		<?php } ?>
 		
-		<?php  if (!$c->isGeneratedCollection()) { ?>
+		<?php if (!$c->isGeneratedCollection()) { ?>
 		<div class="clearfix" id="ccm-more-page-paths">
-			<label><?php echo  t('More URLs') ?></label>
+			<label><?php echo t('More URLs') ?></label>
 
-			<?php 
+			<?php
 				$paths = $c->getPagePaths();
 				foreach ($paths as $path) {
 					if (!$path['ppIsCanonical']) {
@@ -168,18 +169,18 @@ if ($_REQUEST['approveImmediately'] == 1) {
 		 		<p><?php echo t('Note: Additional page paths are not versioned. They will be available immediately.')?></p>
 			</div>			
 
-		<?php  } ?>
+		<?php } ?>
 	
 	</div>
 	
 	<style type="text/css">
 	#ccm-more-page-paths div.input {margin-bottom: 10px;}
 	</style>
-	<?php  } ?>
+	<?php } ?>
 	
 	
-	<div id="ccm-properties-custom-tab" <?php  if (!$c->isMasterCollection()) { ?>style="display: none" <?php  } ?>>
-		<?php  Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
+	<div id="ccm-properties-custom-tab" <?php if (!$c->isMasterCollection()) { ?>style="display: none" <?php } ?>>
+		<?php Loader::element('collection_metadata_fields', array('c'=>$c, 'assignment' => $asl) ); ?>
 	</div>
 
 	

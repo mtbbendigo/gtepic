@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 /**
  * @package Blocks
@@ -163,7 +163,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 						$requiredSymbol=($questionRow['required'])?'&nbsp;<span class="required">*</span>':'';
 						echo '<tr>
 						        <td valign="top" class="question"><label for="Question'.intval($questionRow['msqID']).'">'.$questionRow['question'].''.$requiredSymbol.'</label></td>
-						        <td valign="top">'.$this->loadInputType($questionRow,showEdit).'</td>
+						        <td valign="top">'.$this->loadInputType($questionRow, $showEdit).'</td>
 						      </tr>';
 					//}
 				}			
@@ -196,20 +196,20 @@ class Concrete5_Controller_Block_FormMinisurvey {
 				
 					$requiredSymbol=($questionRow['required'])?'<span class="required">*</span>':'';				
 					?>
-					<div id="miniSurveyQuestionRow<?php  echo $questionRow['msqID']?>" class="miniSurveyQuestionRow">
-						<div class="miniSurveyQuestion"><?php  echo $questionRow['question'].' '.$requiredSymbol?></div>
-						<?php   /* <div class="miniSurveyResponse"><?php  echo $this->loadInputType($questionRow,$showEdit)?></div> */ ?>
+					<div id="miniSurveyQuestionRow<?php echo $questionRow['msqID']?>" class="miniSurveyQuestionRow">
+						<div class="miniSurveyQuestion"><?php echo $questionRow['question'].' '.$requiredSymbol?></div>
+						<?php  /* <div class="miniSurveyResponse"><?php echo $this->loadInputType($questionRow,$showEdit)?></div> */ ?>
 						<div class="miniSurveyOptions">
 							<div style="float:right">
-								<a href="javascript:void(0)" onclick="miniSurvey.moveUp(this,<?php  echo $questionRow['msqID']?>);return false" class="moveUpLink"></a> 
-								<a href="javascript:void(0)" onclick="miniSurvey.moveDown(this,<?php  echo $questionRow['msqID']?>);return false" class="moveDownLink"></a>						  
+								<a href="javascript:void(0)" onclick="miniSurvey.moveUp(this,<?php echo $questionRow['msqID']?>);return false" class="moveUpLink"></a> 
+								<a href="javascript:void(0)" onclick="miniSurvey.moveDown(this,<?php echo $questionRow['msqID']?>);return false" class="moveDownLink"></a>						  
 							</div>						
-							<a href="javascript:void(0)" onclick="miniSurvey.reloadQuestion(<?php echo intval($questionRow['qID']) ?>);return false"><?php  echo t('edit')?></a> &nbsp;&nbsp; 
-							<a href="javascript:void(0)" onclick="miniSurvey.deleteQuestion(this,<?php echo intval($questionRow['msqID']) ?>,<?php echo intval($questionRow['qID'])?>);return false"><?php echo  t('remove')?></a>
+							<a href="javascript:void(0)" onclick="miniSurvey.reloadQuestion(<?php echo intval($questionRow['qID']) ?>);return false"><?php echo t('edit')?></a> &nbsp;&nbsp; 
+							<a href="javascript:void(0)" onclick="miniSurvey.deleteQuestion(this,<?php echo intval($questionRow['msqID']) ?>,<?php echo intval($questionRow['qID'])?>);return false"><?php echo t('remove')?></a>
 						</div>
 						<div class="miniSurveySpacer"></div>
 					</div>
-				<?php   }			 
+				<?php  }			 
 				echo '</div></div>';
 			}
 		}
@@ -218,6 +218,7 @@ class Concrete5_Controller_Block_FormMinisurvey {
 			$options=explode('%%',$questionData['options']);
 			$msqID=intval($questionData['msqID']);
 			$datetime = loader::helper('form/date_time');
+			$html = '';
 			switch($questionData['inputType']){			
 				case 'checkboxlist': 
 					// this is looking really crappy so i'm going to make it behave the same way all the time - andrew

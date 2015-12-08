@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Concrete5_Model_UserBannedIP extends ADOdb_Active_Record {	
 	
 	public $_table = 'UserBannedIPs';

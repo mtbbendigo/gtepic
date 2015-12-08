@@ -1,4 +1,4 @@
-<?php   defined('C5_EXECUTE') or die("Access Denied."); 
+<?php  defined('C5_EXECUTE') or die("Access Denied."); 
 /**
  * Displays next and previous links based on the current area of the site where added.
  *
@@ -93,6 +93,8 @@ class Concrete5_Controller_Block_NextPrevious extends BlockController {
 				$cp = new Permissions($page);
 				if ($cp->canRead() && $page->getAttribute('exclude_nav') != 1) {
 					break;
+				} else {
+					$page = null; //avoid accidentally returning this $page if we're on last loop iteration
 				}
 			}
 		}
@@ -129,6 +131,8 @@ class Concrete5_Controller_Block_NextPrevious extends BlockController {
 				$cp = new Permissions($page);
 				if ($cp->canRead() && $page->getAttribute('exclude_nav') != 1) {
 					break;
+				} else {
+					$page = null; //avoid accidentally returning this $page if we're on last loop iteration
 				}
 			}
 		}

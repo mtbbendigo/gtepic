@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $th = Loader::helper('text');
@@ -12,7 +12,7 @@ $gl = new GroupSearch();
 $gl->setItemsPerPage(10000);
 $gArray = $gl->getPage();
 
-$languages = Localization::getAvailableInterfaceLanguages();
+$locales = Localization::getAvailableInterfaceLanguageDescriptions(ACTIVE_LOCALE);
 
 ?>
 
@@ -42,43 +42,31 @@ $languages = Localization::getAvailableInterfaceLanguages();
 				</tr>
                 <tr>
                     <td><?php echo t('Email Address')?> <span class="required">*</span></td>
-                    <td><?php  if ($assignment->allowEditAvatar()) { ?><?php echo t('User Avatar')?><?php  } ?></td>
+                    <td><?php if ($assignment->allowEditAvatar()) { ?><?php echo t('User Avatar')?><?php } ?></td>
                 </tr>
                 <tr>
 					<td><input type="text" name="uEmail" autocomplete="off" value="<?php echo $th->entities($_POST['uEmail'])?>" style="width: 95%"></td>
-					<td><?php  if ($assignment->allowEditAvatar()) { ?><input type="file" name="uAvatar" style="width: 95%"/><?php  } ?></td>
+					<td><?php if ($assignment->allowEditAvatar()) { ?><input type="file" name="uAvatar" style="width: 95%"/><?php } ?></td>
 				</tr>
                 
                 
-				<?php  if (count($languages) > 0) { ?>
+				<?php if (count($locales) > 1) { // "> 1" because en_US is always available ?>
 			
 				<tr>
 					<td colspan="2"><?php echo t('Language')?></td>
 				</tr>	
 				<tr>
 					<td colspan="2">
-					<?php 
-						array_unshift($languages, 'en_US');
-						$locales = array();
-						$locales[''] = t('** Default');
-						Loader::library('3rdparty/Zend/Locale');
-						Loader::library('3rdparty/Zend/Locale/Data');
-						Zend_Locale_Data::setCache(Cache::getLibrary());
-						foreach($languages as $lang) {
-							$loc = new Zend_Locale($lang);
-							$locales[$lang] = Zend_Locale::getTranslation($loc->getLanguage(), 'language', ACTIVE_LOCALE);
-						}
-						print $form->select('uDefaultLanguage', $locales);
-					?>
+					<?php print $form->select('uDefaultLanguage', $locales, Localization::activeLocale()); ?>
 					</td>
 				</tr>
                 
-				<?php  } ?>
+				<?php } ?>
                 
 			</tbody>
 		</table>
 
-	<?php  if (count($attribs) > 0) { ?>
+	<?php if (count($attribs) > 0) { ?>
 	
         <table class="table table-striped">
         	<thead>
@@ -86,24 +74,24 @@ $languages = Localization::getAvailableInterfaceLanguages();
             		<th><?php echo t('Registration Data')?></th>
 	        	</tr>
 			</thead>
-            <tbody class="inputs-list">
+            <tbody>
             
-			<?php  foreach($attribs as $ak) { 
+			<?php foreach($attribs as $ak) { 
 				if (in_array($ak->getAttributeKeyID(), $assignment->getAttributesAllowedArray())) { 
 				?>
                 <tr>
                     <td class="clearfix">
-                    	<label><?php echo $ak->getAttributeKeyName()?> <?php  if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><?php  } ?></label>
-                        <?php  $ak->render('form', $caValue, false)?>
+                    	<label><?php echo $ak->getAttributeKeyDisplayName()?> <?php if ($ak->isAttributeKeyRequiredOnRegister()) { ?><span class="required">*</span><?php } ?></label>
+                        <?php $ak->render('form', $caValue, false)?>
                     </td>
                 </tr>
-                <?php  } ?>
-            <?php  } // END Foreach ?>
+                <?php } ?>
+            <?php } // END Foreach ?>
         
 			</tbody>
         </table>
 	
-	<?php  } ?>
+	<?php } ?>
 
 		<table class="inputs-list table-striped table">
         	<thead>
@@ -115,7 +103,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
 				<tr>
 					<td>
                     
-					<?php  
+					<?php 
 					$gak = PermissionKey::getByHandle('assign_user_groups');
 					foreach ($gArray as $g) { 
 						if ($gak->validate($g['gID'])) {
@@ -123,16 +111,16 @@ $languages = Localization::getAvailableInterfaceLanguages();
 
 						?>
 						<label>
-							<input type="checkbox" name="gID[]" value="<?php echo $g['gID']?>" <?php  
+							<input type="checkbox" name="gID[]" value="<?php echo $g['gID']?>" <?php 
                             if (is_array($_POST['gID'])) {
                                 if (in_array($g['gID'], $_POST['gID'])) {
                                     echo(' checked ');
                                 }
                             }
                         ?> />
-							<span><?php echo $g['gName']?></span>
+							<span><?php echo h(tc('GroupName', $g['gName']))?></span>
 						</label>
-                    <?php  }
+                    <?php }
                     
                     
                 } ?>
@@ -149,7 +137,7 @@ $languages = Localization::getAvailableInterfaceLanguages();
     <div class="ccm-pane-footer">
         <div class="ccm-buttons">
             <input type="hidden" name="create" value="1" />
-            <?php  print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
+            <?php print $ih->submit(t('Add'), 'ccm-user-form', 'right', 'primary'); ?>
         </div>	
     </div>
 

@@ -1,9 +1,9 @@
-<?php   defined('C5_EXECUTE') or die("Access Denied.");
+<?php  defined('C5_EXECUTE') or die("Access Denied.");
 
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
 	<p><?php echo t('You do not have permission to download packages from the marketplace.')?></p>
-	<?php  exit;
+	<?php exit;
 
 }
 
@@ -55,7 +55,7 @@ if (!$error->has() && $install) {
 
 if (!$error->has()) { ?>
 	<p>
-	<?php  if ($install) {
+	<?php if ($install) {
 		$_pkg = Package::getByHandle($p->getPackageHandle());
 		if ($_pkg->hasInstallPostScreen()) { 
 			Loader::element('dashboard/install_post', false, $_pkg->getPackageHandle());
@@ -70,14 +70,14 @@ if (!$error->has()) { ?>
 	print '</div>';
 	?>
 	</p>
-<?php  } else { ?>
-	<p><?php echo  t("The package could not be installed:") ?></p>
+<?php } else { ?>
+	<p><?php echo t("The package could not be installed:") ?></p>
 
-	<?php  $error->output(); ?>
+	<?php $error->output(); ?>
 
     <hr/>
-    <?php  if (is_object($mri)) { ?>
-	<p><?php echo  t("To install the package manually:") ?></p>
+    <?php if (is_object($mri)) { ?>
+	<p><?php echo t("To install the package manually:") ?></p>
 	<ol>
 		<li><?php echo t('Download the package from <a href="%s">here</a>.', $mri->getRemoteURL())?></li>
 		<li><?php echo t('Upload and unpack the package on your web server. Place the unpacked files in the packages directory of the root of your concrete5 installation.')?></li>
@@ -85,5 +85,5 @@ if (!$error->has()) { ?>
         <li><?php echo t('Click the Install button next to the package name.')?></li>
 	</ol>
 	<div class="dialog-buttons"></div>
-	<?php  } ?>
-<?php  } ?>
+	<?php } ?>
+<?php } ?>

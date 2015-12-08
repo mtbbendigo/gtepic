@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Controller_AttributeType_Boolean extends AttributeTypeController  {
@@ -73,7 +73,7 @@ class Concrete5_Controller_AttributeType_Boolean extends AttributeTypeController
 	}
 	
 	public function search() {
-		print Loader::helper('form')->checkbox($this->field('value'), 1, $this->request('value') == 1) . ' ' . t('Yes');
+		print '<label class="checkbox">' . Loader::helper('form')->checkbox($this->field('value'), 1, $this->request('value') == 1) . ' ' . t('Yes') . '</label>';
 	}
 
 	public function type_form() {

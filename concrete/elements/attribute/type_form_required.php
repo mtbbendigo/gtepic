@@ -1,4 +1,4 @@
-<?php  
+<?php 
 $form = Loader::helper('form'); 
 $ih = Loader::helper("concrete/interface");
 $valt = Loader::helper('validation/token');
@@ -23,8 +23,8 @@ if (is_object($key)) {
 
 <div class="ccm-pane-body">
 
-<?php  if (is_object($key)) { ?>
-	<?php 
+<?php if (is_object($key)) { ?>
+	<?php
 	$valt = Loader::helper('validation/token');
 	$ih = Loader::helper('concrete/interface');
 	$delConfirmJS = t('Are you sure you want to remove this attribute?');
@@ -37,12 +37,12 @@ if (is_object($key)) {
 	}
 	</script>
 	
-	<?php  print $ih->button_js(t('Delete Attribute'), "deleteAttribute()", 'right', 'error');?>
-<?php  } ?>
+	<?php print $ih->button_js(t('Delete Attribute'), "deleteAttribute()", 'right', 'error');?>
+<?php } ?>
 
 
 <fieldset>
-<legend><?php echo t('%s: Basic Details', $type->getAttributeTypeName())?></legend>
+<legend><?php echo t('%s: Basic Details', $type->getAttributeTypeDisplayName())?></legend>
 
 <div class="clearfix">
 <?php echo $form->label('akHandle', t('Handle'))?>
@@ -60,27 +60,27 @@ if (is_object($key)) {
 </div>
 </div>
 
-<?php  if ($category->allowAttributeSets() == AttributeKeyCategory::ASET_ALLOW_SINGLE) { ?>
+<?php if ($category->allowAttributeSets() == AttributeKeyCategory::ASET_ALLOW_SINGLE) { ?>
 <div class="clearfix">
 <?php echo $form->label('asID', t('Set'))?>
 <div class="input">
-	<?php 
+	<?php
 		$sel = array('0' => t('** None'));
 		$sets = $category->getAttributeSets();
 		foreach($sets as $as) {
-			$sel[$as->getAttributeSetID()] = $as->getAttributeSetName();
+			$sel[$as->getAttributeSetID()] = $as->getAttributeSetDisplayName();
 		}
 		print $form->select('asID', $sel, $asID);
 		?>
 </div>
 </div>
-<?php  } ?>
+<?php } ?>
 
 <div class="clearfix">
 <label><?php echo t('Searchable')?></label>
 <div class="input">
 <ul class="inputs-list">
-<?php 
+<?php
 	$category_handle = $category->getAttributeKeyCategoryHandle();
 	$keyword_label = t('Content included in "Keyword Search".');
 	$advanced_label = t('Field available in "Advanced Search".');
@@ -110,21 +110,21 @@ if (is_object($key)) {
 <?php echo $form->hidden('atID', $type->getAttributeTypeID())?>
 <?php echo $form->hidden('akCategoryID', $category->getAttributeKeyCategoryID()); ?>
 <?php echo $valt->output('add_or_update_attribute')?>
-<?php  
+<?php 
 if ($category->getPackageID() > 0) { 
 	@Loader::packageElement('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), $category->getPackageHandle(), array('key' => $key));
 } else {
 	@Loader::element('attribute/categories/' . $category->getAttributeKeyCategoryHandle(), array('key' => $key));
 }
 ?>
-<?php  $type->render('type_form', $key); ?>
+<?php $type->render('type_form', $key); ?>
 
 </div>
 <div class="ccm-pane-footer">
 
-<?php  if (is_object($key)) { ?>
+<?php if (is_object($key)) { ?>
 	<?php echo $ih->submit(t('Save'), 'ccm-attribute-key-form', 'right', 'primary')?>
-<?php  } else { ?>
+<?php } else { ?>
 	<?php echo $ih->submit(t('Add'), 'ccm-attribute-key-form', 'right', 'primary')?>
-<?php  } ?>
+<?php } ?>
 </div>

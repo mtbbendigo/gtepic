@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Controller_Dashboard_Base extends Controller {
 	
@@ -10,7 +10,7 @@ class Concrete5_Controller_Dashboard_Base extends Controller {
 		Loader::library('3rdparty/mobile_detect');
 		$md = new Mobile_Detect();
 		if ($md->isMobile()) {
-			$this->addHeaderItem('<meta name="viewport" content="width=device-width,initial-scale=1"></meta>');
+			$this->addHeaderItem('<meta name="viewport" content="width=device-width,initial-scale=1"/>');
 		}
 	}
 	

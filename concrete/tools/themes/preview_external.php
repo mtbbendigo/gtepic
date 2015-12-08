@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 Loader::model('collection_types');
@@ -15,7 +15,7 @@ if ($mi->isConnected() && $tp->canInstallPackages()) {
 	
 	if (!function_exists('curl_init')) { ?>
 		<div><?php echo t('curl must be enabled to preview external themes.')?></div>
-	<?php  }else{
+	<?php }else{
 		$curl_handle = curl_init();
 
 		// Check to see if there are proxy settings

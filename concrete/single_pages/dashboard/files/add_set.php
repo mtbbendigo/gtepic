@@ -1,5 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php  $ih = Loader::helper('concrete/interface'); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php $ih = Loader::helper('concrete/interface'); ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Add Set'), false, 'span10 offset1', false)?>
     <form method="post" class="form-horizontal" id="file-sets-add" action="<?php echo $this->url('/dashboard/files/add_set', 'do_add')?>">

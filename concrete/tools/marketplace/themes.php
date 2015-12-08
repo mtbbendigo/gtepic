@@ -1,18 +1,18 @@
-<?php   defined('C5_EXECUTE') or die("Access Denied.");?>
+<?php  defined('C5_EXECUTE') or die("Access Denied.");?>
 <div class="ccm-ui">
-<?php 
+<?php
 
 Loader::library('marketplace');
 $mi = Marketplace::getInstance();
 $tp = new TaskPermission();
 if (!$tp->canInstallPackages()) { ?>
 	<p><?php echo t('You do not have permission to download packages from the marketplace.')?></p>
-	<?php  exit;
+	<?php exit;
 } else if (!$mi->isConnected()) { ?>
 	<div class="ccm-pane-body-inner">
-		<?php  Loader::element('dashboard/marketplace_connect_failed')?>
+		<?php Loader::element('dashboard/marketplace_connect_failed')?>
 	</div>
-<?php  } else {	
+<?php } else {	
 
 
 $cnt = Loader::controller('/dashboard/extend/themes');
@@ -39,6 +39,6 @@ $bu = REL_DIR_FILES_TOOLS_REQUIRED . '/marketplace/themes';
 		ccm_setupMarketplaceDialogForm();
 	});
 	</script>
-<?php  } ?>
+<?php } ?>
 
 </div>

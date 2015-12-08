@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $subject = SITE.' '.t("Registration - Approval Required");
@@ -9,21 +9,21 @@ $subject = SITE.' '.t("Registration - Approval Required");
 ob_start()
 
 ?>
-<h2><?php echo  t('Registration Approval Required') ?></h2>
-<?php echo  t('A new user has registered on your website. This account must be approved before it is active and may login.') ?><br />
-<?php echo  t('User Name') ?>: <b><?php echo  $uName ?></b><br />
-<?php echo  t('Email') ?>: <b><?php echo  $uEmail ?></b><br />
+<h2><?php echo t('Registration Approval Required') ?></h2>
+<?php echo t('A new user has registered on your website. This account must be approved before it is active and may login.') ?><br />
+<?php echo t('User Name') ?>: <b><?php echo $uName ?></b><br />
+<?php echo t('Email') ?>: <b><?php echo $uEmail ?></b><br />
 <br />
-<?php echo  t('You may approve or remove this user account here:') ?><br />
-<a href="<?php echo  BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>"><?php echo  BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?></a>
-<?php  if($attribs): ?>
+<?php echo t('You may approve or remove this user account here:') ?><br />
+<a href="<?php echo BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?>"><?php echo BASE_URL.View::url('/dashboard/users/search?uID='.$uID) ?></a>
+<?php if($attribs): ?>
 	<ul>
-	<?php  foreach($attribs as $item): ?>
-		<li><?php echo  $item ?></li>
-	<?php  endforeach ?>
+	<?php foreach($attribs as $item): ?>
+		<li><?php echo $item ?></li>
+	<?php endforeach ?>
 	</ul>
-<?php  endif ?>
-<?php 
+<?php endif ?>
+<?php
 
 $bodyHTML = ob_get_clean();
 /**
@@ -36,25 +36,25 @@ $bodyHTML = ob_get_clean();
 ob_start();
 
 ?>
-<?php echo  t('Registration Approval Required') ?>
+<?php echo t('Registration Approval Required') ?>
 
-<?php echo  t('A new user has registered on your website. This account must be approved before it is active and may login.') ?>
+<?php echo t('A new user has registered on your website. This account must be approved before it is active and may login.') ?>
 
-<?php echo  t('User Name') ?>: <?php echo  $uName ?>
+<?php echo t('User Name') ?>: <?php echo $uName ?>
 
-<?php echo  t('Email Address') ?>: <?php echo  $uEmail ?>
+<?php echo t('Email Address') ?>: <?php echo $uEmail ?>
 
-<?php  if($attribs): ?>
-	<?php  foreach($attribs as $item): ?>
-		<?php echo  $item ?>
+<?php if($attribs): ?>
+	<?php foreach($attribs as $item): ?>
+		<?php echo $item ?>
 
-	<?php  endforeach ?>
-<?php  endif ?>
+	<?php endforeach ?>
+<?php endif ?>
 
-<?php echo  t('You may approve or remove this user account here') ?>:
+<?php echo t('You may approve or remove this user account here') ?>:
 
-<?php echo  BASE_URL . View::url('/dashboard/users/search?uID=' . $uID) ?>
-<?php 
+<?php echo BASE_URL . View::url('/dashboard/users/search?uID=' . $uID) ?>
+<?php
 
 $body = ob_get_clean();
 /**

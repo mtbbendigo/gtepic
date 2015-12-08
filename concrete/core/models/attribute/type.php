@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_AttributeType extends Object {
 
@@ -6,7 +6,24 @@ class Concrete5_Model_AttributeType extends Object {
 	public function getAttributeTypeHandle() {return $this->atHandle;}
 	public function getAttributeTypeName() {return $this->atName;}
 	public function getController() {return $this->controller;}
-	
+
+	/** Returns the display name for this attribute type (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display name won't be escaped.
+	* @return string
+	*/
+	public function getAttributeTypeDisplayName($format = 'html') {
+		$value = tc('AttributeTypeName', $this->getAttributeTypeName());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	public static function getByID($atID) {
 		$db = Loader::db();
 		$row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atID = ?', array($atID));
@@ -97,10 +114,12 @@ class Concrete5_Model_AttributeType extends Object {
 		
 		$db = Loader::db();
 		$row = $db->GetRow('select atID, pkgID, atHandle, atName from AttributeTypes where atHandle = ?', array($atHandle));
-		$at = new AttributeType();
-		$at->setPropertiesFromArray($row);
-		$at->loadController();
-		return $at;
+		if ($row['atID']) {
+			$at = new AttributeType();
+			$at->setPropertiesFromArray($row);
+			$at->loadController();
+			return $at;
+		}
 	}
 	
 	public static function add($atHandle, $atName, $pkg = false) {

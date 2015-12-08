@@ -1,9 +1,9 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?php  
+<?php 
 if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) { 
 	$pa = PermissionAccess::getByID($_REQUEST['paID'], $permissionKey);
-	if ($pa->isPermissionAccessInUse()) {
+	if ($pa->isPermissionAccessInUse() || $_REQUEST['duplicate'] == '1') {
 		$pa = $pa->duplicate();
 	}
 } else { 
@@ -17,15 +17,15 @@ if ($_REQUEST['paID'] && $_REQUEST['paID'] > 0) {
 
 <input type="hidden" name="paID" value="<?php echo $pa->getPermissionAccessID()?>" />
 
-<?php  $workflows = Workflow::getList();?>
+<?php $workflows = Workflow::getList();?>
 
-<?php  Loader::element('permission/message_list'); ?>
+<?php Loader::element('permission/message_list'); ?>
 
-<?php 
+<?php
 $tabs = array();
 
  if ($permissionKey->hasCustomOptionsForm() || ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0)) { ?>
-	<?php 
+	<?php
 	$tabs[] = array('access-types', t('Access'), true);
 	if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) {
 		$tabs[] = array('workflow', t('Workflow'));
@@ -35,37 +35,37 @@ $tabs = array();
 	}
 	?>
 	<?php echo Loader::helper('concrete/interface')->tabs($tabs);?>
-<?php  } ?>
+<?php } ?>
 	
-<?php  if ($permissionKey->getPermissionKeyDescription()) { ?>
+<?php if ($permissionKey->getPermissionKeyDisplayDescription()) { ?>
 <div class="dialog-help">
-<?php echo $permissionKey->getPermissionKeyDescription()?>
+<?php echo $permissionKey->getPermissionKeyDisplayDescription()?>
 </div>
-<?php  } ?>
+<?php } ?>
 
 
-<div id="ccm-tab-content-access-types" <?php  if (count($tabs) > 0) { ?>class="ccm-tab-content"<?php  } ?>>
-<?php 
+<div id="ccm-tab-content-access-types" <?php if (count($tabs) > 0) { ?>class="ccm-tab-content"<?php } ?>>
+<?php
 $pkCategoryHandle = $permissionKey->getPermissionKeyCategoryHandle();
 $accessTypes = $permissionKey->getSupportedAccessTypes();
 Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategoryHandle, 'permissionAccess' => $pa, 'accessTypes' => $accessTypes)); ?>
 </div>
 
-<?php  if ($permissionKey->hasCustomOptionsForm()) { ?>
+<?php if ($permissionKey->hasCustomOptionsForm()) { ?>
 <div id="ccm-tab-content-custom-options" class="ccm-tab-content">
 
-<?php  if ($permissionKey->getPackageID() > 0) { ?>
-	<?php  Loader::packageElement('permission/keys/' . $permissionKey->getPermissionKeyHandle(), $permissionKey->getPackageHandle(), array('permissionAccess' => $pa)); ?>
-<?php  } else { ?>
-	<?php  Loader::element('permission/keys/' . $permissionKey->getPermissionKeyHandle(), array('permissionAccess' => $pa)); ?>
-<?php  } ?>
+<?php if ($permissionKey->getPackageID() > 0) { ?>
+	<?php Loader::packageElement('permission/keys/' . $permissionKey->getPermissionKeyHandle(), $permissionKey->getPackageHandle(), array('permissionAccess' => $pa)); ?>
+<?php } else { ?>
+	<?php Loader::element('permission/keys/' . $permissionKey->getPermissionKeyHandle(), array('permissionAccess' => $pa)); ?>
+<?php } ?>
 
 </div>
 
-<?php  } ?>
+<?php } ?>
 
-<?php  if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) { ?>
-	<?php 
+<?php if ($permissionKey->canPermissionKeyTriggerWorkflow() && count($workflows) > 0) { ?>
+	<?php
 	$selectedWorkflows = $pa->getWorkflows();
 	$workflowIDs = array();
 	foreach($selectedWorkflows as $swf) {
@@ -79,15 +79,15 @@ Loader::element('permission/access/list', array('pkCategoryHandle' => $pkCategor
 			<label><?php echo t('Workflow')?></label>
 			<div class="input">
 			<ul class="inputs-list">
-				<?php  foreach($workflows as $wf) { ?>
-					<li><label><input type="checkbox" name="wfID[]" value="<?php echo $wf->getWorkflowID()?>" <?php  if (count($wf->getRestrictedToPermissionKeyHandles()) > 0 && (!in_array($permissionKey->getPermissionKeyHandle(), $wf->getRestrictedToPermissionKeyHandles()))) { ?> disabled="disabled" <?php  } ?>
-					<?php  if (in_array($wf->getWorkflowID(), $workflowIDs)) { ?> checked="checked" <?php  } ?> /> <span><?php echo $wf->getWorkflowName()?></span></label></li>
-				<?php  } ?>
+				<?php foreach($workflows as $wf) { ?>
+					<li><label><input type="checkbox" name="wfID[]" value="<?php echo $wf->getWorkflowID()?>" <?php if (count($wf->getRestrictedToPermissionKeyHandles()) > 0 && (!in_array($permissionKey->getPermissionKeyHandle(), $wf->getRestrictedToPermissionKeyHandles()))) { ?> disabled="disabled" <?php } ?>
+					<?php if (in_array($wf->getWorkflowID(), $workflowIDs)) { ?> checked="checked" <?php } ?> /> <span><?php echo $wf->getWorkflowName()?></span></label></li>
+				<?php } ?>
 			</ul>
 			</div>
 			</div>
 	</div>
-<?php  } ?>
+<?php } ?>
 
 	<div class="dialog-buttons">
 		<a href="javascript:void(0)" class="btn" onclick="jQuery.fn.dialog.closeTop()"><?php echo t('Cancel')?></a>
@@ -143,7 +143,10 @@ $(function() {
 			// now we reload the permission key to use the new permission assignment
 			$('#ccm-permission-grid-cell-<?php echo $permissionKey->getPermissionKeyID()?>').load(
 				'<?php echo $permissionKey->getPermissionAssignmentObject()->getPermissionKeyToolsURL("display_access_cell")?>&paID=<?php echo $pa->getPermissionAccessID()?>', function() {
-					$('#ccm-permission-grid-name-<?php echo $permissionKey->getPermissionKeyID()?> a').attr('data-paID', '<?php echo $pa->getPermissionAccessID()?>');		
+					$('#ccm-permission-grid-name-<?php echo $permissionKey->getPermissionKeyID()?> a').attr('data-paID', '<?php echo $pa->getPermissionAccessID()?>');	
+					if (typeof(ccm_submitPermissionsDetailFormPost) != 'undefined') {
+						ccm_submitPermissionsDetailFormPost();
+					}
 				}
 			);
 		});
@@ -151,13 +154,13 @@ $(function() {
 	}
 	
 	
-	<?php  if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'custom_options_saved') { ?>
+	<?php if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'custom_options_saved') { ?>
 		$('a[data-tab=custom-options]').click();
-	<?php  } ?>
+	<?php } ?>
 
-	<?php  if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'workflows_saved') { ?>
+	<?php if (isset($_REQUEST['message']) && $_REQUEST['message'] == 'workflows_saved') { ?>
 		$('a[data-tab=workflow]').click();
-	<?php  } ?>
+	<?php } ?>
 
 
 });

@@ -1,9 +1,11 @@
-<?php  if (isset($key)) { ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
+<?php if (isset($key)) { ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Attribute'), false, false, false)?>
 <form method="post" action="<?php echo $this->action('edit')?>" id="ccm-attribute-key-form">
 
-<?php  Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
+<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
 
 </form>
 
@@ -12,25 +14,25 @@
 
 
 
-<?php  } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
+<?php } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Attributes'), false, false, false)?>
 
-	<?php  if (isset($type)) { ?>
+	<?php if (isset($type)) { ?>
 		<form method="post" action="<?php echo $this->action('add')?>" id="ccm-attribute-key-form">
-		<?php  Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
+		<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
 		</form>	
-	<?php  } ?>
+	<?php } ?>
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
 
 
-<?php  } else { ?>
+<?php } else { ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Attributes'), false, false, false)?>
 
-	<?php 
+	<?php
 	$attribs = CollectionAttributeKey::getList();
 	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/pages/attributes')); ?>
 
@@ -53,4 +55,4 @@
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
-<?php  } ?>
+<?php } ?>

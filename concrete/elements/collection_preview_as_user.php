@@ -1,5 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php
 $form = Loader::helper("form");
 $u = new User();
 $date = Loader::helper('form/date_time');
@@ -36,12 +36,12 @@ $us = Loader::helper('form/user_selector'); ?>
 </form>
 </div>
 
-<?php 
+<?php
 $assignments = $cp->getAllTimedAssignmentsForPage();
 if (count($assignments) > 0) { ?>
-	<a href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?php echo $c->getCollectionID()?>&ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?php echo t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><?php  
-		if (count($assignments) == 1) { ?><?php echo t('1 Timed Permission Found')?><?php  } else { ?><?php echo t('%s Timed Permissions Found', count($assignments))?><?php  } ?></a>
-<?php  } ?>
+	<a href="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/edit_collection_popup.php?cID=<?php echo $c->getCollectionID()?>&ctask=view_timed_permission_list" dialog-width="500" dialog-height="300" dialog-title="<?php echo t('View Timed Permission Assignments')?>" class="dialog-launch" onclick="" id="ccm-list-view-customize-top"><span class="ccm-menu-icon ccm-icon-clock"></span><?php 
+		if (count($assignments) == 1) { ?><?php echo t('1 Timed Permission Found')?><?php } else { ?><?php echo t('%s Timed Permissions Found', count($assignments))?><?php } ?></a>
+<?php } ?>
 </div>
 <br/>
 <iframe width="100%" height="200" style="border: 0px" border="0" frameborder="0" id="ccm-collection-preview-as-user-frame" name="ccm-collection-preview-as-user-frame" src="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/pages/preview_as_user?cID=<?php echo $c->getCollectionID()?>"></iframe>

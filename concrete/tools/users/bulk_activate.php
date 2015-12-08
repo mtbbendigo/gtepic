@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
 if(!strlen($searchInstance)) {
 	$searchInstance = 'user';
@@ -40,28 +40,28 @@ if ($_POST['task'] == 'activate') {
 
 if (!isset($_REQUEST['reload'])) { ?>
 	<div id="ccm-user-bulk-activate-wrapper">
-<?php  } ?>
+<?php } ?>
 
 	<div id="ccm-user-activate" class="ccm-ui">
-		<form method="post" id="ccm-user-bulk-activate" action="<?php  echo REL_DIR_FILES_TOOLS_REQUIRED ?>/users/bulk_activate">
-			<?php 
+		<form method="post" id="ccm-user-bulk-activate" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED ?>/users/bulk_activate">
+			<?php
 			echo $form->hidden('task','activate');
 			foreach($users as $ui) {
 				echo $form->hidden('uID[]' , $ui->getUserID());
 			}
 			?>
-			<?php  echo t('Are you sure you would like to activate the following users?');?><br/><br/>
-			<?php  Loader::element('users/confirm_list',array('users'=>$users)); ?>
+			<?php echo t('Are you sure you would like to activate the following users?');?><br/><br/>
+			<?php Loader::element('users/confirm_list',array('users'=>$users)); ?>
 		</form>	
 	</div>
 	<div class="dialog-buttons">
 		<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left', 'btn')?>	
 		<?php echo $ih->button_js(t('Activate'), 'ccm_userBulkActivate()', 'right', 'btn primary')?>
 	</div>
-<?php 
+<?php
 if (!isset($_REQUEST['reload'])) { ?>
 </div>
-<?php  } ?>
+<?php } ?>
 
 <script type="text/javascript">
 ccm_userBulkActivate = function() { 

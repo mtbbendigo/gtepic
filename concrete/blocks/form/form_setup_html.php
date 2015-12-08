@@ -1,4 +1,4 @@
-<?php  
+<?php 
 defined('C5_EXECUTE') or die("Access Denied.");
 /* @var $uh ConcreteUrlsHelper */ 
 $uh = Loader::helper('concrete/urls');
@@ -9,21 +9,21 @@ $ih = Loader::helper('concrete/interface');
 ?>
 <div class="ccm-ui">
 	<ul class="tabs" id="ccm-formblock-tabs">
-		<li class="<?php  echo (intval($miniSurveyInfo['bID'])==0)?'active':''?>"><a href="javascript:void(0)" id="ccm-formblock-tab-add"><?php  echo t('Add')?></a></li>
-		<li class="<?php  echo (intval($miniSurveyInfo['bID'])>0)?'active':''?>"><a href="javascript:void(0)" id="ccm-formblock-tab-edit"><?php  echo t('Edit')?></a></li>
-		<li><a href="javascript:void(0)" id="ccm-formblock-tab-preview"><?php  echo t('Preview')?></a></li>
-		<li><a href="javascript:void(0)" id="ccm-formblock-tab-options"><?php  echo t('Options')?></a></li>
+		<li class="<?php echo (intval($miniSurveyInfo['bID'])==0)?'active':''?>"><a href="javascript:void(0)" id="ccm-formblock-tab-add"><?php echo t('Add')?></a></li>
+		<li class="<?php echo (intval($miniSurveyInfo['bID'])>0)?'active':''?>"><a href="javascript:void(0)" id="ccm-formblock-tab-edit"><?php echo t('Edit')?></a></li>
+		<li><a href="javascript:void(0)" id="ccm-formblock-tab-preview"><?php echo t('Preview')?></a></li>
+		<li><a href="javascript:void(0)" id="ccm-formblock-tab-options"><?php echo t('Options')?></a></li>
 	</ul>
 	<div class="spacer"></div>
 	
-	<input type="hidden" name="miniSurveyServices" value="<?php  echo $uh->getBlockTypeToolsURL($bt)?>/services.php" />
+	<input type="hidden" name="miniSurveyServices" value="<?php echo $uh->getBlockTypeToolsURL($bt)?>/services.php" />
 	
-	<?php  /* these question ids have been deleted, or edited, and so shouldn't be duplicated for block versioning */ ?>
+	<?php /* these question ids have been deleted, or edited, and so shouldn't be duplicated for block versioning */ ?>
 	<input type="hidden" id="ccm-ignoreQuestionIDs" name="ignoreQuestionIDs" value="" />
 	<input type="hidden" id="ccm-pendingDeleteIDs" name="pendingDeleteIDs" value="" />
 	
 	<div id="ccm-formBlockPane-options" class="ccm-formBlockPane">
-		<?php  
+		<?php 
 		$c = Page::getCurrentPage();
 		if(strlen($miniSurveyInfo['surveyName'])==0)
 			$miniSurveyInfo['surveyName']=$c->getCollectionName();
@@ -79,7 +79,7 @@ $ih = Loader::helper('concrete/interface');
 				<label for="ccm-form-redirect"><?php echo t('Redirect to another page after form submission?')?></label>
 				<div class="input">
 					<div id="ccm-form-redirect-page">
-						<?php 
+						<?php
 							$page_selector = Loader::helper('form/page_selector');
 							if ($miniSurveyInfo['redirectCID']) {
 								print $page_selector->selectPage('redirectCID', $miniSurveyInfo['redirectCID']);
@@ -94,7 +94,7 @@ $ih = Loader::helper('concrete/interface');
 				<label for="ccm-form-fileset"><?php echo t('Add uploaded files to a set?')?></label>
 				<div class="input">
 					<div id="ccm-form-fileset">
-						<?php 
+						<?php
 							Loader::model('file_set');
 							$fs = new FileSet();
 							$fileSets = $fs->getMySets();
@@ -110,15 +110,15 @@ $ih = Loader::helper('concrete/interface');
 		</fieldset>
 	</div> 
 	
-	<input type="hidden" id="qsID" name="qsID" type="text" value="<?php  echo intval($miniSurveyInfo['questionSetId'])?>" />
-	<input type="hidden" id="oldQsID" name="oldQsID" type="text" value="<?php  echo intval($miniSurveyInfo['questionSetId'])?>" />
-	<input type="hidden" id="msqID" name="msqID" type="text" value="<?php  echo intval($msqID)?>" />
+	<input type="hidden" id="qsID" name="qsID" type="text" value="<?php echo intval($miniSurveyInfo['questionSetId'])?>" />
+	<input type="hidden" id="oldQsID" name="oldQsID" type="text" value="<?php echo intval($miniSurveyInfo['questionSetId'])?>" />
+	<input type="hidden" id="msqID" name="msqID" type="text" value="<?php echo intval($msqID)?>" />
 	
-	<div id="ccm-formBlockPane-add" class="ccm-formBlockPane" style=" <?php  echo (intval($miniSurveyInfo['bID'])==0)?'display:block':''?> ">
+	<div id="ccm-formBlockPane-add" class="ccm-formBlockPane" style=" <?php echo (intval($miniSurveyInfo['bID'])==0)?'display:block':''?> ">
 		
 	
 		<fieldset id="newQuestionBox">
-			<legend id="addNewQuestionTitle"><?php  echo t('Add a New Question')?></legend>		
+			<legend id="addNewQuestionTitle"><?php echo t('Add a New Question')?></legend>		
 			
 			<div id="questionAddedMsg" class="alert-message" style="display:none">
 				<?php echo t('Your question has been added. To view it click the preview tab.')?>
@@ -192,9 +192,9 @@ $ih = Loader::helper('concrete/interface');
 
 			<div class="clearfix">
 				<div id="emailSettings">
-					<?php  print $form->label('send_notification_from', t('Send Form Email From This Address'));?>
+					<?php print $form->label('send_notification_from', t('Reply to this email address'));?>
 					<div class="input send_notification_from">
-						<?php  print $form->checkbox('send_notification_from', 1); ?>
+						<?php print $form->checkbox('send_notification_from', 1); ?>
 					</div>
 				</div>
 			</div>
@@ -210,10 +210,10 @@ $ih = Loader::helper('concrete/interface');
 		</fieldset> 
 	</div> 
 		
-	<div id="ccm-formBlockPane-edit" class="ccm-formBlockPane" style=" <?php  echo (intval($miniSurveyInfo['bID'])>0)?'display:block':''?> ">
+	<div id="ccm-formBlockPane-edit" class="ccm-formBlockPane" style=" <?php echo (intval($miniSurveyInfo['bID'])>0)?'display:block':''?> ">
 		
 		<div id="questionEditedMsg" class="alert-message" style="display:none">
-			<?php  echo t('Your question has been edited.')?>
+			<?php echo t('Your question has been edited.')?>
 		</div>
 		
 		<div id="editQuestionForm" style="display:none">
@@ -291,9 +291,9 @@ $ih = Loader::helper('concrete/interface');
 				</div>
 
 				<div id="emailSettingsEdit">
-					<?php  print $form->label('send_notification_from_edit', t('Reply to this email address'));?>
+					<?php print $form->label('send_notification_from_edit', t('Reply to this email address'));?>
 					<div class="input send_notification_from">
-						<?php  print $form->checkbox('send_notification_from_edit', 1); ?>
+						<?php print $form->checkbox('send_notification_from_edit', 1); ?>
 					</div>
 				</div>
 			</fieldset>
@@ -307,14 +307,14 @@ $ih = Loader::helper('concrete/interface');
 		</div>
 	
 		<div id="miniSurvey">
-			<div style="margin-bottom:16px"><strong><?php  echo t('Edit')?>:</strong>	</div>
+			<div style="margin-bottom:16px"><strong><?php echo t('Edit')?>:</strong>	</div>
 			<div id="miniSurveyWrap"></div>
 		</div>
 	</div>	
 		
 	<div id="ccm-formBlockPane-preview" class="ccm-formBlockPane">
 		<div id="miniSurvey">
-			<div style="margin-bottom:16px"><strong><?php  echo t('Preview')?>:</strong></div>	
+			<div style="margin-bottom:16px"><strong><?php echo t('Preview')?>:</strong></div>	
 			<div id="miniSurveyPreviewWrap"></div>
 		</div>
 	</div>
@@ -323,11 +323,11 @@ $ih = Loader::helper('concrete/interface');
 //safari was loading the auto.js too late. This ensures it's initialized
 function initFormBlockWhenReady(){
 	if(miniSurvey && typeof(miniSurvey.init)=='function'){
-		miniSurvey.cID=parseInt(<?php  echo $c->getCollectionID()?>);
-		miniSurvey.arHandle="<?php  echo $a->getAreaHandle()?>";
+		miniSurvey.cID=parseInt(<?php echo $c->getCollectionID()?>);
+		miniSurvey.arHandle="<?php echo $a->getAreaHandle()?>";
 		miniSurvey.bID=thisbID;
 		miniSurvey.btID=thisbtID;
-		miniSurvey.qsID=parseInt(<?php  echo $miniSurveyInfo['questionSetId']?>);	
+		miniSurvey.qsID=parseInt(<?php echo $miniSurveyInfo['questionSetId']?>);	
 		miniSurvey.init();
 		miniSurvey.refreshSurvey();
 	}else setTimeout('initFormBlockWhenReady()',100);

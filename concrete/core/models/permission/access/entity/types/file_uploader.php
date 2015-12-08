@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 class Concrete5_Model_FileUploaderPermissionAccessEntity extends PermissionAccessEntity {
@@ -26,7 +26,7 @@ class Concrete5_Model_FileUploaderPermissionAccessEntity extends PermissionAcces
 	}
 	
 	public function getAccessEntityTypeLinkHTML() {
-		$html = '<a href="javascript:void(0)" onclick="ccm_choosePermissionAccessEntityFileUploader()">' . t('File Uploader') . '</a>';
+		$html = '<a href="javascript:void(0)" onclick="ccm_choosePermissionAccessEntityFileUploader()">' . tc('PermissionAccessEntityTypeName', 'File Uploader') . '</a>';
 		return $html;		
 	}
 

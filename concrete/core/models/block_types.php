@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -134,6 +134,10 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			
 			$aDir = array();
 			if (is_dir($dir)) {
+				$currentLocale = Localization::activeLocale();
+				if ($currentLocale != 'en_US') {
+					Localization::changeLocale('en_US');
+				}
 				$handle = opendir($dir);
 				while(($file = readdir($handle)) !== false) {
 					if (strpos($file, '.') === false) {
@@ -159,6 +163,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
 							
 						}
 					}				
+				}
+				if ($currentLocale != 'en_US') {
+					Localization::changeLocale($currentLocale);
 				}
 			}
 			
@@ -288,7 +295,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/**
 		 * Gets the BlockType object for the given Block Type Handle
 		 * ex: 
-		 * <code><?php 
+		 * <code><?php
 		 * $bt = BlockType::getByHandle('content'); // returns the BlockType object for the core Content block
 		 * ?></code>
 		 * @param string $handle
@@ -444,11 +451,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		/** 
 		 * Returns the number of unique instances of this block throughout the entire site
 		 * note - this count could include blocks in areas that are no longer rendered by the theme
+		 * @param boolean specify true if you only want to see the number of blocks in active pages
 		 * @return int
 		 */
-		public function getCount() {
+		public function getCount($ignoreUnapprovedVersions = false) {
 			$db = Loader::db();
-			$count = $db->GetOne("select count(btID) from Blocks where btID = ?", array($this->btID));
+            		if ($ignoreUnapprovedVersions) {
+                		$count = $db->GetOne("SELECT count(btID) FROM Blocks b
+                    			WHERE btID=?
+                    			AND EXISTS (
+                        			SELECT 1 FROM CollectionVersionBlocks cvb 
+                        			INNER JOIN CollectionVersions cv ON cv.cID=cvb.cID AND cv.cvID=cvb.cvID
+                        			WHERE b.bID=cvb.bID AND cv.cvIsApproved=1
+                    			)", array($this->btID));            
+            		}
+            		else {
+                		$count = $db->GetOne("SELECT count(btID) FROM Blocks WHERE btID = ?", array($this->btID));
+            		}
 			return $count;
 		}
 		
@@ -475,72 +494,61 @@ defined('C5_EXECUTE') or die("Access Denied.");
 		
 		/**
 		 * Gets the custom templates available for the current BlockType
-		 * @return array an array of strings
+		 * @return TemplateFile[]
 		 */
 		function getBlockTypeCustomTemplates() {
 			$btHandle = $this->getBlockTypeHandle();
-			$pkgHandle = $this->getPackageHandle();
-
-			$templates = array();
 			$fh = Loader::helper('file');
-			
-			if (file_exists(DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES)) {
-				$templates = array_merge($templates, $fh->getDirectoryContents(DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES));
+			$files = array();
+			$dir = DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES;
+			if(is_dir($dir)) {
+				$files = array_merge($files, $fh->getDirectoryContents($dir));
 			}
-			
-			/*
-			if ($pkgHandle != null) {
-				if (is_dir(DIR_PACKAGES . '/' . $pkgHandle)) {
-					$templates = array_merge($templates, $fh->getDirectoryContents(DIR_PACKAGES . "/{$pkgHandle}/" . DIRNAME_BLOCKS . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES));
-				} else {
-					$templates = array_merge($templates, $fh->getDirectoryContents(DIR_PACKAGES_CORE . "/{$pkgHandle}/" . DIRNAME_BLOCKS . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES));
-				}
-			}
-			*/ 
-			
 			// NOW, we check to see if this btHandle has any custom templates that have been installed as separate packages
-			$pl = PackageList::get();
-			$packages = $pl->getPackages();
-			foreach($packages as $pkg) {
-				$d = (is_dir(DIR_PACKAGES . '/' . $pkg->getPackageHandle())) ? DIR_PACKAGES . '/'. $pkg->getPackageHandle() : DIR_PACKAGES_CORE . '/'. $pkg->getPackageHandle();
-				if (is_dir($d . '/' . DIRNAME_BLOCKS . '/' . $btHandle . '/' . DIRNAME_BLOCK_TEMPLATES)) {
-					$templates = array_merge($templates, $fh->getDirectoryContents($d . '/' . DIRNAME_BLOCKS . '/' . $btHandle . '/' . DIRNAME_BLOCK_TEMPLATES));
+			foreach(PackageList::get()->getPackages() as $pkg) {
+				$dir =
+					(is_dir(DIR_PACKAGES . '/' . $pkg->getPackageHandle()) ? DIR_PACKAGES : DIR_PACKAGES_CORE)
+					. '/'. $pkg->getPackageHandle() . '/' . DIRNAME_BLOCKS . '/' . $btHandle . '/' . DIRNAME_BLOCK_TEMPLATES
+				;
+				if(is_dir($dir)) {
+					$files = array_merge($files, $fh->getDirectoryContents($dir));
 				}
 			}
-			
-			if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES)) {
-				$templates = array_merge($templates, $fh->getDirectoryContents(DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES));
+			$dir = DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES;
+			if(is_dir($dir)) {
+				$files = array_merge($files, $fh->getDirectoryContents($dir));
 			}
-
-			$templates = array_unique($templates);
-	
-			return $templates;
+			Loader::library('template_file');
+			$templates = array();
+			foreach(array_unique($files) as $file) {
+				$templates[] = new TemplateFile($this, $file);
+			}
+			return TemplateFile::sortTemplateFileList($templates);
 		}
 
-		
-		/** 
-		 * gets the available composer templates 
+		/**
+		 * gets the available composer templates
 		 * used for editing instances of the BlockType while in the composer ui in the dashboard
-		 * @return array array of strings
+		 * @return TemplateFile[]
 		 */
 		function getBlockTypeComposerTemplates() {
 			$btHandle = $this->getBlockTypeHandle();
-			$pkgHandle = $this->getPackageHandle();
-
-			$templates = array();
+			$files = array();
 			$fh = Loader::helper('file');
-			
-			if (file_exists(DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER)) {
-				$templates = array_merge($templates, $fh->getDirectoryContents(DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER));
+			$dir = DIR_FILES_BLOCK_TYPES . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER;
+			if(is_dir($dir)) {
+				$files = array_merge($files, $fh->getDirectoryContents($dir));
 			}
-
-			if (file_exists(DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER)) {
-				$templates = array_merge($templates, $fh->getDirectoryContents(DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER));
+			$dir = DIR_FILES_BLOCK_TYPES_CORE . "/{$btHandle}/" . DIRNAME_BLOCK_TEMPLATES_COMPOSER;
+			if (file_exists($dir)) {
+				$files = array_merge($files, $fh->getDirectoryContents($dir));
 			}
-
-			$templates = array_unique($templates);
-	
-			return $templates;
+			Loader::library('template_file');
+			$templates = array();
+			foreach(array_unique($files) as $file) {
+				$templates[] = new TemplateFile($this, $file);
+			}
+			return TemplateFile::sortTemplateFileList($templates);
 		}
 		
 		function setBlockTypeDisplayOrder($displayOrder) {
@@ -877,6 +885,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
 			$r = $db->Execute('select cID, cvID, b.bID, arHandle from CollectionVersionBlocks cvb inner join Blocks b on b.bID = cvb.bID where btID = ?', array($this->getBlockTypeID()));
 			while ($row = $r->FetchRow()) {
 				$nc = Page::getByID($row['cID'], $row['cvID']);
+				if(!is_object($nc) || $nc->isError()) continue;
 				$b = Block::getByID($row['bID'], $nc, $row['arHandle']);
 				if (is_object($b)) {
 					$b->deleteBlock();

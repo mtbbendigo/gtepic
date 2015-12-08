@@ -1,5 +1,5 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php  
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php 
 if ($_GET['_ccm_dashboard_external']) {
 	return;
 }
@@ -24,7 +24,7 @@ $dashboard = Page::getByPath("/dashboard");
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<?php 
+<?php
 Loader::library('3rdparty/mobile_detect');
 $md = new Mobile_Detect();
 
@@ -57,8 +57,9 @@ if (LANGUAGE != 'en') {
 // Require CSS
 $v->addHeaderItem($html->css('ccm.app.css'));
 if ($md->isMobile() == true) {
+	$v->addHeaderItem('<meta name="viewport" content="width=device-width,initial-scale=1"/>');
 	$v->addHeaderItem($html->css('ccm.app.mobile.css')); ?>
-	<?php 		
+	<?php		
 }
 $v->addHeaderItem($html->css('ccm.dashboard.css'));
 $v->addHeaderItem($html->css('jquery.ui.css'));
@@ -75,12 +76,12 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 <script type="text/javascript">
 
 	$(function() {
-		<?php  if ($backgroundImage->image) { ?>
-		    $.backstretch("<?php echo $backgroundImage->image?>" <?php  if (!$_SESSION['dashboardHasSeenImage']) { ?>,  {speed: 750}<?php  } ?>);
-	    <?php  } ?>
-	    <?php  if ($backgroundImage->checkData) { ?>
-		    ccm_getDashboardBackgroundImageData('<?php echo $backgroundImage->filename?>', <?php  if ($backgroundImage->displayCaption) { ?> true <?php  } else { ?> false <?php  } ?>);
-		<?php  } ?>
+		<?php if ($backgroundImage->image) { ?>
+		    $.backstretch("<?php echo $backgroundImage->image?>" <?php if (!$_SESSION['dashboardHasSeenImage']) { ?>,  {speed: 750}<?php } ?>);
+	    <?php } ?>
+	    <?php if ($backgroundImage->checkData) { ?>
+		    ccm_getDashboardBackgroundImageData('<?php echo $backgroundImage->filename?>', <?php if ($backgroundImage->displayCaption) { ?> true <?php } else { ?> false <?php } ?>);
+		<?php } ?>
 
 		$(window).on('resize', function() {
 			ccm_testFixForms();
@@ -95,35 +96,35 @@ $backgroundImage = Loader::helper('concrete/dashboard')->getDashboardBackgroundI
 </head>
 <body>
 
-<?php  if (!$_SESSION['dashboardHasSeenImage']) { 
+<?php if (!$_SESSION['dashboardHasSeenImage']) { 
 	$_SESSION['dashboardHasSeenImage'] = true;
 } ?>
 
-<?php  if (isset($backgroundImage->caption) && $backgroundImage->caption) { ?>
-	<div id="ccm-dashboard-background-caption" class="ccm-ui"><div id="ccm-dashboard-background-caption-inner"><?php  if ($backgroundImage->url) { ?><a target="_blank" href="<?php echo $backgroundImage->url?>"><?php  } ?><?php echo $backgroundImage->caption?><?php  if ($backgroundImage->url) { ?></a><?php  } ?></div></div>
-<?php  } ?>
+<?php if (isset($backgroundImage->caption) && $backgroundImage->caption) { ?>
+	<div id="ccm-dashboard-background-caption" class="ccm-ui"><div id="ccm-dashboard-background-caption-inner"><?php if ($backgroundImage->url) { ?><a target="_blank" href="<?php echo $backgroundImage->url?>"><?php } ?><?php echo $backgroundImage->caption?><?php if ($backgroundImage->url) { ?></a><?php } ?></div></div>
+<?php } ?>
 
 <div class="ccm-ui">
 
 <div id="ccm-toolbar">
 <ul id="ccm-main-nav">
 <li id="ccm-logo-wrapper"><?php echo Loader::helper('concrete/interface')->getToolbarLogoSRC()?></li>
-<li><a class="ccm-icon-back ccm-menu-icon" href="<?php echo $this->url('/')?>"><?php  if ($md->isMobile()) { ?><?php echo t('Back')?><?php  } else { ?><?php echo t('Return to Website')?><?php  } ?></a></li>
-<?php  if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
+<li><a class="ccm-icon-back ccm-menu-icon" href="<?php echo $this->url('/')?>"><?php if ($md->isMobile()) { ?><?php echo t('Back')?><?php } else { ?><?php echo t('Return to Website')?><?php } ?></a></li>
+<?php if (Loader::helper('concrete/interface')->showWhiteLabelMessage()) { ?>
 	<li id="ccm-white-label-message"><?php echo t('Powered by <a href="%s">concrete5</a>.', CONCRETE5_ORG_URL)?></li>
-<?php  } ?>
+<?php } ?>
 </ul>
 
 <ul id="ccm-system-nav">
-<li><a class="ccm-icon-dashboard ccm-menu-icon" id="ccm-nav-dashboard<?php  if ($md->isMobile()) { ?>-mobile<?php  } ?>" href="<?php echo $this->url('/dashboard')?>"><?php echo t('Dashboard')?></a></li>
+<li><a class="ccm-icon-dashboard ccm-menu-icon" id="ccm-nav-dashboard<?php if ($md->isMobile()) { ?>-mobile<?php } ?>" href="<?php echo $this->url('/dashboard')?>"><?php echo t('Dashboard')?></a></li>
 <li id="ccm-nav-intelligent-search-wrapper"><input type="search" placeholder="<?php echo t('Intelligent Search')?>" id="ccm-nav-intelligent-search" tabindex="1" /></li>
-<?php  if ($md->isMobile() == false) { ?>
+<?php if ($md->isMobile() == false) { ?>
 	<li><a id="ccm-nav-sign-out" class="ccm-icon-sign-out ccm-menu-icon" href="<?php echo $this->url('/login', 'logout')?>"><?php echo t('Sign Out')?></a></li>
-<?php  } ?>
+<?php } ?>
 </ul>
 
 </div>
-<?php 
+<?php
 $_ih = Loader::helper('concrete/interface');
 $dh = Loader::helper('concrete/dashboard');
 $html = $dh->getDashboardAndSearchMenus();
@@ -137,8 +138,8 @@ print $dh->addQuickNavToMenus($html);
 	<div class="container">
 
 
-	<?php  if (isset($error)) { ?>
-		<?php  
+	<?php if (isset($error)) { ?>
+		<?php 
 		if ($error instanceof Exception) {
 			$_error[] = $error->getMessage();
 		} else if ($error instanceof ValidationErrorHelper) {
@@ -153,9 +154,9 @@ print $dh->addQuickNavToMenus($html);
 		if (count($_error) > 0) {
 			?>
 			<div class="ccm-ui"  id="ccm-dashboard-result-message">
-				<?php  Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
+				<?php Loader::element('system_errors', array('format' => 'block', 'error' => $_error)); ?>
 			</div>
-		<?php  
+		<?php 
 		}
 	}
 	
@@ -163,9 +164,9 @@ print $dh->addQuickNavToMenus($html);
 		<div class="ccm-ui" id="ccm-dashboard-result-message">
 			<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button><?php echo nl2br(Loader::helper('text')->entities($message))?></div>
 		</div>
-	<?php  
+	<?php 
 	} else if (isset($success)) { ?>
 		<div class="ccm-ui" id="ccm-dashboard-result-message">
 			<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><?php echo nl2br(Loader::helper('text')->entities($success))?></div>
 		</div>
-	<?php  } ?>
+	<?php } ?>

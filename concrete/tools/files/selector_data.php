@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!Loader::helper('validation/numbers')->integer($_REQUEST['fID'])) {
@@ -11,7 +11,7 @@ $u = new User();
 $form = Loader::helper('form');
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }
 
 

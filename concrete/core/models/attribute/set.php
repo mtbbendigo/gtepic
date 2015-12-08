@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 class Concrete5_Model_AttributeSet extends Object {
 
@@ -6,7 +6,12 @@ class Concrete5_Model_AttributeSet extends Object {
 		$db = Loader::db();
 		$row = $db->GetRow('select asID, asHandle, pkgID, asName, akCategoryID, asIsLocked  from AttributeSets where asID = ?', array($asID));
 		if (isset($row['asID'])) {
-			$akc = new AttributeSet();
+			if (function_exists('get_called_class')) {
+				$class = get_called_class(); // using this for an add-on that requires 5.3
+			} else {
+				$class = 'AttributeSet';
+			}
+			$akc = new $class();
 			$akc->setPropertiesFromArray($row);
 			return $akc;
 		}
@@ -16,7 +21,12 @@ class Concrete5_Model_AttributeSet extends Object {
 		$db = Loader::db();
 		$row = $db->GetRow('select asID, asHandle, pkgID, asName, akCategoryID, asIsLocked from AttributeSets where asHandle = ?', array($asHandle));
 		if (isset($row['asID'])) {
-			$akc = new AttributeSet();
+			if (function_exists('get_called_class')) {
+				$class = get_called_class(); // using this for an add-on that requires 5.3
+			} else {
+				$class = 'AttributeSet';
+			}
+			$akc = new $class();
 			$akc->setPropertiesFromArray($row);
 			return $akc;
 		}
@@ -40,7 +50,24 @@ class Concrete5_Model_AttributeSet extends Object {
 	public function getPackageHandle() {return PackageList::getHandle($this->pkgID);}
 	public function getAttributeSetKeyCategoryID() {return $this->akCategoryID;}
 	public function isAttributeSetLocked() {return $this->asIsLocked;}
-	
+
+	/** Returns the display name for this attribute set (localized and escaped accordingly to $format)
+	* @param string $format = 'html'
+	*	Escape the result in html format (if $format is 'html').
+	*	If $format is 'text' or any other value, the display name won't be escaped.
+	* @return string
+	*/
+	public function getAttributeSetDisplayName($format = 'html') {
+		$value = tc('AttributeSetName', $this->getAttributeSetName());
+		switch($format) {
+			case 'html':
+				return h($value);
+			case 'text':
+			default:
+				return $value;
+		}
+	}
+
 	public function updateAttributeSetName($asName) {
 		$this->asName = $asName;
 		$db = Loader::db();

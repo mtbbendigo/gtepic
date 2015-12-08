@@ -1,6 +1,6 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?php 
+<?php
 
 $repeats = array(
 	'' => t('** Options'), 
@@ -149,13 +149,13 @@ $dt = Loader::helper('form/date_time');
 <div class="control-group">
 <label class="control-label"><?php echo t('On')?></label>
 <div class="controls">
-<?php  
+<?php 
 $x = 0;
 foreach($list['format']['wide'] as $key => $value) { ?>
-	<label><input <?php  if (in_array($x, $pdRepeatPeriodWeekDays)) { ?>checked="checked" <?php  } ?>
+	<label><input <?php if (in_array($x, $pdRepeatPeriodWeekDays)) { ?>checked="checked" <?php } ?>
 	type="checkbox" name="pdRepeatPeriodWeeksDays[]" value="<?php echo $x?>" /> <span><?php echo $value?></span></label>
 	
-<?php 
+<?php
 	$x++;
 } ?>
 </div>
@@ -207,9 +207,9 @@ ccm_accessEntityCalculateRepeatOptions = function() {
 		return false;
 	}
        
-	var sdf = ($("#pdStartDate_dt").datepicker('option', 'dateFormat'));
+	var sdf = ($("#pdStartDate_dt_pub").datepicker('option', 'altFormat'));
 	var sdfr = $.datepicker.parseDate(sdf, $("#pdStartDate_dt").val());
-	var edf = ($("#pdEndDate_dt").datepicker('option', 'dateFormat'));
+	var edf = ($("#pdEndDate_dt_pub").datepicker('option', 'altFormat'));
 	var edfr = $.datepicker.parseDate(edf, $("#pdEndDate_dt").val());
 	var sh = $("select[name=pdStartDate_h]").val();
 	var eh = $("select[name=pdEndDate_h]").val();
@@ -233,7 +233,7 @@ ccm_accessEntityCalculateRepeatOptions = function() {
 		$('select[name=pdRepeatPeriod] option[value=daily]').attr('disabled', false);
 		$("#ccm-permissions-access-entity-dates-repeat-weekly-dow").show();
 	}
-	$('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt").val());
+	$('input[name=pdStartRepeatDate]').val($("#pdStartDate_dt_pub").val());
 	switch(sdfr.getDay()) {
 		case 0:
 			$("#ccm-permissions-access-entity-dates-repeat-weekly-dow input[value=0]").attr('checked', true);
@@ -313,9 +313,9 @@ ccm_accessEntityOnRepeatPeriodChange = function() {
 
 ccm_accessEntityCalculateRepeatEnd = function() {
 	if ($('input[name=pdEndRepeatDate]:checked').val() == 'date') { 
-		$("#ccm-permissions-access-entity-dates-repeat-dates input.ccm-input-date").attr('disabled', false);
+		$("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', false);
 	} else {
-		$("#ccm-permissions-access-entity-dates-repeat-dates input.ccm-input-date").attr('disabled', true);
+		$("#ccm-permissions-access-entity-dates-repeat-dates .ccm-input-date-wrapper input").attr('disabled', true);
 	}
 }
 

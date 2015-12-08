@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <style type="text/css">
 div.survey-block-option {
 	position: relative; border-bottom: 1px solid #ddd; padding-bottom: 3px; padding-top: 3px;
@@ -19,14 +19,14 @@ div.survey-block-option img {
 <br><br>
 
 <strong><?php echo t('Open to all site visitors?')?></strong><br/>
-<input type="radio" value="0" name="requiresRegistration" style="vertical-align: middle" <?php  if (!$controller->requiresRegistration()) { ?> checked <?php  } ?> />&nbsp;<?php echo t('Yes')?>
+<input type="radio" value="0" name="requiresRegistration" style="vertical-align: middle" <?php if (!$controller->requiresRegistration()) { ?> checked <?php } ?> />&nbsp;<?php echo t('Yes')?>
 &nbsp;&nbsp;
-<input type="radio" value="1" name="requiresRegistration" style="vertical-align: middle" <?php  if ($controller->requiresRegistration()) { ?> checked <?php  } ?> />&nbsp;<?php echo t('No. Registration is required to answer.')?>
+<input type="radio" value="1" name="requiresRegistration" style="vertical-align: middle" <?php if ($controller->requiresRegistration()) { ?> checked <?php } ?> />&nbsp;<?php echo t('No. Registration is required to answer.')?>
 <br><br>
 
 <strong><?php echo t('Options')?></strong>
 <div id="pollOptions">
-<?php  
+<?php 
 $options = $controller->getPollOptions();
 if (count($options) == 0) {
 	echo t("None");
@@ -35,7 +35,7 @@ if (count($options) == 0) {
         <div class="survey-block-option" id="option<?php echo $opt->getOptionID()?>"><a href="#" onclick="removeOption(<?php echo $opt->getOptionID()?>); return false"><img src="<?php echo ASSETS_URL_IMAGES?>/icons/delete_small.png" /></a> <?php echo $opt->getOptionName()?>
         <input type="hidden" name="survivingOptionNames[]" value="<?php echo htmlspecialchars($opt->getOptionName())?>" />
         </div>		
-	<?php  }
+	<?php }
 } ?>
 </div>
 <br/><br/>

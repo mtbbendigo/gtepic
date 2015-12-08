@@ -1,6 +1,6 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<?php  $ih = Loader::helper('concrete/interface'); ?>
-<?php  if ($this->controller->getTask() == 'view_detail') { ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php $ih = Loader::helper('concrete/interface'); ?>
+<?php if ($this->controller->getTask() == 'view_detail') { ?>
 
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Set'), false, 'span10 offset1', false)?>
@@ -19,7 +19,7 @@
 
 	<div id="ccm-tab-details" class="ccm-tab">
 
-		<?php 
+		<?php
 		$u=new User();
 
 		$delConfirmJS = t('Are you sure you want to permanently remove this file set?');
@@ -40,7 +40,7 @@
 		</div>
 		</div>
 
-		<?php  
+		<?php 
 		$fsp = new Permissions($fs);
 
 		if (PERMISSIONS_MODEL != 'simple') { 
@@ -58,25 +58,25 @@
 		
 		
 
-		<div id="ccm-file-set-permissions-wrapper" <?php  if (!$fs->overrideGlobalPermissions()) { ?> style="display: none" <?php  } ?>>
+		<div id="ccm-permission-list-form" <?php if (!$fs->overrideGlobalPermissions()) { ?> style="display: none" <?php } ?>>
 
-		<?php  Loader::element('permission/lists/file_set', array("fs" => $fs)); ?>
+		<?php Loader::element('permission/lists/file_set', array("fs" => $fs)); ?>
 		
 		</div>
-		<?php  } 
+		<?php } 
 		
 		}
 		?>
 		
 
-		<?php 
+		<?php
 			echo $form->hidden('fsID',$fs->getFileSetID());
 		?>
 		
 		</div>
 
 	<div style="display: none" class="ccm-tab" id="ccm-tab-files">
-		<?php 
+		<?php
 		Loader::model("file_list");
 		$fl = new FileList();
 		$fl->filterBySet($fs);
@@ -90,7 +90,7 @@
 		
 		<ul class="ccm-file-set-file-list">
 		
-		<?php 
+		<?php
 
 		foreach($files as $f) { ?>
 			
@@ -101,20 +101,20 @@
 			</div>
 		</li>
 			
-		<?php  } ?>
+		<?php } ?>
 
 			
 		</ul>
-		<?php  } else { ?>
+		<?php } else { ?>
 			<p><?php echo t('There are no files in this set.')?></p>
-		<?php  } ?>
+		<?php } ?>
 	</div>
 	</div>
 	<div class="ccm-pane-footer">
 		<input type="submit" value="<?php echo t('Save')?>" class="btn primary ccm-button-v2-right" />
-		<?php  if ($fsp->canDeleteFileSet()) { ?>
-			<?php  print $ih->button_js(t('Delete'), "deleteFileSet()", 'right','error');?>
-		<?php  } ?>
+		<?php if ($fsp->canDeleteFileSet()) { ?>
+			<?php print $ih->button_js(t('Delete'), "deleteFileSet()", 'right','error');?>
+		<?php } ?>
 	</div>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
@@ -144,7 +144,7 @@
 	.ccm-file-set-file-list:hover {cursor: move}
 	</style>
 
-<?php  } else { ?>
+<?php } else { ?>
 
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('File Sets'), false, 'span10 offset1', false)?>
@@ -164,8 +164,8 @@
 		<?php echo $form->label('fsType', t('Type'))?>
 		<div class="controls">
 		<select id="fsType" name="fsType" style="width: 130px">
-		<option value="<?php echo FileSet::TYPE_PUBLIC?>" <?php  if ($fsType != FileSet::TYPE_PRIVATE) { ?> selected <?php  } ?>><?php echo t('Public Sets')?></option>
-		<option value="<?php echo FileSet::TYPE_PRIVATE?>" <?php  if ($fsType == FileSet::TYPE_PRIVATE) { ?> selected <?php  } ?>><?php echo t('My Sets')?></option>
+		<option value="<?php echo FileSet::TYPE_PUBLIC?>" <?php if ($fsType != FileSet::TYPE_PRIVATE) { ?> selected <?php } ?>><?php echo t('Public Sets')?></option>
+		<option value="<?php echo FileSet::TYPE_PRIVATE?>" <?php if ($fsType == FileSet::TYPE_PRIVATE) { ?> selected <?php } ?>><?php echo t('My Sets')?></option>
 		</select>
 		<input type="submit" class="btn" value="<?php echo t('Search')?>" />
 		</div>
@@ -176,40 +176,40 @@
 	</div>
 		</form>
 	</div>
-	<div class="ccm-pane-body <?php  if (!$fsl->requiresPaging()) { ?> ccm-pane-body-footer <?php  } ?> ">
+	<div class="ccm-pane-body <?php if (!$fsl->requiresPaging()) { ?> ccm-pane-body-footer <?php } ?> ">
 
 		<a href="<?php echo View::url('/dashboard/files/add_set')?>" style="float: right; z-index: 5; position:relative;top:-5px" class="btn primary"><?php echo t("Add File Set")?></a>
 
 		<?php echo $fsl->displaySummary()?>
 	
-		<?php  if (count($fileSets) > 0) { ?>
+		<?php if (count($fileSets) > 0) { ?>
 			
 			<style type="text/css">
 				div.ccm-paging-top {padding-bottom:10px;}
 			</style>
 		
-		<?php  foreach ($fileSets as $fs) { ?>
+		<?php foreach ($fileSets as $fs) { ?>
 		
 			<div class="ccm-group">
 				<a class="ccm-group-inner" href="<?php echo $this->url('/dashboard/files/sets/', 'view_detail', $fs->getFileSetID())?>" style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)"><?php echo $fs->getFileSetName()?></a>
 			</div>
 		
 		
-		<?php  }
+		<?php }
 		
 		
 		} else { ?>
 		
 			<p><?php echo t('No file sets found.')?></p>
 		
-		<?php  } ?>
+		<?php } ?>
 	
 	</div>
-	<?php  if ($fsl->requiresPaging()) { ?>
+	<?php if ($fsl->requiresPaging()) { ?>
 		<div class="ccm-pane-footer">
-		<?php  $fsl->displayPagingV2(); ?>
+		<?php $fsl->displayPagingV2(); ?>
 		</div>
-	<?php  } ?>
+	<?php } ?>
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper($fsl->requiresPaging())?>
 	
 	<script type="text/javascript">
@@ -232,4 +232,4 @@
 		
 		
 	</script>
-<?php  } ?>	
+<?php } ?>	

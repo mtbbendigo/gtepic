@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
@@ -60,6 +60,12 @@ abstract class Concrete5_Library_PageCache {
 		if (!is_object($c)) {
 			return false;
 		}
+
+		$cp = new Permissions($c);
+		if (!$cp->canViewPage()) {
+			return false;
+		}
+
 		$u = new User();
 
 		$allowedControllerActions = array('view');

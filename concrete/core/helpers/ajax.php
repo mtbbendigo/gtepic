@@ -1,4 +1,4 @@
-<?php  defined('C5_EXECUTE') or die('Access Denied.');
+<?php defined('C5_EXECUTE') or die('Access Denied.');
 
 class Concrete5_Helper_Ajax {
 
@@ -21,9 +21,13 @@ class Concrete5_Helper_Ajax {
 		if(@ob_get_length()) {
 			@ob_end_clean();
 		}
-		header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
-		header('Content-Type: text/plain; charset=' . APP_CHARSET, true);
-		echo ($error instanceof Exception) ? $error->getMessage() : $error;
+		if ($error instanceof ValidationErrorHelper) {
+			$error->outputJSON();
+		} else {
+			header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+			header('Content-Type: text/plain; charset=' . APP_CHARSET, true);
+			echo ($error instanceof Exception) ? $error->getMessage() : $error;
+		}
 		die();
 	}
 

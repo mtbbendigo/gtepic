@@ -1,9 +1,9 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 <div id="ccm-profile-wrapper">
-    <?php  Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
+    <?php Loader::element('profile/sidebar', array('profile'=> $ui)); ?>    
     <div id="ccm-profile-body">
     	<?php echo $error->output(); ?>
-    	<?php  switch($this->controller->getTask()) { 
+    	<?php switch($this->controller->getTask()) { 
     		case 'view_message': ?>
 
     		<div><a href="<?php echo $this->url('/profile/messages', 'view_mailbox', $box)?>">&lt;&lt; <?php echo t('Back to Mailbox')?></a></div><br/>
@@ -30,23 +30,23 @@
    				<?php echo $msg->getFormattedMessageBody()?>
     		</div>
 			<div class="ccm-profile-buttons">
-				<?php  if ($msg->getMessageAuthorID() != $ui->getUserID()) { ?>
-					<?php  
+				<?php if ($msg->getMessageAuthorID() != $ui->getUserID()) { ?>
+					<?php 
 					$mui = $msg->getMessageRelevantUserObject();
 					if (is_object($mui)) { 
 						if ($mui->getUserProfilePrivateMessagesEnabled()) { ?>
 							<?php echo $form->submit('button_submit', t('Reply'))?>
-						<?php  } 
+						<?php } 
 						
 					}?>
-				<?php  } ?>
+				<?php } ?>
 				<?php echo $form->submit('button_delete', t('Delete'), array('onclick' => 'if(confirm(\'' . t('Delete this message?') . '\')) { window.location.href=\'' . $deleteURL . '\'}; return false'))?>
 				<?php echo $form->submit('button_cancel', t('Back'), array('onclick' => 'window.location.href=\'' . $backURL . '\'; return false'))?>
 			</div>
 			</form>
 			    		
     		
-    		<?php  
+    		<?php 
     			break;
     		case 'view_mailbox': ?>
     		
@@ -54,7 +54,7 @@
     		
 			<table class="ccm-profile-messages-list" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<th><?php  if ($mailbox == 'sent') { ?><?php echo t('To')?><?php  } else { ?><?php echo t('From')?><?php  } ?></th>
+				<th><?php if ($mailbox == 'sent') { ?><?php echo t('To')?><?php } else { ?><?php echo t('From')?><?php } ?></th>
 				<th><?php echo t('Subject')?></th>
 				<th><?php echo t('Sent At')?></th>
 				<th><?php echo t('Status')?></th>
@@ -62,7 +62,7 @@
     		
     		
     		
-    		<?php 
+    		<?php
     			if (is_array($messages)) { 
 					foreach($messages as $msg) { ?>
 					
@@ -72,22 +72,22 @@
 						<a href="<?php echo $this->url('/profile', 'view', $msg->getMessageRelevantUserID())?>"><?php echo $msg->getMessageRelevantUserName()?></a>
 						</td>
 						<td class="ccm-profile-messages-item-name"><a href="<?php echo $this->url('/profile/messages', 'view_message', $mailbox, $msg->getMessageID())?>"><?php echo $msg->getFormattedMessageSubject()?></a></td>
-						<td style="white-space: nowrap"><?php echo $msg->getMessageDateAdded('user', t('F d, Y \a\t g:i A'))?></td>
+						<td style="white-space: nowrap"><?php echo $msg->getMessageDateAdded('user', DATE_APP_GENERIC_MDYT_FULL)?></td>
 						<td><?php echo $msg->getMessageStatus()?></td>
 					</tr>
 					
 					
 			
-				<?php  } ?>
-			<?php  } else { ?>
+				<?php } ?>
+			<?php } else { ?>
 				<tr>
 					<Td colspan="4"><?php echo t('No messages found.')?></td>
 				</tr>
-			<?php  } ?>
+			<?php } ?>
 			</table>
 			
 			
-			<?php 
+			<?php
 
 				$messageList->displayPaging();
     			break;
@@ -96,21 +96,21 @@
     		<h2><?php echo t('Reply Sent.')?></h2>
     		<a href="<?php echo $this->url('/profile/messages', 'view_message', $box, $msgID)?>"><?php echo t('Return to Message.')?></a>
     		
-    		<?php 
+    		<?php
     			break;
     		case 'send_complete': ?>
     		
     		<h2><?php echo t('Message Sent.')?></h2>
     		<a href="<?php echo $this->url('/profile', 'view', $recipient->getUserID())?>"><?php echo t('Return to Profile.')?></a>
     		
-    		<?php 
+    		<?php
     			break;
 			case 'over_limit': ?>
-				<h2><?php  echo t('Woops!')?></h2>
-				<p><?php  echo t("You've sent more messages than we can handle just now, that last one didn't go out. 
+				<h2><?php echo t('Woops!')?></h2>
+				<p><?php echo t("You've sent more messages than we can handle just now, that last one didn't go out. 
 				We've notified an administrator to check into this. 
 				Please wait a few minutes before sending a new message."); ?></p>
-				<?php  break; 
+				<?php break; 
     		case 'send':
     		case 'reply':
     		case 'write': ?>
@@ -119,10 +119,10 @@
 				<form method="post" action="<?php echo $this->action('send')?>">
 				
 				<?php echo $form->hidden("uID", $recipient->getUserID())?>
-				<?php  if ($this->controller->getTask() == 'reply') { ?>
+				<?php if ($this->controller->getTask() == 'reply') { ?>
 					<?php echo $form->hidden("msgID", $msgID)?>
 					<?php echo $form->hidden("box", $box)?>
-				<?php  
+				<?php 
 					$subject = t('Re: %s', $text->entities($msgSubject));
 				} else {
 					$subject = $text->entities($msgSubject);
@@ -160,7 +160,7 @@
 			</div>    	    		
     		
     		
-    		<?php  break; 
+    		<?php break; 
     		
     		default: 
     			// the inbox and sent box and other controls ?>
@@ -174,27 +174,27 @@
     			<tr>
     				<td class="ccm-profile-messages-item-name"><a href="<?php echo $this->action('view_mailbox', 'inbox')?>"><?php echo t('Inbox')?></a></td>
     				<td><?php echo $inbox->getTotalMessages()?></td>
-    				<td class="ccm-profile-mailbox-last-message"><?php 
+    				<td class="ccm-profile-mailbox-last-message"><?php
     				$msg = $inbox->getLastMessageObject();
     				if (is_object($msg)) {
-    					print t('<strong>%s</strong>, sent by %s on %s', $msg->getFormattedMessageSubject(), $msg->getMessageAuthorName(), $msg->getMessageDateAdded('user', t('F d, Y \a\t g:i A')));
+    					print t('<strong>%s</strong>, sent by %s on %s', $msg->getFormattedMessageSubject(), $msg->getMessageAuthorName(), $msg->getMessageDateAdded('user', DATE_APP_GENERIC_MDYT_FULL));
     				}
     				?></td>
     			</tr>
     			<tr>
     				<td class="ccm-profile-messages-item-name"><a href="<?php echo $this->action('view_mailbox', 'sent')?>"><?php echo t('Sent Messages')?></a></td>
     				<td><?php echo $sent->getTotalMessages()?></td>
-    				<td class="ccm-profile-mailbox-last-message"><?php 
+    				<td class="ccm-profile-mailbox-last-message"><?php
      				$msg = $sent->getLastMessageObject();
     				if (is_object($msg)) {
-    					print t('<strong>%s</strong>, sent by %s on %s', $msg->getFormattedMessageSubject(), $msg->getMessageAuthorName(), $msg->getMessageDateAdded('user', t('F d, Y \a\t g:i A')));
+    					print t('<strong>%s</strong>, sent by %s on %s', $msg->getFormattedMessageSubject(), $msg->getMessageAuthorName(), $msg->getMessageDateAdded('user', DATE_APP_GENERIC_MDYT_FULL));
     				}
     				?>
    				</td>
     			</tr>
     			</table>
     		
-    		<?php 
+    		<?php
     			break;
     	} ?>
         
