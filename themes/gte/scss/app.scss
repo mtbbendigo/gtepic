@@ -232,10 +232,12 @@ p{
     padding-left: 5%;
     padding-right: 5%;
     .document-text {
-      h1{@include headings($heading-family, $h1-size, $white, 2px);}
-      h2{@include headings($heading-family, $h2-size, $white, 2px);}
-      h3{@include headings($heading-family, $h3-size, $white, 2px);}
-      h4{@include headings($heading-family, $h4-size, $white, 2px);}
+		.white-text {
+	    	h1{@include headings($heading-family, $h1-size, $white, 2px);}
+	      	h2{@include headings($heading-family, $h2-size, $white, 2px);}
+	      	h3{@include headings($heading-family, $h3-size, $white, 2px);}
+	      	h4{@include headings($heading-family, $h4-size, $white, 2px);}
+      	}
       .article-title{@include headings($heading-family, $h3-size, $default-gold, 2px);}
       a{color: $default-gold;}
       a:hover{color: $orange; border-bottom: $orange 1px solid;}
