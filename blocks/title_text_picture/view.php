@@ -9,20 +9,22 @@ $nh = Loader::helper('navigation');
                     <div class="row">
                         <div class="small-12 large-12 columns">
                             <div class="document-text">
-                                <h3>
-                                    <?php  if (!empty($field_1_textbox_text)): ?>
+                                <div class="article-title">
+                                	<?php  if (!empty($field_1_textbox_text)): ?>
                                         <?php  echo htmlentities($field_1_textbox_text, ENT_QUOTES, APP_CHARSET); ?>
                                     <?php  endif; ?>
-                                </h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="small-12 large-12 columns">
                             <div class="document-text">
-                            <?php  if (!empty($field_2_wysiwyg_content)): ?>
-                                <?php  echo $field_2_wysiwyg_content; ?>
-                            <?php  endif; ?>
+                            	<div class="white-text">
+	                            	<?php  if (!empty($field_2_wysiwyg_content)): ?>
+	                                	<?php  echo $field_2_wysiwyg_content; ?>
+	                            	<?php  endif; ?>
+                            	</div>
                             </div>
                         </div>
                     </div>

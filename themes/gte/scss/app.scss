@@ -51,12 +51,19 @@ $orange: #FFA500;
 $heading-family: Enriqueta, Alegreya, Belgrano, serif;
 $paragraph-font-family: 'Open Sans', tahoma, verdana;
 
-$h1-size: 2.85em;
-$h2-size: 2.5em;
-$h3-size: 2.1em;
-$h4-size: 1.75em;
-$h5-size: 1.5em;
-$h6-size: 1.3em;
+//$h1-size: 2.85em;
+//$h2-size: 2.5em;
+//$h3-size: 2.1em;
+//$h4-size: 1.75em;
+//$h5-size: 1.5em;
+//$h6-size: 1.3em;
+
+$h1-size: 2.1em;
+$h2-size: 1.95em;
+$h3-size: 1.70em;
+$h4-size: 1.35em;
+$h5-size: 1.1em;
+$h6-size: .85em;
 
 $h1-lineHeight: 1.2em;
 $h2-lineHeight: 1.2em;
@@ -238,7 +245,7 @@ p{
 	      	h3{@include headings($heading-family, $h3-size, $white, 2px);}
 	      	h4{@include headings($heading-family, $h4-size, $white, 2px);}
       	}
-      .article-title{@include headings($heading-family, $h3-size, $default-gold, 2px);}
+      .article-title{@include headings($heading-family, $h1-size, $default-gold, 2px);}
       a{color: $default-gold;}
       a:hover{color: $orange; border-bottom: $orange 1px solid;}
 
