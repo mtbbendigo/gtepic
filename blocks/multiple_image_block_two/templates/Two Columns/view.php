@@ -10,7 +10,7 @@
 
 	if (!empty($field_1_textbox_text)){
 	echo '<div class="content-container"><div class="document-text">';
-			echo '<h3 class="article-title">'.htmlentities($field_1_textbox_text, ENT_QUOTES, APP_CHARSET).'</h3>';
+			echo '<div class="article-title">'.htmlentities($field_1_textbox_text, ENT_QUOTES, APP_CHARSET).'</div>';
 			echo '</div></div>';
 	}
 

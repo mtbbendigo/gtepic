@@ -9,11 +9,11 @@ $nh = Loader::helper('navigation');
                     <div class="row">
                         <div class="small-12 large-12 columns">
                             <div class="document-text">
-                                <h3>
+                                <h1>
                                 <?php  if (!empty($field_1_textbox_text)): ?>
                                     <?php  echo htmlentities($field_1_textbox_text, ENT_QUOTES, APP_CHARSET); ?>
                                 <?php  endif; ?>
-                                </h3>
+                                </h1>
                             </div>
                         </div>
                     </div>

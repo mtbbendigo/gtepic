@@ -10,7 +10,7 @@
 
 <div class="document-text">
 <?php   if ($displaySetTitle && $filesetname = $controller->getFileSetName()) { ?>
-<h3><?php   echo $filesetname; ?></h3>
+<div class="white-text"><?php   echo $filesetname; ?></div>
 <?php   } ?>
 	
 <?php   if (!empty($files)) { ?>
